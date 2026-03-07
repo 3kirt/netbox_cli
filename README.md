@@ -1,6 +1,6 @@
 # netbox-cli
 
-A command-line interface for the [NetBox](https://netbox.dev) API. Designed to retrieve inventory information for use as context with Claude and other tools.
+A command-line interface for the [NetBox](https://netbox.dev) API, primarily written by [Claude](https://claude.ai) and intended for use by Claude as a tool for retrieving network inventory information as context.
 
 ## Requirements
 
@@ -47,46 +47,106 @@ netbox-cli --config /path/to/config.json virtualization clusters list
 netbox-cli [--config FILE] <app> <endpoint> <action> [flags]
 ```
 
+All output is JSON written to stdout.
+
 ### Virtualization
 
 ```bash
-# Cluster types
-netbox-cli virtualization cluster-types list
-netbox-cli virtualization cluster-types get --id 1
-
-# Cluster groups
 netbox-cli virtualization cluster-groups list
 netbox-cli virtualization cluster-groups get --id 1
 
-# Clusters
+netbox-cli virtualization cluster-types list
+netbox-cli virtualization cluster-types get --id 1
+
 netbox-cli virtualization clusters list
 netbox-cli virtualization clusters get --id 1
 
-# Virtual machines
-netbox-cli virtualization virtual-machines list
-netbox-cli virtualization virtual-machines get --id 1
-
-# Interfaces
 netbox-cli virtualization interfaces list
 netbox-cli virtualization interfaces get --id 1
+
+netbox-cli virtualization virtual-disks list
+netbox-cli virtualization virtual-disks get --id 1
+
+netbox-cli virtualization virtual-machines list
+netbox-cli virtualization virtual-machines get --id 1
 ```
 
-All output is JSON written to stdout.
+### IPAM
+
+```bash
+netbox-cli ipam aggregates list
+netbox-cli ipam aggregates get --id 1
+
+netbox-cli ipam asns list
+netbox-cli ipam asns get --id 1
+
+netbox-cli ipam asn-ranges list
+netbox-cli ipam asn-ranges get --id 1
+
+netbox-cli ipam fhrp-groups list
+netbox-cli ipam fhrp-groups get --id 1
+
+netbox-cli ipam fhrp-group-assignments list
+netbox-cli ipam fhrp-group-assignments get --id 1
+
+netbox-cli ipam ip-addresses list
+netbox-cli ipam ip-addresses get --id 1
+
+netbox-cli ipam ip-ranges list
+netbox-cli ipam ip-ranges get --id 1
+
+netbox-cli ipam prefixes list
+netbox-cli ipam prefixes get --id 1
+
+netbox-cli ipam rirs list
+netbox-cli ipam rirs get --id 1
+
+netbox-cli ipam roles list
+netbox-cli ipam roles get --id 1
+
+netbox-cli ipam route-targets list
+netbox-cli ipam route-targets get --id 1
+
+netbox-cli ipam service-templates list
+netbox-cli ipam service-templates get --id 1
+
+netbox-cli ipam services list
+netbox-cli ipam services get --id 1
+
+netbox-cli ipam vlan-groups list
+netbox-cli ipam vlan-groups get --id 1
+
+netbox-cli ipam vlan-translation-policies list
+netbox-cli ipam vlan-translation-policies get --id 1
+
+netbox-cli ipam vlan-translation-rules list
+netbox-cli ipam vlan-translation-rules get --id 1
+
+netbox-cli ipam vlans list
+netbox-cli ipam vlans get --id 1
+
+netbox-cli ipam vrfs list
+netbox-cli ipam vrfs get --id 1
+```
 
 ## Project Structure
 
 ```
 netbox_cli/
-├── main.go                          # Entry point
+├── main.go                              # Entry point
 ├── cmd/
-│   ├── root.go                      # Root command, config and client setup
+│   ├── root.go                          # Root command, config and client setup
+│   ├── ipam/
+│   │   └── ipam.go                      # IPAM subcommands
 │   └── virtualization/
-│       └── virtualization.go        # Virtualization subcommands
+│       └── virtualization.go            # Virtualization subcommands
 └── internal/
     ├── clientctx/
-    │   └── clientctx.go             # Passes API client through cobra context
+    │   └── clientctx.go                 # Passes API client through cobra context
+    ├── cmdutil/
+    │   └── cmdutil.go                   # Shared helpers: OutputJSON, APIError, ListCmd, GetCmd
     └── config/
-        └── config.go                # Config file loading and token resolution
+        └── config.go                    # Config file loading and token resolution
 ```
 
 New NetBox API areas can be added by creating a package under `cmd/` and registering it in `cmd/root.go`.
