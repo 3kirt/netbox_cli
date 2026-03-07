@@ -1,13 +1,12 @@
 # netbox-cli
 
-A command-line interface for the [NetBox](https://netbox.dev) API, primarily written by [Claude](https://claude.ai) and intended for use by Claude as a tool for retrieving network inventory information as context.
+A command-line tool for reading data from a [NetBox](https://netbox.dev) instance via its REST API. It outputs JSON, making it easy to pipe results into other tools.
 
-## Requirements
-
-- Go 1.22+
-- A NetBox instance with API access
+This project is primarily written by [Claude](https://claude.ai) and intended for use by Claude as a tool for retrieving network inventory information as context.
 
 ## Installation
+
+**From source** (requires Go 1.22+):
 
 ```bash
 git clone https://github.com/3kirt/netbox_cli.git
@@ -17,9 +16,16 @@ make build
 
 This produces a `netbox-cli` binary in the current directory.
 
+**Docker:**
+
+```bash
+make docker
+docker run --rm -e NETBOX_TOKEN=your-token netbox-cli --config /path/to/config.json ipam ip-addresses list
+```
+
 ## Configuration
 
-Create a config file at `~/.netbox_cli.json`:
+Create `~/.netbox_cli.json` with your NetBox URL:
 
 ```json
 {
@@ -27,126 +33,77 @@ Create a config file at `~/.netbox_cli.json`:
 }
 ```
 
-Set your API token in the environment:
+Set your API token as an environment variable:
 
 ```bash
 export NETBOX_TOKEN=your-token-here
 ```
 
-The token can also be stored in the config file as `"token"`, but the environment variable takes priority.
-
-A different config file can be specified with the `--config` flag:
-
-```bash
-netbox-cli --config /path/to/config.json virtualization clusters list
-```
+The token can also be stored in the config file as `"token"`, but the environment variable takes priority. You can point to a different config file with the `--config` flag.
 
 ## Usage
 
+Every command follows the same pattern:
+
 ```
-netbox-cli [--config FILE] <app> <endpoint> <action> [flags]
+netbox-cli [--config FILE] <app> <resource> <action> [flags]
 ```
 
-All output is JSON written to stdout.
+- `<app>` is a NetBox application (`ipam`, `virtualization`)
+- `<resource>` is the object type (e.g. `ip-addresses`, `clusters`)
+- `<action>` is either `list` (all records) or `get --id <ID>` (one record)
 
-### Virtualization
+**Examples:**
 
 ```bash
-netbox-cli virtualization cluster-groups list
-netbox-cli virtualization cluster-groups get --id 1
-
-netbox-cli virtualization cluster-types list
-netbox-cli virtualization cluster-types get --id 1
-
-netbox-cli virtualization clusters list
-netbox-cli virtualization clusters get --id 1
-
-netbox-cli virtualization interfaces list
-netbox-cli virtualization interfaces get --id 1
-
-netbox-cli virtualization virtual-disks list
-netbox-cli virtualization virtual-disks get --id 1
-
-netbox-cli virtualization virtual-machines list
-netbox-cli virtualization virtual-machines get --id 1
-```
-
-### IPAM
-
-```bash
-netbox-cli ipam aggregates list
-netbox-cli ipam aggregates get --id 1
-
-netbox-cli ipam asns list
-netbox-cli ipam asns get --id 1
-
-netbox-cli ipam asn-ranges list
-netbox-cli ipam asn-ranges get --id 1
-
-netbox-cli ipam fhrp-groups list
-netbox-cli ipam fhrp-groups get --id 1
-
-netbox-cli ipam fhrp-group-assignments list
-netbox-cli ipam fhrp-group-assignments get --id 1
-
+# List all IP addresses
 netbox-cli ipam ip-addresses list
-netbox-cli ipam ip-addresses get --id 1
 
-netbox-cli ipam ip-ranges list
-netbox-cli ipam ip-ranges get --id 1
+# Get a single prefix by ID
+netbox-cli ipam prefixes get --id 42
 
-netbox-cli ipam prefixes list
-netbox-cli ipam prefixes get --id 1
-
-netbox-cli ipam rirs list
-netbox-cli ipam rirs get --id 1
-
-netbox-cli ipam roles list
-netbox-cli ipam roles get --id 1
-
-netbox-cli ipam route-targets list
-netbox-cli ipam route-targets get --id 1
-
-netbox-cli ipam service-templates list
-netbox-cli ipam service-templates get --id 1
-
-netbox-cli ipam services list
-netbox-cli ipam services get --id 1
-
-netbox-cli ipam vlan-groups list
-netbox-cli ipam vlan-groups get --id 1
-
-netbox-cli ipam vlan-translation-policies list
-netbox-cli ipam vlan-translation-policies get --id 1
-
-netbox-cli ipam vlan-translation-rules list
-netbox-cli ipam vlan-translation-rules get --id 1
-
-netbox-cli ipam vlans list
-netbox-cli ipam vlans get --id 1
-
-netbox-cli ipam vrfs list
-netbox-cli ipam vrfs get --id 1
+# List all virtual machines
+netbox-cli virtualization virtual-machines list
 ```
 
-## Project Structure
+Output is JSON. Use [`jq`](https://jqlang.org) to filter or format it:
 
-```
-netbox_cli/
-├── main.go                              # Entry point
-├── cmd/
-│   ├── root.go                          # Root command, config and client setup
-│   ├── ipam/
-│   │   └── ipam.go                      # IPAM subcommands
-│   └── virtualization/
-│       └── virtualization.go            # Virtualization subcommands
-└── internal/
-    ├── clientctx/
-    │   └── clientctx.go                 # Passes API client through cobra context
-    ├── cmdutil/
-    │   └── cmdutil.go                   # Shared helpers: OutputJSON, APIError, ListCmd, GetCmd
-    └── config/
-        └── config.go                    # Config file loading and token resolution
+```bash
+netbox-cli ipam ip-addresses list | jq '.[].address'
 ```
 
-New NetBox API areas can be added by creating a package under `cmd/` and registering it in `cmd/root.go`.
+## Available resources
+
+### `ipam`
+
+| Resource | Description |
+|---|---|
+| `aggregates` | IP aggregates |
+| `asns` | Autonomous system numbers |
+| `asn-ranges` | ASN ranges |
+| `fhrp-groups` | First-hop redundancy protocol groups |
+| `fhrp-group-assignments` | FHRP group assignments |
+| `ip-addresses` | IP addresses |
+| `ip-ranges` | IP ranges |
+| `prefixes` | IP prefixes |
+| `rirs` | Regional internet registries |
+| `roles` | IP/VLAN roles |
+| `route-targets` | VRF route targets |
+| `service-templates` | Service templates |
+| `services` | Services |
+| `vlan-groups` | VLAN groups |
+| `vlan-translation-policies` | VLAN translation policies |
+| `vlan-translation-rules` | VLAN translation rules |
+| `vlans` | VLANs |
+| `vrfs` | Virtual routing and forwarding instances |
+
+### `virtualization`
+
+| Resource | Description |
+|---|---|
+| `cluster-groups` | Cluster groups |
+| `cluster-types` | Cluster types |
+| `clusters` | Clusters |
+| `interfaces` | Virtual machine interfaces |
+| `virtual-disks` | Virtual disks |
+| `virtual-machines` | Virtual machines |
