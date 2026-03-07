@@ -1,13 +1,10 @@
 package ipam
 
 import (
-  "encoding/json"
-  "fmt"
-  "os"
-
   "github.com/spf13/cobra"
 
   "github.com/kirtis/netbox-cli/internal/clientctx"
+  "github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
 func Command() *cobra.Command {
@@ -31,16 +28,6 @@ func Command() *cobra.Command {
   return cmd
 }
 
-func outputJSON(v any) error {
-  enc := json.NewEncoder(os.Stdout)
-  enc.SetIndent("", "  ")
-  return enc.Encode(v)
-}
-
-func apiError(err error) error {
-  return fmt.Errorf("netbox API error: %w", err)
-}
-
 // aggregatesCmd -------------------------------------------------------
 
 func aggregatesCmd() *cobra.Command {
@@ -53,9 +40,9 @@ func aggregatesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamAggregatesList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("aggregate", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -64,9 +51,9 @@ func aggregatesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamAggregatesRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd
@@ -84,9 +71,9 @@ func prefixesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamPrefixesList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("prefix", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -95,9 +82,9 @@ func prefixesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamPrefixesRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd
@@ -115,9 +102,9 @@ func ipAddressesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamIpAddressesList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("ip-address", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -126,9 +113,9 @@ func ipAddressesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamIpAddressesRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd
@@ -146,9 +133,9 @@ func ipRangesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamIpRangesList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("ip-range", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -157,9 +144,9 @@ func ipRangesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamIpRangesRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd
@@ -177,9 +164,9 @@ func vlansCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamVlansList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("vlan", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -188,9 +175,9 @@ func vlansCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamVlansRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd
@@ -208,9 +195,9 @@ func vlanGroupsCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamVlanGroupsList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("vlan-group", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -219,9 +206,9 @@ func vlanGroupsCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamVlanGroupsRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd
@@ -239,9 +226,9 @@ func vrfsCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamVrfsList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("vrf", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -250,9 +237,9 @@ func vrfsCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamVrfsRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd
@@ -270,9 +257,9 @@ func rolesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamRolesList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("role", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -281,9 +268,9 @@ func rolesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamRolesRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd
@@ -301,9 +288,9 @@ func servicesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamServicesList(cmd.Context()).Limit(0).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     }),
     getCmd("service", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
@@ -312,9 +299,9 @@ func servicesCmd() *cobra.Command {
       }
       resp, _, err := client.IpamAPI.IpamServicesRetrieve(cmd.Context(), id).Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     }),
   )
   return cmd

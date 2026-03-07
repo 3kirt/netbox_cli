@@ -1,15 +1,10 @@
 package virtualization
 
 import (
-  "context"
-  "encoding/json"
-  "fmt"
-  "os"
-
   "github.com/spf13/cobra"
 
-  netbox "github.com/netbox-community/go-netbox/v4"
   "github.com/kirtis/netbox-cli/internal/clientctx"
+  "github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
 func Command() *cobra.Command {
@@ -27,17 +22,6 @@ func Command() *cobra.Command {
   )
 
   return cmd
-}
-
-// outputJSON marshals v to indented JSON and writes it to stdout.
-func outputJSON(v any) error {
-  enc := json.NewEncoder(os.Stdout)
-  enc.SetIndent("", "  ")
-  return enc.Encode(v)
-}
-
-func apiError(err error) error {
-  return fmt.Errorf("netbox API error: %w", err)
 }
 
 // clusterTypesCmd -------------------------------------------------------
@@ -65,9 +49,9 @@ func clusterTypesListCmd() *cobra.Command {
         Limit(0).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     },
   }
 }
@@ -86,9 +70,9 @@ func clusterTypesGetCmd() *cobra.Command {
         VirtualizationClusterTypesRetrieve(cmd.Context(), id).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     },
   }
   cmd.Flags().Int32Var(&id, "id", 0, "cluster type ID (required)")
@@ -121,9 +105,9 @@ func clusterGroupsListCmd() *cobra.Command {
         Limit(0).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     },
   }
 }
@@ -142,9 +126,9 @@ func clusterGroupsGetCmd() *cobra.Command {
         VirtualizationClusterGroupsRetrieve(cmd.Context(), id).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     },
   }
   cmd.Flags().Int32Var(&id, "id", 0, "cluster group ID (required)")
@@ -177,9 +161,9 @@ func clustersListCmd() *cobra.Command {
         Limit(0).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     },
   }
 }
@@ -198,9 +182,9 @@ func clustersGetCmd() *cobra.Command {
         VirtualizationClustersRetrieve(cmd.Context(), id).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     },
   }
   cmd.Flags().Int32Var(&id, "id", 0, "cluster ID (required)")
@@ -233,9 +217,9 @@ func virtualMachinesListCmd() *cobra.Command {
         Limit(0).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     },
   }
 }
@@ -254,9 +238,9 @@ func virtualMachinesGetCmd() *cobra.Command {
         VirtualizationVirtualMachinesRetrieve(cmd.Context(), id).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     },
   }
   cmd.Flags().Int32Var(&id, "id", 0, "virtual machine ID (required)")
@@ -289,9 +273,9 @@ func interfacesListCmd() *cobra.Command {
         Limit(0).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp.GetResults())
+      return cmdutil.OutputJSON(resp.GetResults())
     },
   }
 }
@@ -310,19 +294,12 @@ func interfacesGetCmd() *cobra.Command {
         VirtualizationInterfacesRetrieve(cmd.Context(), id).
         Execute()
       if err != nil {
-        return apiError(err)
+        return cmdutil.APIError(err)
       }
-      return outputJSON(resp)
+      return cmdutil.OutputJSON(resp)
     },
   }
   cmd.Flags().Int32Var(&id, "id", 0, "interface ID (required)")
   _ = cmd.MarkFlagRequired("id")
   return cmd
-}
-
-// WithClient and context helpers are in internal/clientctx — re-exported
-// here for convenience so callers only need to import this package.
-
-func WithClient(ctx context.Context, client *netbox.APIClient) context.Context {
-  return clientctx.WithClient(ctx, client)
 }
