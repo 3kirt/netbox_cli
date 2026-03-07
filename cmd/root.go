@@ -1,3 +1,6 @@
+// Package cmd wires together the root cobra command, configuration loading,
+// and NetBox API client initialisation. Each NetBox API area is registered as
+// a subcommand group from its own package under cmd/.
 package cmd
 
 import (

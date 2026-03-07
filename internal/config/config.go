@@ -1,3 +1,6 @@
+// Package config handles loading the netbox-cli JSON configuration file and
+// resolving the NetBox URL and API token. The token is read from the
+// NETBOX_TOKEN environment variable first, falling back to the config file.
 package config
 
 import (
@@ -9,11 +12,15 @@ import (
 
 const defaultConfigFile = ".netbox_cli.json"
 
+// Config holds the values loaded from the JSON configuration file.
 type Config struct {
   URL   string `json:"url"`
   Token string `json:"token"`
 }
 
+// Load reads and parses the JSON config file at path. If path is empty the
+// default location (~/.netbox_cli.json) is used. A missing file is not an
+// error; an empty Config is returned instead.
 func Load(path string) (*Config, error) {
   if path == "" {
     home, err := os.UserHomeDir()
@@ -39,6 +46,9 @@ func Load(path string) (*Config, error) {
   return &cfg, nil
 }
 
+// ResolveToken returns the API token, preferring the NETBOX_TOKEN environment
+// variable over the token field in the config file. An error is returned if
+// no token is found in either location.
 func (c *Config) ResolveToken() (string, error) {
   if token := os.Getenv("NETBOX_TOKEN"); token != "" {
     return token, nil
@@ -52,6 +62,8 @@ func (c *Config) ResolveToken() (string, error) {
   )
 }
 
+// ResolveURL returns the NetBox base URL from the config file. An error is
+// returned if the url field is empty.
 func (c *Config) ResolveURL() (string, error) {
   if c.URL == "" {
     return "", fmt.Errorf(

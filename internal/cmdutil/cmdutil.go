@@ -1,3 +1,6 @@
+// Package cmdutil provides shared helpers for building netbox-cli subcommands,
+// including JSON output, error formatting, and cobra command constructors for
+// the standard list and get actions.
 package cmdutil
 
 import (
@@ -8,12 +11,14 @@ import (
   "github.com/spf13/cobra"
 )
 
+// OutputJSON marshals v to indented JSON and writes it to stdout.
 func OutputJSON(v any) error {
   enc := json.NewEncoder(os.Stdout)
   enc.SetIndent("", "  ")
   return enc.Encode(v)
 }
 
+// APIError wraps a NetBox API error with a descriptive prefix.
 func APIError(err error) error {
   return fmt.Errorf("netbox API error: %w", err)
 }
