@@ -18,7 +18,7 @@ I would like to work on a command line interface for netbox.  This tool will pri
 |---|---|
 | circuits | not started |
 | dcim | complete |
-| extras | not started |
+| extras | complete |
 | ipam | complete |
 | tenancy | not started |
 | users | not started |
