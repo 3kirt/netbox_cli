@@ -21,7 +21,7 @@ I would like to work on a command line interface for netbox.  This tool will pri
 | extras | complete |
 | ipam | complete |
 | tenancy | complete |
-| users | not started |
+| users | complete |
 | virtualization | complete |
 | vpn | not started |
 | wireless | not started |

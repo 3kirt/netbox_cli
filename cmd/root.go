@@ -13,6 +13,7 @@ import (
 	"github.com/kirtis/netbox-cli/cmd/extras"
 	"github.com/kirtis/netbox-cli/cmd/ipam"
 	"github.com/kirtis/netbox-cli/cmd/tenancy"
+	"github.com/kirtis/netbox-cli/cmd/users"
 	"github.com/kirtis/netbox-cli/cmd/virtualization"
 	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/config"
@@ -58,6 +59,7 @@ func init() {
 	rootCmd.AddCommand(dcim.Command())
 	rootCmd.AddCommand(extras.Command())
 	rootCmd.AddCommand(tenancy.Command())
+	rootCmd.AddCommand(users.Command())
 	rootCmd.AddCommand(virtualization.Command())
 	rootCmd.AddCommand(ipam.Command())
 }
