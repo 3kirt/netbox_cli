@@ -20,9 +20,15 @@ netbox_cli/
 ├── main.go                        # Entry point: calls cmd.Execute()
 ├── cmd/
 │   ├── root.go                    # Root cobra command, config loading, client init
-│   └── virtualization/
-│       └── virtualization.go      # Virtualization subcommands
+│   ├── virtualization/
+│   │   └── virtualization.go      # Virtualization subcommands
+│   └── ipam/
+│       └── ipam.go                # IPAM subcommands
 └── internal/
+    ├── clientctx/
+    │   └── clientctx.go           # Passes API client through cobra context
+    ├── cmdutil/
+    │   └── cmdutil.go             # Shared helpers: OutputJSON, APIError
     └── config/
         └── config.go              # Config struct and JSON loading
 ```
@@ -32,7 +38,7 @@ The `cmd/` directory is the primary extension point. Adding a new NetBox API are
 ## Dependencies
 
 - `github.com/spf13/cobra` — CLI framework
-- `github.com/netbox-community/go-netbox/v4` — NetBox API client (local checkout at `/Users/kirtis/source/repos/go-netbox`)
+- `github.com/netbox-community/go-netbox/v4` — NetBox API client (published module)
 
 ## Configuration
 
@@ -90,19 +96,19 @@ Each endpoint exposes two subcommands:
 ### Virtualization Commands (Initial Scope)
 
 ```
-netbox-cli virtualization cluster-types list [--filter key=value ...]
+netbox-cli virtualization cluster-types list
 netbox-cli virtualization cluster-types get --id ID
 
-netbox-cli virtualization cluster-groups list [--filter key=value ...]
+netbox-cli virtualization cluster-groups list
 netbox-cli virtualization cluster-groups get --id ID
 
-netbox-cli virtualization clusters list [--filter key=value ...]
+netbox-cli virtualization clusters list
 netbox-cli virtualization clusters get --id ID
 
-netbox-cli virtualization virtual-machines list [--filter key=value ...]
+netbox-cli virtualization virtual-machines list
 netbox-cli virtualization virtual-machines get --id ID
 
-netbox-cli virtualization interfaces list [--filter key=value ...]
+netbox-cli virtualization interfaces list
 netbox-cli virtualization interfaces get --id ID
 ```
 
@@ -114,6 +120,47 @@ result, _, err := client.VirtualizationAPI.VirtualizationVirtualMachinesList(ctx
 
 // get by ID
 result, _, err := client.VirtualizationAPI.VirtualizationVirtualMachinesRetrieve(ctx, int32(id)).Execute()
+```
+
+### IPAM Commands (Initial Scope)
+
+```
+netbox-cli ipam aggregates list
+netbox-cli ipam aggregates get --id ID
+
+netbox-cli ipam prefixes list
+netbox-cli ipam prefixes get --id ID
+
+netbox-cli ipam ip-addresses list
+netbox-cli ipam ip-addresses get --id ID
+
+netbox-cli ipam ip-ranges list
+netbox-cli ipam ip-ranges get --id ID
+
+netbox-cli ipam vlans list
+netbox-cli ipam vlans get --id ID
+
+netbox-cli ipam vlan-groups list
+netbox-cli ipam vlan-groups get --id ID
+
+netbox-cli ipam vrfs list
+netbox-cli ipam vrfs get --id ID
+
+netbox-cli ipam roles list
+netbox-cli ipam roles get --id ID
+
+netbox-cli ipam services list
+netbox-cli ipam services get --id ID
+```
+
+go-netbox API calls follow the same pattern via `client.IpamAPI`:
+
+```go
+// list
+result, _, err := client.IpamAPI.IpamIpAddressesList(ctx).Execute()
+
+// get by ID
+result, _, err := client.IpamAPI.IpamIpAddressesRetrieve(ctx, int32(id)).Execute()
 ```
 
 ## Output
