@@ -9,7 +9,7 @@ I would like to work on a command line interface for netbox.  This tool will pri
 
 - The command line tool will use a netbox token for API access.  It should be able to read the token from an environment variable.
 - The command line tool should be able to read it's configuration from a JSON configuration file.
-- To limit the scope of the initial implementation, the tool should start by providing read access to the virtualization API.
+- To limit the scope of the initial implementation, the tool should start by providing read access to the virtualization and ipam APIs.
 - The tool will be expanded over time to support all of the netbox API, so you should organize the code to support expansion.
 
 # Standards
@@ -17,3 +17,7 @@ I would like to work on a command line interface for netbox.  This tool will pri
 ## Text encoding
 
 - The project should follow the text encoding standards in .editorconfig
+
+## Style
+
+- The project should follow the go style guide: https://google.github.io/styleguide/go/guide
