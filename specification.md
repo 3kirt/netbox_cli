@@ -20,7 +20,7 @@ I would like to work on a command line interface for netbox.  This tool will pri
 | dcim | complete |
 | extras | not started |
 | ipam | complete |
-| tenancy | not started |
+| tenancy | complete |
 | users | not started |
 | virtualization | complete |
 | vpn | not started |
