@@ -15,14 +15,23 @@ func Command() *cobra.Command {
 
   cmd.AddCommand(
     aggregatesCmd(),
-    prefixesCmd(),
+    asnsCmd(),
+    asnRangesCmd(),
+    fhrpGroupsCmd(),
+    fhrpGroupAssignmentsCmd(),
     ipAddressesCmd(),
     ipRangesCmd(),
-    vlansCmd(),
-    vlanGroupsCmd(),
-    vrfsCmd(),
+    prefixesCmd(),
+    rirsCmd(),
     rolesCmd(),
+    routeTargetsCmd(),
+    serviceTemplatesCmd(),
     servicesCmd(),
+    vlanGroupsCmd(),
+    vlanTranslationPoliciesCmd(),
+    vlanTranslationRulesCmd(),
+    vlansCmd(),
+    vrfsCmd(),
   )
 
   return cmd
@@ -33,7 +42,7 @@ func Command() *cobra.Command {
 func aggregatesCmd() *cobra.Command {
   cmd := &cobra.Command{Use: "aggregates", Short: "Manage aggregates"}
   cmd.AddCommand(
-    listCmd("aggregates", func(cmd *cobra.Command) error {
+    cmdutil.ListCmd("aggregates", func(cmd *cobra.Command) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -44,7 +53,7 @@ func aggregatesCmd() *cobra.Command {
       }
       return cmdutil.OutputJSON(resp.GetResults())
     }),
-    getCmd("aggregate", func(cmd *cobra.Command, id int32) error {
+    cmdutil.GetCmd("aggregate", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -59,28 +68,121 @@ func aggregatesCmd() *cobra.Command {
   return cmd
 }
 
-// prefixesCmd -------------------------------------------------------
+// asnsCmd -------------------------------------------------------
 
-func prefixesCmd() *cobra.Command {
-  cmd := &cobra.Command{Use: "prefixes", Short: "Manage prefixes"}
+func asnsCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "asns", Short: "Manage ASNs"}
   cmd.AddCommand(
-    listCmd("prefixes", func(cmd *cobra.Command) error {
+    cmdutil.ListCmd("asns", func(cmd *cobra.Command) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
       }
-      resp, _, err := client.IpamAPI.IpamPrefixesList(cmd.Context()).Limit(0).Execute()
+      resp, _, err := client.IpamAPI.IpamAsnsList(cmd.Context()).Limit(0).Execute()
       if err != nil {
         return cmdutil.APIError(err)
       }
       return cmdutil.OutputJSON(resp.GetResults())
     }),
-    getCmd("prefix", func(cmd *cobra.Command, id int32) error {
+    cmdutil.GetCmd("asn", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
       }
-      resp, _, err := client.IpamAPI.IpamPrefixesRetrieve(cmd.Context(), id).Execute()
+      resp, _, err := client.IpamAPI.IpamAsnsRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
+}
+
+// asnRangesCmd -------------------------------------------------------
+
+func asnRangesCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "asn-ranges", Short: "Manage ASN ranges"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("asn-ranges", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamAsnRangesList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("asn-range", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamAsnRangesRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
+}
+
+// fhrpGroupsCmd -------------------------------------------------------
+
+func fhrpGroupsCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "fhrp-groups", Short: "Manage FHRP groups"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("fhrp-groups", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamFhrpGroupsList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("fhrp-group", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamFhrpGroupsRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
+}
+
+// fhrpGroupAssignmentsCmd -------------------------------------------------------
+
+func fhrpGroupAssignmentsCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "fhrp-group-assignments", Short: "Manage FHRP group assignments"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("fhrp-group-assignments", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamFhrpGroupAssignmentsList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("fhrp-group-assignment", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamFhrpGroupAssignmentsRetrieve(cmd.Context(), id).Execute()
       if err != nil {
         return cmdutil.APIError(err)
       }
@@ -95,7 +197,7 @@ func prefixesCmd() *cobra.Command {
 func ipAddressesCmd() *cobra.Command {
   cmd := &cobra.Command{Use: "ip-addresses", Short: "Manage IP addresses"}
   cmd.AddCommand(
-    listCmd("ip-addresses", func(cmd *cobra.Command) error {
+    cmdutil.ListCmd("ip-addresses", func(cmd *cobra.Command) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -106,7 +208,7 @@ func ipAddressesCmd() *cobra.Command {
       }
       return cmdutil.OutputJSON(resp.GetResults())
     }),
-    getCmd("ip-address", func(cmd *cobra.Command, id int32) error {
+    cmdutil.GetCmd("ip-address", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -126,7 +228,7 @@ func ipAddressesCmd() *cobra.Command {
 func ipRangesCmd() *cobra.Command {
   cmd := &cobra.Command{Use: "ip-ranges", Short: "Manage IP ranges"}
   cmd.AddCommand(
-    listCmd("ip-ranges", func(cmd *cobra.Command) error {
+    cmdutil.ListCmd("ip-ranges", func(cmd *cobra.Command) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -137,7 +239,7 @@ func ipRangesCmd() *cobra.Command {
       }
       return cmdutil.OutputJSON(resp.GetResults())
     }),
-    getCmd("ip-range", func(cmd *cobra.Command, id int32) error {
+    cmdutil.GetCmd("ip-range", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -152,28 +254,28 @@ func ipRangesCmd() *cobra.Command {
   return cmd
 }
 
-// vlansCmd -------------------------------------------------------
+// prefixesCmd -------------------------------------------------------
 
-func vlansCmd() *cobra.Command {
-  cmd := &cobra.Command{Use: "vlans", Short: "Manage VLANs"}
+func prefixesCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "prefixes", Short: "Manage prefixes"}
   cmd.AddCommand(
-    listCmd("vlans", func(cmd *cobra.Command) error {
+    cmdutil.ListCmd("prefixes", func(cmd *cobra.Command) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
       }
-      resp, _, err := client.IpamAPI.IpamVlansList(cmd.Context()).Limit(0).Execute()
+      resp, _, err := client.IpamAPI.IpamPrefixesList(cmd.Context()).Limit(0).Execute()
       if err != nil {
         return cmdutil.APIError(err)
       }
       return cmdutil.OutputJSON(resp.GetResults())
     }),
-    getCmd("vlan", func(cmd *cobra.Command, id int32) error {
+    cmdutil.GetCmd("prefix", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
       }
-      resp, _, err := client.IpamAPI.IpamVlansRetrieve(cmd.Context(), id).Execute()
+      resp, _, err := client.IpamAPI.IpamPrefixesRetrieve(cmd.Context(), id).Execute()
       if err != nil {
         return cmdutil.APIError(err)
       }
@@ -183,59 +285,28 @@ func vlansCmd() *cobra.Command {
   return cmd
 }
 
-// vlanGroupsCmd -------------------------------------------------------
+// rirsCmd -------------------------------------------------------
 
-func vlanGroupsCmd() *cobra.Command {
-  cmd := &cobra.Command{Use: "vlan-groups", Short: "Manage VLAN groups"}
+func rirsCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "rirs", Short: "Manage RIRs"}
   cmd.AddCommand(
-    listCmd("vlan-groups", func(cmd *cobra.Command) error {
+    cmdutil.ListCmd("rirs", func(cmd *cobra.Command) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
       }
-      resp, _, err := client.IpamAPI.IpamVlanGroupsList(cmd.Context()).Limit(0).Execute()
+      resp, _, err := client.IpamAPI.IpamRirsList(cmd.Context()).Limit(0).Execute()
       if err != nil {
         return cmdutil.APIError(err)
       }
       return cmdutil.OutputJSON(resp.GetResults())
     }),
-    getCmd("vlan-group", func(cmd *cobra.Command, id int32) error {
+    cmdutil.GetCmd("rir", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
       }
-      resp, _, err := client.IpamAPI.IpamVlanGroupsRetrieve(cmd.Context(), id).Execute()
-      if err != nil {
-        return cmdutil.APIError(err)
-      }
-      return cmdutil.OutputJSON(resp)
-    }),
-  )
-  return cmd
-}
-
-// vrfsCmd -------------------------------------------------------
-
-func vrfsCmd() *cobra.Command {
-  cmd := &cobra.Command{Use: "vrfs", Short: "Manage VRFs"}
-  cmd.AddCommand(
-    listCmd("vrfs", func(cmd *cobra.Command) error {
-      client, err := clientctx.Client(cmd.Context())
-      if err != nil {
-        return err
-      }
-      resp, _, err := client.IpamAPI.IpamVrfsList(cmd.Context()).Limit(0).Execute()
-      if err != nil {
-        return cmdutil.APIError(err)
-      }
-      return cmdutil.OutputJSON(resp.GetResults())
-    }),
-    getCmd("vrf", func(cmd *cobra.Command, id int32) error {
-      client, err := clientctx.Client(cmd.Context())
-      if err != nil {
-        return err
-      }
-      resp, _, err := client.IpamAPI.IpamVrfsRetrieve(cmd.Context(), id).Execute()
+      resp, _, err := client.IpamAPI.IpamRirsRetrieve(cmd.Context(), id).Execute()
       if err != nil {
         return cmdutil.APIError(err)
       }
@@ -250,7 +321,7 @@ func vrfsCmd() *cobra.Command {
 func rolesCmd() *cobra.Command {
   cmd := &cobra.Command{Use: "roles", Short: "Manage IP/VLAN roles"}
   cmd.AddCommand(
-    listCmd("roles", func(cmd *cobra.Command) error {
+    cmdutil.ListCmd("roles", func(cmd *cobra.Command) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -261,7 +332,7 @@ func rolesCmd() *cobra.Command {
       }
       return cmdutil.OutputJSON(resp.GetResults())
     }),
-    getCmd("role", func(cmd *cobra.Command, id int32) error {
+    cmdutil.GetCmd("role", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -276,12 +347,74 @@ func rolesCmd() *cobra.Command {
   return cmd
 }
 
+// routeTargetsCmd -------------------------------------------------------
+
+func routeTargetsCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "route-targets", Short: "Manage route targets"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("route-targets", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamRouteTargetsList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("route-target", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamRouteTargetsRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
+}
+
+// serviceTemplatesCmd -------------------------------------------------------
+
+func serviceTemplatesCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "service-templates", Short: "Manage service templates"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("service-templates", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamServiceTemplatesList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("service-template", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamServiceTemplatesRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
+}
+
 // servicesCmd -------------------------------------------------------
 
 func servicesCmd() *cobra.Command {
   cmd := &cobra.Command{Use: "services", Short: "Manage services"}
   cmd.AddCommand(
-    listCmd("services", func(cmd *cobra.Command) error {
+    cmdutil.ListCmd("services", func(cmd *cobra.Command) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -292,7 +425,7 @@ func servicesCmd() *cobra.Command {
       }
       return cmdutil.OutputJSON(resp.GetResults())
     }),
-    getCmd("service", func(cmd *cobra.Command, id int32) error {
+    cmdutil.GetCmd("service", func(cmd *cobra.Command, id int32) error {
       client, err := clientctx.Client(cmd.Context())
       if err != nil {
         return err
@@ -307,28 +440,157 @@ func servicesCmd() *cobra.Command {
   return cmd
 }
 
-// helpers -------------------------------------------------------
+// vlanGroupsCmd -------------------------------------------------------
 
-func listCmd(noun string, run func(cmd *cobra.Command) error) *cobra.Command {
-  return &cobra.Command{
-    Use:   "list",
-    Short: "List all " + noun,
-    RunE: func(cmd *cobra.Command, args []string) error {
-      return run(cmd)
-    },
-  }
+func vlanGroupsCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "vlan-groups", Short: "Manage VLAN groups"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("vlan-groups", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVlanGroupsList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("vlan-group", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVlanGroupsRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
 }
 
-func getCmd(noun string, run func(cmd *cobra.Command, id int32) error) *cobra.Command {
-  var id int32
-  cmd := &cobra.Command{
-    Use:   "get",
-    Short: "Get a " + noun + " by ID",
-    RunE: func(cmd *cobra.Command, args []string) error {
-      return run(cmd, id)
-    },
-  }
-  cmd.Flags().Int32Var(&id, "id", 0, noun+" ID (required)")
-  _ = cmd.MarkFlagRequired("id")
+// vlanTranslationPoliciesCmd -------------------------------------------------------
+
+func vlanTranslationPoliciesCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "vlan-translation-policies", Short: "Manage VLAN translation policies"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("vlan-translation-policies", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVlanTranslationPoliciesList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("vlan-translation-policy", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVlanTranslationPoliciesRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
+}
+
+// vlanTranslationRulesCmd -------------------------------------------------------
+
+func vlanTranslationRulesCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "vlan-translation-rules", Short: "Manage VLAN translation rules"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("vlan-translation-rules", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVlanTranslationRulesList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("vlan-translation-rule", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVlanTranslationRulesRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
+}
+
+// vlansCmd -------------------------------------------------------
+
+func vlansCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "vlans", Short: "Manage VLANs"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("vlans", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVlansList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("vlan", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVlansRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
+  return cmd
+}
+
+// vrfsCmd -------------------------------------------------------
+
+func vrfsCmd() *cobra.Command {
+  cmd := &cobra.Command{Use: "vrfs", Short: "Manage VRFs"}
+  cmd.AddCommand(
+    cmdutil.ListCmd("vrfs", func(cmd *cobra.Command) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVrfsList(cmd.Context()).Limit(0).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp.GetResults())
+    }),
+    cmdutil.GetCmd("vrf", func(cmd *cobra.Command, id int32) error {
+      client, err := clientctx.Client(cmd.Context())
+      if err != nil {
+        return err
+      }
+      resp, _, err := client.IpamAPI.IpamVrfsRetrieve(cmd.Context(), id).Execute()
+      if err != nil {
+        return cmdutil.APIError(err)
+      }
+      return cmdutil.OutputJSON(resp)
+    }),
+  )
   return cmd
 }
