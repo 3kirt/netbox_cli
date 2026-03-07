@@ -1,3 +1,4 @@
+// Package virtualization implements CLI subcommands for the NetBox virtualization API.
 package virtualization
 
 import (
@@ -7,6 +8,7 @@ import (
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
+// Command returns the cobra command tree for the virtualization API area.
 func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "virtualization",

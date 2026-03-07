@@ -12,6 +12,20 @@ I would like to work on a command line interface for netbox.  This tool will pri
 - To limit the scope of the initial implementation, the tool should start by providing read access to the virtualization and ipam APIs.
 - The tool will be expanded over time to support all of the netbox API, so you should organize the code to support expansion.
 
+# API Coverage
+
+| Area | Status |
+|---|---|
+| circuits | not started |
+| dcim | complete |
+| extras | not started |
+| ipam | complete |
+| tenancy | not started |
+| users | not started |
+| virtualization | complete |
+| vpn | not started |
+| wireless | not started |
+
 # Standards
 
 ## Text encoding

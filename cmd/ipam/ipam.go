@@ -1,3 +1,4 @@
+// Package ipam implements CLI subcommands for the NetBox IPAM API.
 package ipam
 
 import (
@@ -7,6 +8,7 @@ import (
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
+// Command returns the cobra command tree for the IPAM API area.
 func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "ipam",

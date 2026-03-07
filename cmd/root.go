@@ -9,6 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/kirtis/netbox-cli/cmd/dcim"
 	"github.com/kirtis/netbox-cli/cmd/ipam"
 	"github.com/kirtis/netbox-cli/cmd/virtualization"
 	"github.com/kirtis/netbox-cli/internal/clientctx"
@@ -52,6 +53,7 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVar(&configPath, "config", "", "path to JSON config file (default: ~/.netbox_cli.json)")
+	rootCmd.AddCommand(dcim.Command())
 	rootCmd.AddCommand(virtualization.Command())
 	rootCmd.AddCommand(ipam.Command())
 }
