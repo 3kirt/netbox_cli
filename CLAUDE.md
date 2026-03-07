@@ -41,13 +41,19 @@ internal/
   config/config.go                   JSON config loading, token/URL resolution
 ```
 
+## Branching
+
+- All new features must be developed on a dedicated feature branch (`feature/<name>`).
+- Branch from `main` and merge back to `main` when the work is complete.
+
 ## Adding a new API area
 
-1. Create `cmd/<area>/<area>.go` — follow the pattern in `cmd/ipam/ipam.go`.
-2. Register `<area>.Command()` in `cmd/root.go`.
-3. Use `cmdutil.ListCmd` / `cmdutil.GetCmd` for standard list/get subcommands.
-4. Retrieve the client with `clientctx.Client(cmd.Context())`.
-5. Call the corresponding `client.<Area>API.<Area>XxxList(ctx).Limit(0).Execute()`.
+1. Create a feature branch: `git checkout -b feature/<area>`.
+2. Create `cmd/<area>/<area>.go` — follow the pattern in `cmd/ipam/ipam.go`.
+3. Register `<area>.Command()` in `cmd/root.go`.
+4. Use `cmdutil.ListCmd` / `cmdutil.GetCmd` for standard list/get subcommands.
+5. Retrieve the client with `clientctx.Client(cmd.Context())`.
+6. Call the corresponding `client.<Area>API.<Area>XxxList(ctx).Limit(0).Execute()`.
 
 ## Code standards
 
