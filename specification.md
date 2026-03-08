@@ -17,6 +17,7 @@ I would like to work on a command line interface for netbox.  This tool will pri
 | Area | Status |
 |---|---|
 | circuits | complete |
+| core | complete |
 | dcim | complete |
 | extras | complete |
 | ipam | complete |
