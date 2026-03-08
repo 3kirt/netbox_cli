@@ -51,7 +51,15 @@ netbox-cli [--config FILE] <app> <resource> <action> [flags]
 
 - `<app>` is a NetBox application (`circuits`, `core`, `dcim`, `extras`, `ipam`, `tenancy`, `users`, `virtualization`, `vpn`, `wireless`)
 - `<resource>` is the object type (e.g. `ip-addresses`, `devices`, `tunnels`)
-- `<action>` is either `list` (all records) or `get --id <ID>` (one record)
+- `<action>` is one of:
+
+| Action | Flags | Description |
+|---|---|---|
+| `list` | | Fetch all records |
+| `get` | `--id <ID>` | Fetch one record by ID |
+| `create` | | Create a record; reads JSON body from stdin |
+| `update` | `--id <ID>` | Partially update a record (PATCH); reads JSON from stdin |
+| `delete` | `--id <ID>` | Delete a record |
 
 **Examples:**
 
@@ -62,14 +70,19 @@ netbox-cli ipam ip-addresses list
 # Get a single prefix by ID
 netbox-cli ipam prefixes get --id 42
 
+# Create an IP address
+echo '{"address": "10.0.1.1/24", "status": "active"}' \
+  | netbox-cli ipam ip-addresses create
+
+# Update a device's serial number
+echo '{"serial": "FDO2142A0BC"}' \
+  | netbox-cli dcim devices update --id 100
+
+# Delete a circuit
+netbox-cli circuits circuits delete --id 7
+
 # List all virtual machines
 netbox-cli virtualization virtual-machines list
-
-# List all devices
-netbox-cli dcim devices list
-
-# Get a circuit by ID
-netbox-cli circuits circuits get --id 7
 ```
 
 Output is JSON. Use [`jq`](https://jqlang.org) to filter or format it:
@@ -80,7 +93,9 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 
 ## Available resources
 
-### `circuits`
+Full command references with examples are in the [docs/](docs/) folder.
+
+### `circuits` — [docs/circuits.md](docs/circuits.md)
 
 | Resource | Description |
 |---|---|
@@ -96,7 +111,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `virtual-circuit-types` | Virtual circuit types |
 | `virtual-circuits` | Virtual circuits |
 
-### `core`
+### `core` — [docs/core.md](docs/core.md)
 
 | Resource | Description |
 |---|---|
@@ -105,7 +120,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `jobs` | Background jobs |
 | `object-changes` | Object change log |
 
-### `dcim`
+### `dcim` — [docs/dcim.md](docs/dcim.md)
 
 | Resource | Description |
 |---|---|
@@ -154,7 +169,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `virtual-chassis` | Virtual chassis |
 | `virtual-device-contexts` | Virtual device contexts |
 
-### `extras`
+### `extras` — [docs/extras.md](docs/extras.md)
 
 | Resource | Description |
 |---|---|
@@ -179,7 +194,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `tags` | Tags |
 | `webhooks` | Webhooks |
 
-### `ipam`
+### `ipam` — [docs/ipam.md](docs/ipam.md)
 
 | Resource | Description |
 |---|---|
@@ -202,7 +217,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `vlans` | VLANs |
 | `vrfs` | Virtual routing and forwarding instances |
 
-### `tenancy`
+### `tenancy` — [docs/tenancy.md](docs/tenancy.md)
 
 | Resource | Description |
 |---|---|
@@ -213,7 +228,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `tenant-groups` | Tenant groups |
 | `tenants` | Tenants |
 
-### `users`
+### `users` — [docs/users.md](docs/users.md)
 
 | Resource | Description |
 |---|---|
@@ -222,7 +237,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `tokens` | API tokens |
 | `users` | Users |
 
-### `virtualization`
+### `virtualization` — [docs/virtualization.md](docs/virtualization.md)
 
 | Resource | Description |
 |---|---|
@@ -233,7 +248,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `virtual-disks` | Virtual disks |
 | `virtual-machines` | Virtual machines |
 
-### `vpn`
+### `vpn` — [docs/vpn.md](docs/vpn.md)
 
 | Resource | Description |
 |---|---|
@@ -248,7 +263,7 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 | `tunnel-terminations` | Tunnel terminations |
 | `tunnels` | Tunnels |
 
-### `wireless`
+### `wireless` — [docs/wireless.md](docs/wireless.md)
 
 | Resource | Description |
 |---|---|
