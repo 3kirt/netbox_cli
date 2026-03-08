@@ -25,7 +25,13 @@ The CLI reads from `~/.netbox_cli.json` by default (override with `--config`):
 { "url": "https://netbox.example.com", "token": "abc123" }
 ```
 
-`NETBOX_TOKEN` env var takes precedence over the config file token.
+Token resolution priority:
+
+1. `NETBOX_TOKEN` environment variable
+2. `token` key in the JSON config file
+
+The client is initialised with `netbox.NewAPIClientFor(url, token)`, which sets
+`Authorization: Token <token>` and `Accept-Language: en-US` on every request.
 
 ## Project structure
 
@@ -44,7 +50,7 @@ cmd/
   wireless/wireless.go               Wireless API subcommands
 internal/
   clientctx/clientctx.go            stores *netbox.APIClient in cobra context
-  cmdutil/cmdutil.go                 shared helpers: OutputJSON, APIError, ListCmd, GetCmd
+  cmdutil/cmdutil.go                 shared helpers: OutputJSON, APIError, ListCmd, GetCmd, CreateCmd, UpdateCmd, DeleteCmd
   config/config.go                   JSON config loading, token/URL resolution
 ```
 
@@ -58,9 +64,10 @@ internal/
 1. Create a feature branch: `git checkout -b feature/<area>`.
 2. Create `cmd/<area>/<area>.go` — follow the pattern in `cmd/ipam/ipam.go`.
 3. Register `<area>.Command()` in `cmd/root.go`.
-4. Use `cmdutil.ListCmd` / `cmdutil.GetCmd` for standard list/get subcommands.
-5. Callbacks receive `ctx context.Context` and `client *netbox.APIClient` directly — no manual client retrieval needed.
-6. Call the corresponding `client.<Area>API.<Area>XxxList(ctx).Limit(0).Execute()`.
+4. Use `cmdutil.ListCmd` / `cmdutil.GetCmd` for list/get subcommands.
+5. Use `cmdutil.CreateCmd` / `cmdutil.UpdateCmd` / `cmdutil.DeleteCmd` for write subcommands. Create and update callbacks receive `[]byte` (raw stdin JSON) and unmarshal into the appropriate `netbox.XxxRequest` / `netbox.PatchedXxxRequest` type.
+6. Callbacks receive `ctx context.Context` and `client *netbox.APIClient` directly — no manual client retrieval needed.
+7. Call the corresponding `client.<Area>API.<Area>XxxList(ctx).Limit(0).Execute()`.
 
 ## Code standards
 
@@ -70,3 +77,22 @@ internal/
 - **Comments**: godoc on all exported symbols and packages.
 - **Module**: `github.com/kirtis/netbox-cli`, Go 1.22.
 - **go-netbox**: `github.com/netbox-community/go-netbox/v4 v4.3.0` (published module).
+
+## API coverage
+
+All ten NetBox API areas are fully implemented with list, get, create, update,
+and delete. Read-only resources (e.g. `core/data-files`, `extras/object-types`)
+expose only list and get.
+
+| Area | Status |
+|---|---|
+| circuits | complete |
+| core | complete |
+| dcim | complete |
+| extras | complete |
+| ipam | complete |
+| tenancy | complete |
+| users | complete |
+| virtualization | complete |
+| vpn | complete |
+| wireless | complete |
