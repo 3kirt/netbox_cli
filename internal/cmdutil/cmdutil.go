@@ -1,6 +1,6 @@
 // Package cmdutil provides shared helpers for building netbox-cli subcommands,
 // including JSON output, error formatting, and cobra command constructors for
-// the standard list and get actions.
+// the standard list, get, create, update, and delete actions.
 package cmdutil
 
 import (
@@ -108,6 +108,8 @@ func UpdateCmd(noun string, run func(context.Context, *netbox.APIClient, int32, 
 		},
 	}
 	cmd.Flags().Int32Var(&id, "id", 0, noun+" ID (required)")
+	// MarkFlagRequired only errors if the flag name is unknown, which cannot
+	// happen here since we just registered "id" on this command.
 	_ = cmd.MarkFlagRequired("id")
 	return cmd
 }
@@ -128,6 +130,8 @@ func DeleteCmd(noun string, run func(context.Context, *netbox.APIClient, int32) 
 		},
 	}
 	cmd.Flags().Int32Var(&id, "id", 0, noun+" ID (required)")
+	// MarkFlagRequired only errors if the flag name is unknown, which cannot
+	// happen here since we just registered "id" on this command.
 	_ = cmd.MarkFlagRequired("id")
 	return cmd
 }

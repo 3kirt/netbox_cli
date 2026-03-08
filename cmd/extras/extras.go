@@ -673,7 +673,7 @@ func notificationsCmd() *cobra.Command {
 // Note: read-only endpoint — no create, update, or delete.
 
 func objectTypesCmd() *cobra.Command {
-	cmd := &cobra.Command{Use: "object-types", Short: "Manage object types"}
+	cmd := &cobra.Command{Use: "object-types", Short: "Browse object types"}
 	cmd.AddCommand(
 		cmdutil.ListCmd("object-types", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.ExtrasAPI.ExtrasObjectTypesList(ctx).Limit(0).Execute()
@@ -870,7 +870,7 @@ func tableConfigsCmd() *cobra.Command {
 // Note: read-only endpoint — no create, update, or delete.
 
 func taggedObjectsCmd() *cobra.Command {
-	cmd := &cobra.Command{Use: "tagged-objects", Short: "Manage tagged objects"}
+	cmd := &cobra.Command{Use: "tagged-objects", Short: "Browse tagged objects"}
 	cmd.AddCommand(
 		cmdutil.ListCmd("tagged-objects", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.ExtrasAPI.ExtrasTaggedObjectsList(ctx).Limit(0).Execute()

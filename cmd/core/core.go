@@ -30,9 +30,10 @@ func Command() *cobra.Command {
 }
 
 // dataFilesCmd -------------------------------------------------------
+// Note: read-only endpoint — no create, update, or delete.
 
 func dataFilesCmd() *cobra.Command {
-	cmd := &cobra.Command{Use: "data-files", Short: "Manage data files"}
+	cmd := &cobra.Command{Use: "data-files", Short: "Browse data files"}
 	cmd.AddCommand(
 		cmdutil.ListCmd("data-files", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.CoreAPI.CoreDataFilesList(ctx).Limit(0).Execute()
@@ -105,9 +106,10 @@ func dataSourcesCmd() *cobra.Command {
 }
 
 // jobsCmd -------------------------------------------------------
+// Note: read-only endpoint — no create, update, or delete.
 
 func jobsCmd() *cobra.Command {
-	cmd := &cobra.Command{Use: "jobs", Short: "Manage jobs"}
+	cmd := &cobra.Command{Use: "jobs", Short: "Browse jobs"}
 	cmd.AddCommand(
 		cmdutil.ListCmd("jobs", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.CoreAPI.CoreJobsList(ctx).Limit(0).Execute()
@@ -128,9 +130,10 @@ func jobsCmd() *cobra.Command {
 }
 
 // objectChangesCmd -------------------------------------------------------
+// Note: read-only endpoint — no create, update, or delete.
 
 func objectChangesCmd() *cobra.Command {
-	cmd := &cobra.Command{Use: "object-changes", Short: "Manage object changes"}
+	cmd := &cobra.Command{Use: "object-changes", Short: "Browse object changes"}
 	cmd.AddCommand(
 		cmdutil.ListCmd("object-changes", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.CoreAPI.CoreObjectChangesList(ctx).Limit(0).Execute()
