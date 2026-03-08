@@ -16,6 +16,7 @@ import (
 	"github.com/kirtis/netbox-cli/cmd/tenancy"
 	"github.com/kirtis/netbox-cli/cmd/users"
 	"github.com/kirtis/netbox-cli/cmd/virtualization"
+	"github.com/kirtis/netbox-cli/cmd/vpn"
 	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/config"
 )
@@ -62,5 +63,6 @@ func init() {
 	rootCmd.AddCommand(tenancy.Command())
 	rootCmd.AddCommand(users.Command())
 	rootCmd.AddCommand(virtualization.Command())
+	rootCmd.AddCommand(vpn.Command())
 	rootCmd.AddCommand(ipam.Command())
 }
