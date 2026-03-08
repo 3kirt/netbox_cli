@@ -54,57 +54,77 @@ func TestLoad(t *testing.T) {
 }
 
 func TestResolveToken(t *testing.T) {
-	t.Run("env var takes precedence over config", func(t *testing.T) {
-		t.Setenv("NETBOX_TOKEN", "envtoken")
-		cfg := &config.Config{Token: "filetoken"}
-		got, err := cfg.ResolveToken()
-		if err != nil {
-			t.Fatalf("got error %v, want nil", err)
-		}
-		if got != "envtoken" {
-			t.Errorf("got %q, want %q", got, "envtoken")
-		}
-	})
+	tests := []struct {
+		name      string
+		envToken  string
+		cfgToken  string
+		wantToken string
+		wantErr   bool
+	}{
+		{
+			name:      "env var takes precedence over config",
+			envToken:  "envtoken",
+			cfgToken:  "filetoken",
+			wantToken: "envtoken",
+		},
+		{
+			name:      "falls back to config file token",
+			envToken:  "",
+			cfgToken:  "filetoken",
+			wantToken: "filetoken",
+		},
+		{
+			name:     "error when no token available",
+			envToken: "",
+			cfgToken: "",
+			wantErr:  true,
+		},
+	}
 
-	t.Run("falls back to config file token", func(t *testing.T) {
-		t.Setenv("NETBOX_TOKEN", "")
-		cfg := &config.Config{Token: "filetoken"}
-		got, err := cfg.ResolveToken()
-		if err != nil {
-			t.Fatalf("got error %v, want nil", err)
-		}
-		if got != "filetoken" {
-			t.Errorf("got %q, want %q", got, "filetoken")
-		}
-	})
-
-	t.Run("error when no token available", func(t *testing.T) {
-		t.Setenv("NETBOX_TOKEN", "")
-		cfg := &config.Config{}
-		_, err := cfg.ResolveToken()
-		if err == nil {
-			t.Fatal("got nil error, want error")
-		}
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Setenv("NETBOX_TOKEN", tt.envToken)
+			cfg := &config.Config{Token: tt.cfgToken}
+			got, err := cfg.ResolveToken()
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("got err=%v, wantErr=%v", err, tt.wantErr)
+			}
+			if !tt.wantErr && got != tt.wantToken {
+				t.Errorf("got %q, want %q", got, tt.wantToken)
+			}
+		})
+	}
 }
 
 func TestResolveURL(t *testing.T) {
-	t.Run("returns URL from config", func(t *testing.T) {
-		cfg := &config.Config{URL: "https://netbox.example.com"}
-		got, err := cfg.ResolveURL()
-		if err != nil {
-			t.Fatalf("got error %v, want nil", err)
-		}
-		if got != "https://netbox.example.com" {
-			t.Errorf("got %q, want %q", got, "https://netbox.example.com")
-		}
-	})
+	tests := []struct {
+		name    string
+		url     string
+		wantURL string
+		wantErr bool
+	}{
+		{
+			name:    "returns URL from config",
+			url:     "https://netbox.example.com",
+			wantURL: "https://netbox.example.com",
+		},
+		{
+			name:    "error when URL is empty",
+			url:     "",
+			wantErr: true,
+		},
+	}
 
-	t.Run("error when URL is empty", func(t *testing.T) {
-		cfg := &config.Config{}
-		_, err := cfg.ResolveURL()
-		if err == nil {
-			t.Fatal("got nil error, want error")
-		}
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cfg := &config.Config{URL: tt.url}
+			got, err := cfg.ResolveURL()
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("got err=%v, wantErr=%v", err, tt.wantErr)
+			}
+			if !tt.wantErr && got != tt.wantURL {
+				t.Errorf("got %q, want %q", got, tt.wantURL)
+			}
+		})
+	}
 }

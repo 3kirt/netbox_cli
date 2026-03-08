@@ -32,10 +32,10 @@ func Load(path string) (*Config, error) {
 	}
 
 	data, err := os.ReadFile(path)
+	if errors.Is(err, os.ErrNotExist) {
+		return &Config{}, nil
+	}
 	if err != nil {
-		if os.IsNotExist(err) {
-			return &Config{}, nil
-		}
 		return nil, fmt.Errorf("reading config file %s: %w", path, err)
 	}
 
