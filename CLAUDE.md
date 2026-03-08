@@ -52,7 +52,7 @@ internal/
 2. Create `cmd/<area>/<area>.go` — follow the pattern in `cmd/ipam/ipam.go`.
 3. Register `<area>.Command()` in `cmd/root.go`.
 4. Use `cmdutil.ListCmd` / `cmdutil.GetCmd` for standard list/get subcommands.
-5. Retrieve the client with `clientctx.Client(cmd.Context())`.
+5. Callbacks receive `ctx context.Context` and `client *netbox.APIClient` directly — no manual client retrieval needed.
 6. Call the corresponding `client.<Area>API.<Area>XxxList(ctx).Limit(0).Execute()`.
 
 ## Code standards

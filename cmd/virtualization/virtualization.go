@@ -2,9 +2,11 @@
 package virtualization
 
 import (
+	"context"
+
+	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
 
-	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
@@ -32,25 +34,17 @@ func Command() *cobra.Command {
 func clusterGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "cluster-groups", Short: "Manage cluster groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("cluster-groups", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.ListCmd("cluster-groups", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationClusterGroupsList(cmd.Context()).Limit(0).Execute()
+				VirtualizationClusterGroupsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("cluster-group", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.GetCmd("cluster-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationClusterGroupsRetrieve(cmd.Context(), id).Execute()
+				VirtualizationClusterGroupsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -65,25 +59,17 @@ func clusterGroupsCmd() *cobra.Command {
 func clusterTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "cluster-types", Short: "Manage cluster types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("cluster-types", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.ListCmd("cluster-types", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationClusterTypesList(cmd.Context()).Limit(0).Execute()
+				VirtualizationClusterTypesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("cluster-type", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.GetCmd("cluster-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationClusterTypesRetrieve(cmd.Context(), id).Execute()
+				VirtualizationClusterTypesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -98,25 +84,17 @@ func clusterTypesCmd() *cobra.Command {
 func clustersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "clusters", Short: "Manage clusters"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("clusters", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.ListCmd("clusters", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationClustersList(cmd.Context()).Limit(0).Execute()
+				VirtualizationClustersList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("cluster", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.GetCmd("cluster", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationClustersRetrieve(cmd.Context(), id).Execute()
+				VirtualizationClustersRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -131,25 +109,17 @@ func clustersCmd() *cobra.Command {
 func interfacesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "interfaces", Short: "Manage VM interfaces"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("interfaces", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.ListCmd("interfaces", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationInterfacesList(cmd.Context()).Limit(0).Execute()
+				VirtualizationInterfacesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("interface", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.GetCmd("interface", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationInterfacesRetrieve(cmd.Context(), id).Execute()
+				VirtualizationInterfacesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -164,25 +134,17 @@ func interfacesCmd() *cobra.Command {
 func virtualDisksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-disks", Short: "Manage virtual disks"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-disks", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.ListCmd("virtual-disks", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationVirtualDisksList(cmd.Context()).Limit(0).Execute()
+				VirtualizationVirtualDisksList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("virtual-disk", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.GetCmd("virtual-disk", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationVirtualDisksRetrieve(cmd.Context(), id).Execute()
+				VirtualizationVirtualDisksRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -197,25 +159,17 @@ func virtualDisksCmd() *cobra.Command {
 func virtualMachinesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-machines", Short: "Manage virtual machines"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-machines", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.ListCmd("virtual-machines", func(ctx context.Context, client *netbox.APIClient) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationVirtualMachinesList(cmd.Context()).Limit(0).Execute()
+				VirtualizationVirtualMachinesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("virtual-machine", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
+		cmdutil.GetCmd("virtual-machine", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
-				VirtualizationVirtualMachinesRetrieve(cmd.Context(), id).Execute()
+				VirtualizationVirtualMachinesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

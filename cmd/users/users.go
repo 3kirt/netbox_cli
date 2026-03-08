@@ -2,9 +2,11 @@
 package users
 
 import (
+	"context"
+
+	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
 
-	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
@@ -30,23 +32,15 @@ func Command() *cobra.Command {
 func groupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "groups", Short: "Manage groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("groups", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.UsersAPI.UsersGroupsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("groups", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.UsersAPI.UsersGroupsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("group", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.UsersAPI.UsersGroupsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.UsersAPI.UsersGroupsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -61,23 +55,15 @@ func groupsCmd() *cobra.Command {
 func permissionsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "permissions", Short: "Manage permissions"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("permissions", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.UsersAPI.UsersPermissionsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("permissions", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.UsersAPI.UsersPermissionsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("permission", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.UsersAPI.UsersPermissionsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("permission", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.UsersAPI.UsersPermissionsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -92,23 +78,15 @@ func permissionsCmd() *cobra.Command {
 func tokensCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tokens", Short: "Manage tokens"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tokens", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.UsersAPI.UsersTokensList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("tokens", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.UsersAPI.UsersTokensList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("token", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.UsersAPI.UsersTokensRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("token", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.UsersAPI.UsersTokensRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -123,23 +101,15 @@ func tokensCmd() *cobra.Command {
 func usersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "users", Short: "Manage users"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("users", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.UsersAPI.UsersUsersList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("users", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.UsersAPI.UsersUsersList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("user", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.UsersAPI.UsersUsersRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("user", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.UsersAPI.UsersUsersRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

@@ -2,9 +2,11 @@
 package dcim
 
 import (
+	"context"
+
+	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
 
-	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
@@ -70,23 +72,15 @@ func Command() *cobra.Command {
 func cableTerminationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "cable-terminations", Short: "Manage cable terminations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("cable-terminations", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimCableTerminationsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("cable-terminations", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimCableTerminationsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("cable-termination", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimCableTerminationsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("cable-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimCableTerminationsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -101,23 +95,15 @@ func cableTerminationsCmd() *cobra.Command {
 func cablesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "cables", Short: "Manage cables"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("cables", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimCablesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("cables", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimCablesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("cable", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimCablesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("cable", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimCablesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -132,23 +118,15 @@ func cablesCmd() *cobra.Command {
 func consolePortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "console-port-templates", Short: "Manage console port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("console-port-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimConsolePortTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("console-port-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimConsolePortTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("console-port-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimConsolePortTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("console-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimConsolePortTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -163,23 +141,15 @@ func consolePortTemplatesCmd() *cobra.Command {
 func consolePortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "console-ports", Short: "Manage console ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("console-ports", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimConsolePortsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("console-ports", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimConsolePortsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("console-port", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimConsolePortsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("console-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimConsolePortsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -194,23 +164,15 @@ func consolePortsCmd() *cobra.Command {
 func consoleServerPortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "console-server-port-templates", Short: "Manage console server port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("console-server-port-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimConsoleServerPortTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("console-server-port-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimConsoleServerPortTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("console-server-port-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimConsoleServerPortTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("console-server-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimConsoleServerPortTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -225,23 +187,15 @@ func consoleServerPortTemplatesCmd() *cobra.Command {
 func consoleServerPortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "console-server-ports", Short: "Manage console server ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("console-server-ports", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimConsoleServerPortsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("console-server-ports", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimConsoleServerPortsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("console-server-port", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimConsoleServerPortsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("console-server-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimConsoleServerPortsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -256,23 +210,15 @@ func consoleServerPortsCmd() *cobra.Command {
 func deviceBayTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "device-bay-templates", Short: "Manage device bay templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("device-bay-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDeviceBayTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("device-bay-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimDeviceBayTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("device-bay-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDeviceBayTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("device-bay-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimDeviceBayTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -287,23 +233,15 @@ func deviceBayTemplatesCmd() *cobra.Command {
 func deviceBaysCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "device-bays", Short: "Manage device bays"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("device-bays", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDeviceBaysList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("device-bays", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimDeviceBaysList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("device-bay", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDeviceBaysRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("device-bay", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimDeviceBaysRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -318,23 +256,15 @@ func deviceBaysCmd() *cobra.Command {
 func deviceRolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "device-roles", Short: "Manage device roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("device-roles", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDeviceRolesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("device-roles", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimDeviceRolesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("device-role", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDeviceRolesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("device-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimDeviceRolesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -349,23 +279,15 @@ func deviceRolesCmd() *cobra.Command {
 func deviceTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "device-types", Short: "Manage device types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("device-types", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDeviceTypesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("device-types", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimDeviceTypesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("device-type", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDeviceTypesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("device-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimDeviceTypesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -380,23 +302,15 @@ func deviceTypesCmd() *cobra.Command {
 func devicesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "devices", Short: "Manage devices"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("devices", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDevicesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("devices", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimDevicesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("device", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimDevicesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("device", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimDevicesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -411,23 +325,15 @@ func devicesCmd() *cobra.Command {
 func frontPortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "front-port-templates", Short: "Manage front port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("front-port-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimFrontPortTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("front-port-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimFrontPortTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("front-port-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimFrontPortTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("front-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimFrontPortTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -442,23 +348,15 @@ func frontPortTemplatesCmd() *cobra.Command {
 func frontPortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "front-ports", Short: "Manage front ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("front-ports", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimFrontPortsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("front-ports", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimFrontPortsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("front-port", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimFrontPortsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("front-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimFrontPortsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -473,23 +371,15 @@ func frontPortsCmd() *cobra.Command {
 func interfaceTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "interface-templates", Short: "Manage interface templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("interface-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInterfaceTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("interface-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimInterfaceTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("interface-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInterfaceTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("interface-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimInterfaceTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -504,23 +394,15 @@ func interfaceTemplatesCmd() *cobra.Command {
 func interfacesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "interfaces", Short: "Manage device interfaces"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("interfaces", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInterfacesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("interfaces", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimInterfacesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("interface", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInterfacesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("interface", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimInterfacesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -535,23 +417,15 @@ func interfacesCmd() *cobra.Command {
 func inventoryItemRolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "inventory-item-roles", Short: "Manage inventory item roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("inventory-item-roles", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInventoryItemRolesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("inventory-item-roles", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimInventoryItemRolesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("inventory-item-role", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInventoryItemRolesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("inventory-item-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimInventoryItemRolesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -566,23 +440,15 @@ func inventoryItemRolesCmd() *cobra.Command {
 func inventoryItemTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "inventory-item-templates", Short: "Manage inventory item templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("inventory-item-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInventoryItemTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("inventory-item-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimInventoryItemTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("inventory-item-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInventoryItemTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("inventory-item-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimInventoryItemTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -597,23 +463,15 @@ func inventoryItemTemplatesCmd() *cobra.Command {
 func inventoryItemsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "inventory-items", Short: "Manage inventory items"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("inventory-items", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInventoryItemsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("inventory-items", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimInventoryItemsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("inventory-item", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimInventoryItemsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("inventory-item", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimInventoryItemsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -628,23 +486,15 @@ func inventoryItemsCmd() *cobra.Command {
 func locationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "locations", Short: "Manage locations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("locations", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimLocationsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("locations", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimLocationsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("location", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimLocationsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("location", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimLocationsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -659,23 +509,15 @@ func locationsCmd() *cobra.Command {
 func macAddressesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "mac-addresses", Short: "Manage MAC addresses"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("mac-addresses", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimMacAddressesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("mac-addresses", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimMacAddressesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("mac-address", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimMacAddressesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("mac-address", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimMacAddressesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -690,23 +532,15 @@ func macAddressesCmd() *cobra.Command {
 func manufacturersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "manufacturers", Short: "Manage manufacturers"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("manufacturers", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimManufacturersList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("manufacturers", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimManufacturersList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("manufacturer", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimManufacturersRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("manufacturer", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimManufacturersRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -721,23 +555,15 @@ func manufacturersCmd() *cobra.Command {
 func moduleBayTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "module-bay-templates", Short: "Manage module bay templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("module-bay-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModuleBayTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("module-bay-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimModuleBayTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("module-bay-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModuleBayTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("module-bay-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimModuleBayTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -752,23 +578,15 @@ func moduleBayTemplatesCmd() *cobra.Command {
 func moduleBaysCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "module-bays", Short: "Manage module bays"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("module-bays", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModuleBaysList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("module-bays", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimModuleBaysList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("module-bay", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModuleBaysRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("module-bay", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimModuleBaysRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -783,23 +601,15 @@ func moduleBaysCmd() *cobra.Command {
 func moduleTypeProfilesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "module-type-profiles", Short: "Manage module type profiles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("module-type-profiles", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModuleTypeProfilesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("module-type-profiles", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimModuleTypeProfilesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("module-type-profile", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModuleTypeProfilesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("module-type-profile", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimModuleTypeProfilesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -814,23 +624,15 @@ func moduleTypeProfilesCmd() *cobra.Command {
 func moduleTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "module-types", Short: "Manage module types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("module-types", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModuleTypesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("module-types", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimModuleTypesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("module-type", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModuleTypesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("module-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimModuleTypesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -845,23 +647,15 @@ func moduleTypesCmd() *cobra.Command {
 func modulesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "modules", Short: "Manage modules"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("modules", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModulesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("modules", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimModulesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("module", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimModulesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("module", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimModulesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -876,23 +670,15 @@ func modulesCmd() *cobra.Command {
 func platformsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "platforms", Short: "Manage platforms"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("platforms", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPlatformsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("platforms", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimPlatformsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("platform", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPlatformsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("platform", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimPlatformsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -907,23 +693,15 @@ func platformsCmd() *cobra.Command {
 func powerFeedsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-feeds", Short: "Manage power feeds"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-feeds", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerFeedsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("power-feeds", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimPowerFeedsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("power-feed", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerFeedsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("power-feed", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimPowerFeedsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -938,23 +716,15 @@ func powerFeedsCmd() *cobra.Command {
 func powerOutletTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-outlet-templates", Short: "Manage power outlet templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-outlet-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerOutletTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("power-outlet-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimPowerOutletTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("power-outlet-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerOutletTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("power-outlet-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimPowerOutletTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -969,23 +739,15 @@ func powerOutletTemplatesCmd() *cobra.Command {
 func powerOutletsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-outlets", Short: "Manage power outlets"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-outlets", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerOutletsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("power-outlets", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimPowerOutletsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("power-outlet", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerOutletsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("power-outlet", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimPowerOutletsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1000,23 +762,15 @@ func powerOutletsCmd() *cobra.Command {
 func powerPanelsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-panels", Short: "Manage power panels"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-panels", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerPanelsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("power-panels", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimPowerPanelsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("power-panel", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerPanelsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("power-panel", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimPowerPanelsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1031,23 +785,15 @@ func powerPanelsCmd() *cobra.Command {
 func powerPortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-port-templates", Short: "Manage power port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-port-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerPortTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("power-port-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimPowerPortTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("power-port-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerPortTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("power-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimPowerPortTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1062,23 +808,15 @@ func powerPortTemplatesCmd() *cobra.Command {
 func powerPortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-ports", Short: "Manage power ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-ports", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerPortsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("power-ports", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimPowerPortsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("power-port", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimPowerPortsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("power-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimPowerPortsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1093,23 +831,15 @@ func powerPortsCmd() *cobra.Command {
 func rackReservationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rack-reservations", Short: "Manage rack reservations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rack-reservations", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRackReservationsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("rack-reservations", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimRackReservationsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("rack-reservation", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRackReservationsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("rack-reservation", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimRackReservationsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1124,23 +854,15 @@ func rackReservationsCmd() *cobra.Command {
 func rackRolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rack-roles", Short: "Manage rack roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rack-roles", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRackRolesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("rack-roles", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimRackRolesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("rack-role", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRackRolesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("rack-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimRackRolesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1155,23 +877,15 @@ func rackRolesCmd() *cobra.Command {
 func rackTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rack-types", Short: "Manage rack types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rack-types", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRackTypesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("rack-types", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimRackTypesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("rack-type", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRackTypesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("rack-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimRackTypesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1186,23 +900,15 @@ func rackTypesCmd() *cobra.Command {
 func racksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "racks", Short: "Manage racks"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("racks", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRacksList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("racks", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimRacksList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("rack", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRacksRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("rack", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimRacksRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1217,23 +923,15 @@ func racksCmd() *cobra.Command {
 func rearPortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rear-port-templates", Short: "Manage rear port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rear-port-templates", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRearPortTemplatesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("rear-port-templates", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimRearPortTemplatesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("rear-port-template", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRearPortTemplatesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("rear-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimRearPortTemplatesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1248,23 +946,15 @@ func rearPortTemplatesCmd() *cobra.Command {
 func rearPortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rear-ports", Short: "Manage rear ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rear-ports", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRearPortsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("rear-ports", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimRearPortsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("rear-port", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRearPortsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("rear-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimRearPortsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1279,23 +969,15 @@ func rearPortsCmd() *cobra.Command {
 func regionsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "regions", Short: "Manage regions"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("regions", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRegionsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("regions", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimRegionsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("region", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimRegionsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("region", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimRegionsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1310,23 +992,15 @@ func regionsCmd() *cobra.Command {
 func siteGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "site-groups", Short: "Manage site groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("site-groups", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimSiteGroupsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("site-groups", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimSiteGroupsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("site-group", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimSiteGroupsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("site-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimSiteGroupsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1341,23 +1015,15 @@ func siteGroupsCmd() *cobra.Command {
 func sitesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "sites", Short: "Manage sites"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("sites", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimSitesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("sites", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimSitesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("site", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimSitesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("site", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimSitesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1372,23 +1038,15 @@ func sitesCmd() *cobra.Command {
 func virtualChassisCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-chassis", Short: "Manage virtual chassis"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-chassis", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimVirtualChassisList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("virtual-chassis", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimVirtualChassisList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("virtual-chassis", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimVirtualChassisRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("virtual-chassis", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimVirtualChassisRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -1403,23 +1061,15 @@ func virtualChassisCmd() *cobra.Command {
 func virtualDeviceContextsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-device-contexts", Short: "Manage virtual device contexts"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-device-contexts", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimVirtualDeviceContextsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("virtual-device-contexts", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.DcimAPI.DcimVirtualDeviceContextsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("virtual-device-context", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.DcimAPI.DcimVirtualDeviceContextsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("virtual-device-context", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.DcimAPI.DcimVirtualDeviceContextsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

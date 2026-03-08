@@ -4,11 +4,15 @@
 package cmdutil
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 
+	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
+
+	"github.com/kirtis/netbox-cli/internal/clientctx"
 )
 
 // OutputJSON marshals v to indented JSON and writes it to stdout.
@@ -23,25 +27,36 @@ func APIError(err error) error {
 	return fmt.Errorf("netbox API error: %w", err)
 }
 
-// ListCmd builds a cobra "list" subcommand that calls run with the command.
-func ListCmd(noun string, run func(cmd *cobra.Command) error) *cobra.Command {
+// ListCmd builds a cobra "list" subcommand. The run callback receives the
+// context and the NetBox API client resolved from the command context.
+func ListCmd(noun string, run func(context.Context, *netbox.APIClient) error) *cobra.Command {
 	return &cobra.Command{
 		Use:   "list",
 		Short: "List all " + noun,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return run(cmd)
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			return run(cmd.Context(), client)
 		},
 	}
 }
 
-// GetCmd builds a cobra "get" subcommand that calls run with the command and parsed --id flag.
-func GetCmd(noun string, run func(cmd *cobra.Command, id int32) error) *cobra.Command {
+// GetCmd builds a cobra "get" subcommand. The run callback receives the
+// context, the NetBox API client resolved from the command context, and
+// the value of the required --id flag.
+func GetCmd(noun string, run func(context.Context, *netbox.APIClient, int32) error) *cobra.Command {
 	var id int32
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get a " + noun + " by ID",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return run(cmd, id)
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			return run(cmd.Context(), client, id)
 		},
 	}
 	cmd.Flags().Int32Var(&id, "id", 0, noun+" ID (required)")

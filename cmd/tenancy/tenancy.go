@@ -2,9 +2,11 @@
 package tenancy
 
 import (
+	"context"
+
+	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
 
-	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
@@ -32,23 +34,15 @@ func Command() *cobra.Command {
 func contactAssignmentsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "contact-assignments", Short: "Manage contact assignments"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("contact-assignments", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyContactAssignmentsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("contact-assignments", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.TenancyAPI.TenancyContactAssignmentsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("contact-assignment", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyContactAssignmentsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("contact-assignment", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.TenancyAPI.TenancyContactAssignmentsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -63,23 +57,15 @@ func contactAssignmentsCmd() *cobra.Command {
 func contactGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "contact-groups", Short: "Manage contact groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("contact-groups", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyContactGroupsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("contact-groups", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.TenancyAPI.TenancyContactGroupsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("contact-group", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyContactGroupsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("contact-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.TenancyAPI.TenancyContactGroupsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -94,23 +80,15 @@ func contactGroupsCmd() *cobra.Command {
 func contactRolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "contact-roles", Short: "Manage contact roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("contact-roles", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyContactRolesList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("contact-roles", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.TenancyAPI.TenancyContactRolesList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("contact-role", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyContactRolesRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("contact-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.TenancyAPI.TenancyContactRolesRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -125,23 +103,15 @@ func contactRolesCmd() *cobra.Command {
 func contactsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "contacts", Short: "Manage contacts"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("contacts", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyContactsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("contacts", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.TenancyAPI.TenancyContactsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("contact", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyContactsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("contact", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.TenancyAPI.TenancyContactsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -156,23 +126,15 @@ func contactsCmd() *cobra.Command {
 func tenantGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tenant-groups", Short: "Manage tenant groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tenant-groups", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyTenantGroupsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("tenant-groups", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.TenancyAPI.TenancyTenantGroupsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("tenant-group", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyTenantGroupsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("tenant-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.TenancyAPI.TenancyTenantGroupsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -187,23 +149,15 @@ func tenantGroupsCmd() *cobra.Command {
 func tenantsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tenants", Short: "Manage tenants"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tenants", func(cmd *cobra.Command) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyTenantsList(cmd.Context()).Limit(0).Execute()
+		cmdutil.ListCmd("tenants", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.TenancyAPI.TenancyTenantsList(ctx).Limit(0).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp.GetResults())
 		}),
-		cmdutil.GetCmd("tenant", func(cmd *cobra.Command, id int32) error {
-			client, err := clientctx.Client(cmd.Context())
-			if err != nil {
-				return err
-			}
-			resp, _, err := client.TenancyAPI.TenancyTenantsRetrieve(cmd.Context(), id).Execute()
+		cmdutil.GetCmd("tenant", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.TenancyAPI.TenancyTenantsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
