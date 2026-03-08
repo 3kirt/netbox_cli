@@ -23,6 +23,8 @@ func Command() *cobra.Command {
 		ipsecPoliciesCmd(),
 		ipsecProfilesCmd(),
 		ipsecProposalsCmd(),
+		l2vpnTerminationsCmd(),
+		l2vpnsCmd(),
 		tunnelGroupsCmd(),
 		tunnelTerminationsCmd(),
 		tunnelsCmd(),
@@ -137,6 +139,52 @@ func ipsecProposalsCmd() *cobra.Command {
 		}),
 		cmdutil.GetCmd("ipsec-proposal", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VpnAPI.VpnIpsecProposalsRetrieve(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+	)
+	return cmd
+}
+
+// l2vpnTerminationsCmd -------------------------------------------------------
+
+func l2vpnTerminationsCmd() *cobra.Command {
+	cmd := &cobra.Command{Use: "l2vpn-terminations", Short: "Manage L2VPN terminations"}
+	cmd.AddCommand(
+		cmdutil.ListCmd("l2vpn-terminations", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.VpnAPI.VpnL2vpnTerminationsList(ctx).Limit(0).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		}),
+		cmdutil.GetCmd("l2vpn-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.VpnAPI.VpnL2vpnTerminationsRetrieve(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+	)
+	return cmd
+}
+
+// l2vpnsCmd -------------------------------------------------------
+
+func l2vpnsCmd() *cobra.Command {
+	cmd := &cobra.Command{Use: "l2vpns", Short: "Manage L2VPNs"}
+	cmd.AddCommand(
+		cmdutil.ListCmd("l2vpns", func(ctx context.Context, client *netbox.APIClient) error {
+			resp, _, err := client.VpnAPI.VpnL2vpnsList(ctx).Limit(0).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		}),
+		cmdutil.GetCmd("l2vpn", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			resp, _, err := client.VpnAPI.VpnL2vpnsRetrieve(ctx, id).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
