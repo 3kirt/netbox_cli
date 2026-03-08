@@ -33,8 +33,15 @@ The CLI reads from `~/.netbox_cli.json` by default (override with `--config`):
 main.go                              entry point — calls cmd.Execute()
 cmd/
   root.go                            root cobra command, config + client init
+  circuits/circuits.go               Circuits API subcommands
+  dcim/dcim.go                       DCIM API subcommands
+  extras/extras.go                   Extras API subcommands
   ipam/ipam.go                       IPAM API subcommands
+  tenancy/tenancy.go                 Tenancy API subcommands
+  users/users.go                     Users API subcommands
   virtualization/virtualization.go   Virtualization API subcommands
+  vpn/vpn.go                         VPN API subcommands
+  wireless/wireless.go               Wireless API subcommands
 internal/
   clientctx/clientctx.go            stores *netbox.APIClient in cobra context
   cmdutil/cmdutil.go                 shared helpers: OutputJSON, APIError, ListCmd, GetCmd
