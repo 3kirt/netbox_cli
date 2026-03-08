@@ -10,9 +10,9 @@ information as context.
 
 ```bash
 make build          # produces ./netbox-cli binary
+make lint           # run golangci-lint (includes go vet, staticcheck, and more)
 make docker         # builds Docker image tagged netbox-cli
 make clean          # removes the binary
-go vet ./...        # run static analysis
 gofmt -l .          # check formatting (should produce no output)
 gofmt -w .          # reformat all Go files
 ```
@@ -58,8 +58,9 @@ internal/
 ## Code standards
 
 - **Formatting**: `gofmt` (tabs, not spaces). `.editorconfig` has a `[*.go]` override.
-- **Style**: [Google Go Best Practices](https://google.github.io/styleguide/go/best-practices) and [Google Go Decisions](https://google.github.io/styleguide/go/decisions) — lowercase error strings, no trailing punctuation,
+- **Style**: [Effective Go](https://go.dev/doc/effective_go), [Google Go Best Practices](https://google.github.io/styleguide/go/best-practices), and [Google Go Decisions](https://google.github.io/styleguide/go/decisions) — lowercase error strings, no trailing punctuation,
   never silently discard errors without an explanatory comment.
+- **Linting**: `make lint` runs `golangci-lint` (config in `.golangci.yml`). All issues must be resolved before committing.
 - **Comments**: godoc on all exported symbols and packages.
 - **Module**: `github.com/kirtis/netbox-cli`, Go 1.22.
 - **go-netbox**: `github.com/netbox-community/go-netbox/v4 v4.3.0` (published module).

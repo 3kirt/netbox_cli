@@ -25,7 +25,7 @@ var configPath string
 var rootCmd = &cobra.Command{
 	Use:   "netbox-cli",
 	Short: "Command-line interface for the NetBox API",
-	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+	PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 		cfg, err := config.Load(configPath)
 		if err != nil {
 			return err
@@ -47,6 +47,7 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+// Execute runs the root command and exits with a non-zero status on error.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)

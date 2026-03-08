@@ -33,7 +33,7 @@ func ListCmd(noun string, run func(context.Context, *netbox.APIClient) error) *c
 	return &cobra.Command{
 		Use:   "list",
 		Short: "List all " + noun,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
 				return err
@@ -51,7 +51,7 @@ func GetCmd(noun string, run func(context.Context, *netbox.APIClient, int32) err
 	cmd := &cobra.Command{
 		Use:   "get",
 		Short: "Get a " + noun + " by ID",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
 				return err

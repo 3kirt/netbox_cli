@@ -1,7 +1,7 @@
 BINARY := netbox-cli
 IMAGE  := netbox-cli
 
-.PHONY: build docker clean
+.PHONY: build docker clean lint
 
 build:
 	go build -o $(BINARY) .
@@ -11,3 +11,6 @@ docker:
 
 clean:
 	rm -f $(BINARY)
+
+lint:
+	golangci-lint run ./...
