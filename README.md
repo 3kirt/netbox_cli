@@ -82,7 +82,6 @@ netbox-cli ipam ip-addresses list | jq '.[].address'
 
 ### `circuits`
 
-
 | Resource | Description |
 |---|---|
 | `circuit-group-assignments` | Circuit group assignments |
