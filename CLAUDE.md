@@ -58,8 +58,7 @@ internal/
 ## Code standards
 
 - **Formatting**: `gofmt` (tabs, not spaces). `.editorconfig` has a `[*.go]` override.
-- **Style**: [Effective Go](https://go.dev/doc/effective_go), [Google Go Best Practices](https://google.github.io/styleguide/go/best-practices), and [Google Go Decisions](https://google.github.io/styleguide/go/decisions) — lowercase error strings, no trailing punctuation,
-  never silently discard errors without an explanatory comment.
+- **Style**: See [style.md](style.md) for a full summary. Primary sources: [Effective Go](https://go.dev/doc/effective_go), [Google Go Best Practices](https://google.github.io/styleguide/go/best-practices), [Google Go Decisions](https://google.github.io/styleguide/go/decisions).
 - **Linting**: `make lint` runs `golangci-lint` (config in `.golangci.yml`). All issues must be resolved before committing.
 - **Comments**: godoc on all exported symbols and packages.
 - **Module**: `github.com/kirtis/netbox-cli`, Go 1.22.
