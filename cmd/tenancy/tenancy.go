@@ -3,6 +3,8 @@ package tenancy
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
@@ -48,6 +50,35 @@ func contactAssignmentsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("contact-assignment", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableContactAssignmentRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyContactAssignmentsCreate(ctx).WritableContactAssignmentRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("contact-assignment", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableContactAssignmentRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyContactAssignmentsPartialUpdate(ctx, id).PatchedWritableContactAssignmentRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("contact-assignment", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.TenancyAPI.TenancyContactAssignmentsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -70,6 +101,35 @@ func contactGroupsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("contact-group", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableContactGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyContactGroupsCreate(ctx).WritableContactGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("contact-group", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableContactGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyContactGroupsPartialUpdate(ctx, id).PatchedWritableContactGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("contact-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.TenancyAPI.TenancyContactGroupsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -94,6 +154,35 @@ func contactRolesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("contact-role", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ContactRoleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyContactRolesCreate(ctx).ContactRoleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("contact-role", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedContactRoleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyContactRolesPartialUpdate(ctx, id).PatchedContactRoleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("contact-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.TenancyAPI.TenancyContactRolesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -116,6 +205,35 @@ func contactsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("contact", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ContactRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyContactsCreate(ctx).ContactRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("contact", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedContactRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyContactsPartialUpdate(ctx, id).PatchedContactRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("contact", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.TenancyAPI.TenancyContactsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -140,6 +258,35 @@ func tenantGroupsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("tenant-group", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableTenantGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyTenantGroupsCreate(ctx).WritableTenantGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("tenant-group", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableTenantGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyTenantGroupsPartialUpdate(ctx, id).PatchedWritableTenantGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("tenant-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.TenancyAPI.TenancyTenantGroupsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -162,6 +309,35 @@ func tenantsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("tenant", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.TenantRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyTenantsCreate(ctx).TenantRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("tenant", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedTenantRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.TenancyAPI.TenancyTenantsPartialUpdate(ctx, id).PatchedTenantRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("tenant", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.TenancyAPI.TenancyTenantsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd

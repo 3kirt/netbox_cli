@@ -3,6 +3,8 @@ package circuits
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
@@ -53,6 +55,35 @@ func circuitGroupAssignmentsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("circuit-group-assignment", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableCircuitGroupAssignmentRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupAssignmentsCreate(ctx).WritableCircuitGroupAssignmentRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("circuit-group-assignment", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableCircuitGroupAssignmentRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupAssignmentsPartialUpdate(ctx, id).PatchedWritableCircuitGroupAssignmentRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("circuit-group-assignment", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsCircuitGroupAssignmentsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -75,6 +106,35 @@ func circuitGroupsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("circuit-group", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.CircuitGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupsCreate(ctx).CircuitGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("circuit-group", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedCircuitGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupsPartialUpdate(ctx, id).PatchedCircuitGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("circuit-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsCircuitGroupsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -99,6 +159,35 @@ func circuitTerminationsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("circuit-termination", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.CircuitTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitTerminationsCreate(ctx).CircuitTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("circuit-termination", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedCircuitTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitTerminationsPartialUpdate(ctx, id).PatchedCircuitTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("circuit-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsCircuitTerminationsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -121,6 +210,35 @@ func circuitTypesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("circuit-type", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.CircuitTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitTypesCreate(ctx).CircuitTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("circuit-type", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedCircuitTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitTypesPartialUpdate(ctx, id).PatchedCircuitTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("circuit-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsCircuitTypesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -145,6 +263,35 @@ func circuitsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("circuit", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableCircuitRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitsCreate(ctx).WritableCircuitRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("circuit", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableCircuitRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitsPartialUpdate(ctx, id).PatchedWritableCircuitRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("circuit", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsCircuitsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -167,6 +314,35 @@ func providerAccountsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("provider-account", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ProviderAccountRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsProviderAccountsCreate(ctx).ProviderAccountRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("provider-account", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedProviderAccountRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsProviderAccountsPartialUpdate(ctx, id).PatchedProviderAccountRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("provider-account", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsProviderAccountsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -191,6 +367,35 @@ func providerNetworksCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("provider-network", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ProviderNetworkRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsProviderNetworksCreate(ctx).ProviderNetworkRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("provider-network", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedProviderNetworkRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsProviderNetworksPartialUpdate(ctx, id).PatchedProviderNetworkRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("provider-network", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsProviderNetworksDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -213,6 +418,35 @@ func providersCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("provider", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ProviderRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsProvidersCreate(ctx).ProviderRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("provider", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedProviderRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsProvidersPartialUpdate(ctx, id).PatchedProviderRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("provider", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsProvidersDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -237,6 +471,35 @@ func virtualCircuitTerminationsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("virtual-circuit-termination", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableVirtualCircuitTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTerminationsCreate(ctx).WritableVirtualCircuitTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("virtual-circuit-termination", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableVirtualCircuitTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTerminationsPartialUpdate(ctx, id).PatchedWritableVirtualCircuitTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("virtual-circuit-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsVirtualCircuitTerminationsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -260,6 +523,35 @@ func virtualCircuitTypesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("virtual-circuit-type", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.VirtualCircuitTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTypesCreate(ctx).VirtualCircuitTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("virtual-circuit-type", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedVirtualCircuitTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTypesPartialUpdate(ctx, id).PatchedVirtualCircuitTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("virtual-circuit-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsVirtualCircuitTypesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -282,6 +574,35 @@ func virtualCircuitsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("virtual-circuit", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableVirtualCircuitRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitsCreate(ctx).WritableVirtualCircuitRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("virtual-circuit", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableVirtualCircuitRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitsPartialUpdate(ctx, id).PatchedWritableVirtualCircuitRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("virtual-circuit", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CircuitsAPI.CircuitsVirtualCircuitsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd

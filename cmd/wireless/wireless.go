@@ -3,6 +3,8 @@ package wireless
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
@@ -45,6 +47,35 @@ func wirelessLanGroupsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("wireless-lan-group", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableWirelessLANGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.WirelessAPI.WirelessWirelessLanGroupsCreate(ctx).WritableWirelessLANGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("wireless-lan-group", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableWirelessLANGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.WirelessAPI.WirelessWirelessLanGroupsPartialUpdate(ctx, id).PatchedWritableWirelessLANGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("wireless-lan-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.WirelessAPI.WirelessWirelessLanGroupsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -68,6 +99,35 @@ func wirelessLansCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("wireless-lan", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableWirelessLANRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.WirelessAPI.WirelessWirelessLansCreate(ctx).WritableWirelessLANRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("wireless-lan", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableWirelessLANRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.WirelessAPI.WirelessWirelessLansPartialUpdate(ctx, id).PatchedWritableWirelessLANRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("wireless-lan", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.WirelessAPI.WirelessWirelessLansDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -90,6 +150,35 @@ func wirelessLinksCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("wireless-link", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableWirelessLinkRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.WirelessAPI.WirelessWirelessLinksCreate(ctx).WritableWirelessLinkRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("wireless-link", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableWirelessLinkRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.WirelessAPI.WirelessWirelessLinksPartialUpdate(ctx, id).PatchedWritableWirelessLinkRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("wireless-link", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.WirelessAPI.WirelessWirelessLinksDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd

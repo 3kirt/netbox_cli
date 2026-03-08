@@ -3,6 +3,8 @@ package dcim
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
@@ -86,6 +88,35 @@ func cableTerminationsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("cable-termination", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.CableTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimCableTerminationsCreate(ctx).CableTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("cable-termination", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedCableTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimCableTerminationsPartialUpdate(ctx, id).PatchedCableTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("cable-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimCableTerminationsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -108,6 +139,35 @@ func cablesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("cable", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableCableRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimCablesCreate(ctx).WritableCableRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("cable", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableCableRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimCablesPartialUpdate(ctx, id).PatchedWritableCableRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("cable", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimCablesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -132,6 +192,35 @@ func consolePortTemplatesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("console-port-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableConsolePortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimConsolePortTemplatesCreate(ctx).WritableConsolePortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("console-port-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableConsolePortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimConsolePortTemplatesPartialUpdate(ctx, id).PatchedWritableConsolePortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("console-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimConsolePortTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -154,6 +243,35 @@ func consolePortsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("console-port", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableConsolePortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimConsolePortsCreate(ctx).WritableConsolePortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("console-port", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableConsolePortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimConsolePortsPartialUpdate(ctx, id).PatchedWritableConsolePortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("console-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimConsolePortsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -178,6 +296,35 @@ func consoleServerPortTemplatesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("console-server-port-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableConsoleServerPortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimConsoleServerPortTemplatesCreate(ctx).WritableConsoleServerPortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("console-server-port-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableConsoleServerPortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimConsoleServerPortTemplatesPartialUpdate(ctx, id).PatchedWritableConsoleServerPortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("console-server-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimConsoleServerPortTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -200,6 +347,35 @@ func consoleServerPortsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("console-server-port", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableConsoleServerPortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimConsoleServerPortsCreate(ctx).WritableConsoleServerPortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("console-server-port", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableConsoleServerPortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimConsoleServerPortsPartialUpdate(ctx, id).PatchedWritableConsoleServerPortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("console-server-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimConsoleServerPortsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -224,6 +400,35 @@ func deviceBayTemplatesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("device-bay-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.DeviceBayTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDeviceBayTemplatesCreate(ctx).DeviceBayTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("device-bay-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedDeviceBayTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDeviceBayTemplatesPartialUpdate(ctx, id).PatchedDeviceBayTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("device-bay-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimDeviceBayTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -246,6 +451,35 @@ func deviceBaysCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("device-bay", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.DeviceBayRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDeviceBaysCreate(ctx).DeviceBayRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("device-bay", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedDeviceBayRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDeviceBaysPartialUpdate(ctx, id).PatchedDeviceBayRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("device-bay", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimDeviceBaysDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -270,6 +504,35 @@ func deviceRolesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("device-role", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableDeviceRoleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDeviceRolesCreate(ctx).WritableDeviceRoleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("device-role", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableDeviceRoleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDeviceRolesPartialUpdate(ctx, id).PatchedWritableDeviceRoleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("device-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimDeviceRolesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -292,6 +555,35 @@ func deviceTypesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("device-type", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableDeviceTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDeviceTypesCreate(ctx).WritableDeviceTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("device-type", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableDeviceTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDeviceTypesPartialUpdate(ctx, id).PatchedWritableDeviceTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("device-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimDeviceTypesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -316,6 +608,35 @@ func devicesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("device", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableDeviceWithConfigContextRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDevicesCreate(ctx).WritableDeviceWithConfigContextRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("device", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableDeviceWithConfigContextRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimDevicesPartialUpdate(ctx, id).PatchedWritableDeviceWithConfigContextRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("device", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimDevicesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -338,6 +659,35 @@ func frontPortTemplatesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("front-port-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableFrontPortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimFrontPortTemplatesCreate(ctx).WritableFrontPortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("front-port-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableFrontPortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimFrontPortTemplatesPartialUpdate(ctx, id).PatchedWritableFrontPortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("front-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimFrontPortTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -362,6 +712,35 @@ func frontPortsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("front-port", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableFrontPortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimFrontPortsCreate(ctx).WritableFrontPortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("front-port", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableFrontPortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimFrontPortsPartialUpdate(ctx, id).PatchedWritableFrontPortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("front-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimFrontPortsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -384,6 +763,35 @@ func interfaceTemplatesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("interface-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableInterfaceTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInterfaceTemplatesCreate(ctx).WritableInterfaceTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("interface-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableInterfaceTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInterfaceTemplatesPartialUpdate(ctx, id).PatchedWritableInterfaceTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("interface-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimInterfaceTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -408,6 +816,35 @@ func interfacesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("interface", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableInterfaceRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInterfacesCreate(ctx).WritableInterfaceRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("interface", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableInterfaceRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInterfacesPartialUpdate(ctx, id).PatchedWritableInterfaceRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("interface", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimInterfacesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -430,6 +867,35 @@ func inventoryItemRolesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("inventory-item-role", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.InventoryItemRoleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInventoryItemRolesCreate(ctx).InventoryItemRoleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("inventory-item-role", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedInventoryItemRoleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInventoryItemRolesPartialUpdate(ctx, id).PatchedInventoryItemRoleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("inventory-item-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimInventoryItemRolesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -454,6 +920,35 @@ func inventoryItemTemplatesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("inventory-item-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.InventoryItemTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInventoryItemTemplatesCreate(ctx).InventoryItemTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("inventory-item-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedInventoryItemTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInventoryItemTemplatesPartialUpdate(ctx, id).PatchedInventoryItemTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("inventory-item-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimInventoryItemTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -476,6 +971,35 @@ func inventoryItemsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("inventory-item", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableInventoryItemRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInventoryItemsCreate(ctx).WritableInventoryItemRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("inventory-item", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableInventoryItemRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimInventoryItemsPartialUpdate(ctx, id).PatchedWritableInventoryItemRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("inventory-item", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimInventoryItemsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -500,6 +1024,35 @@ func locationsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("location", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableLocationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimLocationsCreate(ctx).WritableLocationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("location", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableLocationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimLocationsPartialUpdate(ctx, id).PatchedWritableLocationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("location", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimLocationsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -522,6 +1075,35 @@ func macAddressesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("mac-address", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.MACAddressRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimMacAddressesCreate(ctx).MACAddressRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("mac-address", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedMACAddressRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimMacAddressesPartialUpdate(ctx, id).PatchedMACAddressRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("mac-address", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimMacAddressesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -546,6 +1128,35 @@ func manufacturersCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("manufacturer", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ManufacturerRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimManufacturersCreate(ctx).ManufacturerRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("manufacturer", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedManufacturerRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimManufacturersPartialUpdate(ctx, id).PatchedManufacturerRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("manufacturer", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimManufacturersDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -568,6 +1179,35 @@ func moduleBayTemplatesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("module-bay-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ModuleBayTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModuleBayTemplatesCreate(ctx).ModuleBayTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("module-bay-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedModuleBayTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModuleBayTemplatesPartialUpdate(ctx, id).PatchedModuleBayTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("module-bay-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimModuleBayTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -592,6 +1232,35 @@ func moduleBaysCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("module-bay", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ModuleBayRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModuleBaysCreate(ctx).ModuleBayRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("module-bay", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedModuleBayRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModuleBaysPartialUpdate(ctx, id).PatchedModuleBayRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("module-bay", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimModuleBaysDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -614,6 +1283,35 @@ func moduleTypeProfilesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("module-type-profile", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ModuleTypeProfileRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModuleTypeProfilesCreate(ctx).ModuleTypeProfileRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("module-type-profile", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedModuleTypeProfileRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModuleTypeProfilesPartialUpdate(ctx, id).PatchedModuleTypeProfileRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("module-type-profile", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimModuleTypeProfilesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -638,6 +1336,35 @@ func moduleTypesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("module-type", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableModuleTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModuleTypesCreate(ctx).WritableModuleTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("module-type", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableModuleTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModuleTypesPartialUpdate(ctx, id).PatchedWritableModuleTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("module-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimModuleTypesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -660,6 +1387,35 @@ func modulesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("module", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableModuleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModulesCreate(ctx).WritableModuleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("module", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableModuleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimModulesPartialUpdate(ctx, id).PatchedWritableModuleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("module", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimModulesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -684,6 +1440,35 @@ func platformsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("platform", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.PlatformRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPlatformsCreate(ctx).PlatformRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("platform", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedPlatformRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPlatformsPartialUpdate(ctx, id).PatchedPlatformRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("platform", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimPlatformsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -706,6 +1491,35 @@ func powerFeedsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("power-feed", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritablePowerFeedRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerFeedsCreate(ctx).WritablePowerFeedRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("power-feed", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritablePowerFeedRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerFeedsPartialUpdate(ctx, id).PatchedWritablePowerFeedRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("power-feed", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimPowerFeedsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -730,6 +1544,35 @@ func powerOutletTemplatesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("power-outlet-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritablePowerOutletTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerOutletTemplatesCreate(ctx).WritablePowerOutletTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("power-outlet-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritablePowerOutletTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerOutletTemplatesPartialUpdate(ctx, id).PatchedWritablePowerOutletTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("power-outlet-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimPowerOutletTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -752,6 +1595,35 @@ func powerOutletsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("power-outlet", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritablePowerOutletRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerOutletsCreate(ctx).WritablePowerOutletRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("power-outlet", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritablePowerOutletRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerOutletsPartialUpdate(ctx, id).PatchedWritablePowerOutletRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("power-outlet", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimPowerOutletsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -776,6 +1648,35 @@ func powerPanelsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("power-panel", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.PowerPanelRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerPanelsCreate(ctx).PowerPanelRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("power-panel", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedPowerPanelRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerPanelsPartialUpdate(ctx, id).PatchedPowerPanelRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("power-panel", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimPowerPanelsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -798,6 +1699,35 @@ func powerPortTemplatesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("power-port-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritablePowerPortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerPortTemplatesCreate(ctx).WritablePowerPortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("power-port-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritablePowerPortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerPortTemplatesPartialUpdate(ctx, id).PatchedWritablePowerPortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("power-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimPowerPortTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -822,6 +1752,35 @@ func powerPortsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("power-port", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritablePowerPortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerPortsCreate(ctx).WritablePowerPortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("power-port", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritablePowerPortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimPowerPortsPartialUpdate(ctx, id).PatchedWritablePowerPortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("power-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimPowerPortsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -844,6 +1803,35 @@ func rackReservationsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("rack-reservation", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.RackReservationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRackReservationsCreate(ctx).RackReservationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("rack-reservation", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedRackReservationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRackReservationsPartialUpdate(ctx, id).PatchedRackReservationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("rack-reservation", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimRackReservationsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -868,6 +1856,35 @@ func rackRolesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("rack-role", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.RackRoleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRackRolesCreate(ctx).RackRoleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("rack-role", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedRackRoleRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRackRolesPartialUpdate(ctx, id).PatchedRackRoleRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("rack-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimRackRolesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -890,6 +1907,35 @@ func rackTypesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("rack-type", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableRackTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRackTypesCreate(ctx).WritableRackTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("rack-type", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableRackTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRackTypesPartialUpdate(ctx, id).PatchedWritableRackTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("rack-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimRackTypesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -914,6 +1960,35 @@ func racksCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("rack", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableRackRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRacksCreate(ctx).WritableRackRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("rack", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableRackRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRacksPartialUpdate(ctx, id).PatchedWritableRackRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("rack", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimRacksDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -936,6 +2011,35 @@ func rearPortTemplatesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("rear-port-template", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableRearPortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRearPortTemplatesCreate(ctx).WritableRearPortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("rear-port-template", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableRearPortTemplateRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRearPortTemplatesPartialUpdate(ctx, id).PatchedWritableRearPortTemplateRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("rear-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimRearPortTemplatesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -960,6 +2064,35 @@ func rearPortsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("rear-port", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableRearPortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRearPortsCreate(ctx).WritableRearPortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("rear-port", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableRearPortRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRearPortsPartialUpdate(ctx, id).PatchedWritableRearPortRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("rear-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimRearPortsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -982,6 +2115,35 @@ func regionsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("region", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableRegionRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRegionsCreate(ctx).WritableRegionRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("region", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableRegionRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimRegionsPartialUpdate(ctx, id).PatchedWritableRegionRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("region", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimRegionsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -1006,6 +2168,35 @@ func siteGroupsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("site-group", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableSiteGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimSiteGroupsCreate(ctx).WritableSiteGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("site-group", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableSiteGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimSiteGroupsPartialUpdate(ctx, id).PatchedWritableSiteGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("site-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimSiteGroupsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -1028,6 +2219,35 @@ func sitesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("site", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableSiteRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimSitesCreate(ctx).WritableSiteRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("site", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableSiteRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimSitesPartialUpdate(ctx, id).PatchedWritableSiteRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("site", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimSitesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -1052,6 +2272,35 @@ func virtualChassisCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("virtual-chassis", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableVirtualChassisRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimVirtualChassisCreate(ctx).WritableVirtualChassisRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("virtual-chassis", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableVirtualChassisRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimVirtualChassisPartialUpdate(ctx, id).PatchedWritableVirtualChassisRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("virtual-chassis", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimVirtualChassisDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -1074,6 +2323,35 @@ func virtualDeviceContextsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("virtual-device-context", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableVirtualDeviceContextRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimVirtualDeviceContextsCreate(ctx).WritableVirtualDeviceContextRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("virtual-device-context", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableVirtualDeviceContextRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.DcimAPI.DcimVirtualDeviceContextsPartialUpdate(ctx, id).PatchedWritableVirtualDeviceContextRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("virtual-device-context", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.DcimAPI.DcimVirtualDeviceContextsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
