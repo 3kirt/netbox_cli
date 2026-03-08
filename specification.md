@@ -16,15 +16,15 @@ I would like to work on a command line interface for netbox.  This tool will pri
 
 | Area | Status |
 |---|---|
-| circuits | not started |
+| circuits | complete |
 | dcim | complete |
 | extras | complete |
 | ipam | complete |
 | tenancy | complete |
 | users | complete |
 | virtualization | complete |
-| vpn | not started |
-| wireless | not started |
+| vpn | complete |
+| wireless | complete |
 
 # Standards
 
