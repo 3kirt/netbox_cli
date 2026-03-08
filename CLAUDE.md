@@ -58,7 +58,7 @@ internal/
 ## Code standards
 
 - **Formatting**: `gofmt` (tabs, not spaces). `.editorconfig` has a `[*.go]` override.
-- **Style**: Google Go Style Guide — lowercase error strings, no trailing punctuation,
+- **Style**: [Google Go Best Practices](https://google.github.io/styleguide/go/best-practices) — lowercase error strings, no trailing punctuation,
   never silently discard errors without an explanatory comment.
 - **Comments**: godoc on all exported symbols and packages.
 - **Module**: `github.com/kirtis/netbox-cli`, Go 1.22.

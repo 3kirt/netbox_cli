@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
 
 	"github.com/kirtis/netbox-cli/cmd/dcim"
@@ -17,7 +18,6 @@ import (
 	"github.com/kirtis/netbox-cli/cmd/virtualization"
 	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/config"
-	netbox "github.com/netbox-community/go-netbox/v4"
 )
 
 var configPath string

@@ -5,6 +5,7 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -56,7 +57,7 @@ func (c *Config) ResolveToken() (string, error) {
 	if c.Token != "" {
 		return c.Token, nil
 	}
-	return "", fmt.Errorf(
+	return "", errors.New(
 		"no API token found: set the NETBOX_TOKEN environment variable " +
 			"or add a \"token\" key to your config file",
 	)
@@ -66,9 +67,7 @@ func (c *Config) ResolveToken() (string, error) {
 // returned if the url field is empty.
 func (c *Config) ResolveURL() (string, error) {
 	if c.URL == "" {
-		return "", fmt.Errorf(
-			"no NetBox URL found: add a \"url\" key to your config file",
-		)
+		return "", errors.New("no NetBox URL found: add a \"url\" key to your config file")
 	}
 	return c.URL, nil
 }
