@@ -3,6 +3,8 @@ package core
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
@@ -68,6 +70,35 @@ func dataSourcesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("data-source", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableDataSourceRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CoreAPI.CoreDataSourcesCreate(ctx).WritableDataSourceRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("data-source", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableDataSourceRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.CoreAPI.CoreDataSourcesPartialUpdate(ctx, id).PatchedWritableDataSourceRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("data-source", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.CoreAPI.CoreDataSourcesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd

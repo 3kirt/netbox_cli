@@ -3,6 +3,8 @@ package users
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
@@ -46,6 +48,35 @@ func groupsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("group", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.GroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.UsersAPI.UsersGroupsCreate(ctx).GroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("group", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.UsersAPI.UsersGroupsPartialUpdate(ctx, id).PatchedGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.UsersAPI.UsersGroupsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -68,6 +99,35 @@ func permissionsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("permission", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ObjectPermissionRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.UsersAPI.UsersPermissionsCreate(ctx).ObjectPermissionRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("permission", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedObjectPermissionRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.UsersAPI.UsersPermissionsPartialUpdate(ctx, id).PatchedObjectPermissionRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("permission", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.UsersAPI.UsersPermissionsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -92,6 +152,35 @@ func tokensCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("token", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.TokenRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.UsersAPI.UsersTokensCreate(ctx).TokenRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("token", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedTokenRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.UsersAPI.UsersTokensPartialUpdate(ctx, id).PatchedTokenRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("token", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.UsersAPI.UsersTokensDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -114,6 +203,35 @@ func usersCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("user", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.UserRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.UsersAPI.UsersUsersCreate(ctx).UserRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("user", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedUserRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.UsersAPI.UsersUsersPartialUpdate(ctx, id).PatchedUserRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("user", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.UsersAPI.UsersUsersDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd

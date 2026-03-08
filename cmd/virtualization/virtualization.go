@@ -3,6 +3,8 @@ package virtualization
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
@@ -50,6 +52,35 @@ func clusterGroupsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("cluster-group", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ClusterGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationClusterGroupsCreate(ctx).ClusterGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("cluster-group", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedClusterGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationClusterGroupsPartialUpdate(ctx, id).PatchedClusterGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("cluster-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VirtualizationAPI.VirtualizationClusterGroupsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -74,6 +105,35 @@ func clusterTypesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("cluster-type", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.ClusterTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationClusterTypesCreate(ctx).ClusterTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("cluster-type", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedClusterTypeRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationClusterTypesPartialUpdate(ctx, id).PatchedClusterTypeRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("cluster-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VirtualizationAPI.VirtualizationClusterTypesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -100,6 +160,35 @@ func clustersCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("cluster", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableClusterRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationClustersCreate(ctx).WritableClusterRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("cluster", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableClusterRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationClustersPartialUpdate(ctx, id).PatchedWritableClusterRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("cluster", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VirtualizationAPI.VirtualizationClustersDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -124,6 +213,35 @@ func interfacesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("interface", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableVMInterfaceRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationInterfacesCreate(ctx).WritableVMInterfaceRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("interface", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableVMInterfaceRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationInterfacesPartialUpdate(ctx, id).PatchedWritableVMInterfaceRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("interface", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VirtualizationAPI.VirtualizationInterfacesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -150,6 +268,35 @@ func virtualDisksCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("virtual-disk", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.VirtualDiskRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationVirtualDisksCreate(ctx).VirtualDiskRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("virtual-disk", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedVirtualDiskRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationVirtualDisksPartialUpdate(ctx, id).PatchedVirtualDiskRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("virtual-disk", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VirtualizationAPI.VirtualizationVirtualDisksDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -174,6 +321,35 @@ func virtualMachinesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("virtual-machine", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableVirtualMachineWithConfigContextRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationVirtualMachinesCreate(ctx).WritableVirtualMachineWithConfigContextRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("virtual-machine", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableVirtualMachineWithConfigContextRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VirtualizationAPI.VirtualizationVirtualMachinesPartialUpdate(ctx, id).PatchedWritableVirtualMachineWithConfigContextRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("virtual-machine", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VirtualizationAPI.VirtualizationVirtualMachinesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd

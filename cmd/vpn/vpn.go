@@ -3,6 +3,8 @@ package vpn
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
@@ -52,6 +54,35 @@ func ikePoliciesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("ike-policy", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableIKEPolicyRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIkePoliciesCreate(ctx).WritableIKEPolicyRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("ike-policy", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableIKEPolicyRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIkePoliciesPartialUpdate(ctx, id).PatchedWritableIKEPolicyRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("ike-policy", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnIkePoliciesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -74,6 +105,35 @@ func ikeProposalsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("ike-proposal", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableIKEProposalRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIkeProposalsCreate(ctx).WritableIKEProposalRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("ike-proposal", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableIKEProposalRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIkeProposalsPartialUpdate(ctx, id).PatchedWritableIKEProposalRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("ike-proposal", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnIkeProposalsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -98,6 +158,35 @@ func ipsecPoliciesCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("ipsec-policy", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableIPSecPolicyRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIpsecPoliciesCreate(ctx).WritableIPSecPolicyRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("ipsec-policy", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableIPSecPolicyRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIpsecPoliciesPartialUpdate(ctx, id).PatchedWritableIPSecPolicyRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("ipsec-policy", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnIpsecPoliciesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -120,6 +209,35 @@ func ipsecProfilesCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("ipsec-profile", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableIPSecProfileRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIpsecProfilesCreate(ctx).WritableIPSecProfileRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("ipsec-profile", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableIPSecProfileRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIpsecProfilesPartialUpdate(ctx, id).PatchedWritableIPSecProfileRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("ipsec-profile", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnIpsecProfilesDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -144,6 +262,35 @@ func ipsecProposalsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("ipsec-proposal", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableIPSecProposalRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIpsecProposalsCreate(ctx).WritableIPSecProposalRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("ipsec-proposal", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableIPSecProposalRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnIpsecProposalsPartialUpdate(ctx, id).PatchedWritableIPSecProposalRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("ipsec-proposal", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnIpsecProposalsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -166,6 +313,35 @@ func l2vpnTerminationsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("l2vpn-termination", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.L2VPNTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnL2vpnTerminationsCreate(ctx).L2VPNTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("l2vpn-termination", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedL2VPNTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnL2vpnTerminationsPartialUpdate(ctx, id).PatchedL2VPNTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("l2vpn-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnL2vpnTerminationsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -190,6 +366,35 @@ func l2vpnsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("l2vpn", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableL2VPNRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnL2vpnsCreate(ctx).WritableL2VPNRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("l2vpn", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableL2VPNRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnL2vpnsPartialUpdate(ctx, id).PatchedWritableL2VPNRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("l2vpn", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnL2vpnsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -212,6 +417,35 @@ func tunnelGroupsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("tunnel-group", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.TunnelGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnTunnelGroupsCreate(ctx).TunnelGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("tunnel-group", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedTunnelGroupRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnTunnelGroupsPartialUpdate(ctx, id).PatchedTunnelGroupRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("tunnel-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnTunnelGroupsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
@@ -236,6 +470,35 @@ func tunnelTerminationsCmd() *cobra.Command {
 			}
 			return cmdutil.OutputJSON(resp)
 		}),
+		cmdutil.CreateCmd("tunnel-termination", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableTunnelTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnTunnelTerminationsCreate(ctx).WritableTunnelTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("tunnel-termination", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableTunnelTerminationRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnTunnelTerminationsPartialUpdate(ctx, id).PatchedWritableTunnelTerminationRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("tunnel-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnTunnelTerminationsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
+		}),
 	)
 	return cmd
 }
@@ -258,6 +521,35 @@ func tunnelsCmd() *cobra.Command {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.CreateCmd("tunnel", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
+			var body netbox.WritableTunnelRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnTunnelsCreate(ctx).WritableTunnelRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.UpdateCmd("tunnel", func(ctx context.Context, client *netbox.APIClient, id int32, data []byte) error {
+			var body netbox.PatchedWritableTunnelRequest
+			if err := json.Unmarshal(data, &body); err != nil {
+				return fmt.Errorf("invalid JSON: %w", err)
+			}
+			resp, _, err := client.VpnAPI.VpnTunnelsPartialUpdate(ctx, id).PatchedWritableTunnelRequest(body).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		}),
+		cmdutil.DeleteCmd("tunnel", func(ctx context.Context, client *netbox.APIClient, id int32) error {
+			_, err := client.VpnAPI.VpnTunnelsDestroy(ctx, id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return nil
 		}),
 	)
 	return cmd
