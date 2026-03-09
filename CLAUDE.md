@@ -54,6 +54,18 @@ internal/
   config/config.go                   JSON config loading, token/URL resolution
 ```
 
+## Git workflow
+
+1. Create a feature branch: `git checkout -b feature/<name>`.
+2. Make changes, then verify before committing:
+   ```bash
+   gofmt -w .
+   go build ./...
+   make lint
+   ```
+3. Fix any issues, then commit with a conventional commit message.
+4. Merge to `main` and push: `git checkout main && git merge feature/<name> && git push`.
+
 ## Branching
 
 - All new features must be developed on a dedicated feature branch (`feature/<name>`).
@@ -77,6 +89,12 @@ internal/
 - **Comments**: godoc on all exported symbols and packages.
 - **Module**: `github.com/kirtis/netbox-cli`, Go 1.22.
 - **go-netbox**: `github.com/netbox-community/go-netbox/v4 v4.3.0` (published module).
+
+## Documentation
+
+- Write for human readability — avoid unnecessary jargon.
+- Keep docs consolidated; do not create separate planning files when content can live in existing docs.
+- When updating the README, ensure it accurately reflects current project capabilities.
 
 ## API coverage
 
