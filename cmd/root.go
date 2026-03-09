@@ -24,11 +24,16 @@ import (
 	"github.com/kirtis/netbox-cli/internal/config"
 )
 
+// version is the build version. It is overridden at link time by GoReleaser
+// and by `make build` via -ldflags "-X github.com/kirtis/netbox-cli/cmd.version=<tag>".
+var version = "dev"
+
 var configPath string
 
 var rootCmd = &cobra.Command{
-	Use:   "netbox-cli",
-	Short: "Command-line interface for the NetBox API",
+	Use:     "netbox-cli",
+	Short:   "Command-line interface for the NetBox API",
+	Version: version,
 	PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 		cfg, err := config.Load(configPath)
 		if err != nil {
