@@ -67,7 +67,10 @@ func Execute() {
 func init() {
 	// SilenceErrors prevents cobra from printing errors itself; Execute() owns
 	// the output so errors are printed exactly once.
+	// SilenceUsage suppresses the usage block on errors so the error message
+	// is not buried in noise.
 	rootCmd.SilenceErrors = true
+	rootCmd.SilenceUsage = true
 	rootCmd.PersistentFlags().StringVar(&configPath, "config", "", "path to JSON config file (default: ~/.netbox_cli.json)")
 	rootCmd.AddCommand(circuits.Command())
 	rootCmd.AddCommand(core.Command())
