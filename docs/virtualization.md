@@ -12,6 +12,23 @@ Commands for the NetBox Virtualization API — clusters, virtual machines, inter
 | `update` | `--id <ID>` | Partially update a record (PATCH); reads JSON body from stdin |
 | `delete` | `--id <ID>` | Delete a record |
 
+## Resource-specific flags
+
+### `virtual-machines`
+
+`list` accepts optional filter flags. Omitting all flags returns all records.
+
+| Flag | Description |
+|---|---|
+| `--name <name>` | Filter by exact name |
+| `--site <slug>` | Filter by site slug |
+| `--role <slug>` | Filter by role slug |
+| `--cluster <name>` | Filter by cluster name |
+| `--status <status>` | Filter by status (`active`, `staged`, `offline`, `planned`, `decommissioning`) |
+| `--tag <tag>` | Filter by tag (repeatable or comma-separated) |
+
+`get` accepts `--name <name>` as an alternative to `--id`. Returns an error if multiple VMs share the name.
+
 ## Resources
 
 | Resource | Description | Actions |
@@ -31,6 +48,9 @@ netbox-cli virtualization virtual-machines list
 
 # Get a virtual machine by ID
 netbox-cli virtualization virtual-machines get --id 12
+
+# Get a virtual machine by name
+netbox-cli virtualization virtual-machines get --name web-01
 
 # Create a cluster type
 echo '{"name": "VMware vSphere", "slug": "vmware-vsphere"}' \
@@ -66,5 +86,11 @@ echo '{"virtual_machine": 12, "name": "sda", "size": 50}' \
   | netbox-cli virtualization virtual-disks create
 
 # List VMs in a cluster
-netbox-cli virtualization virtual-machines list | jq '.[] | select(.cluster.id == 1) | {id, name, status: .status.value}'
+netbox-cli virtualization virtual-machines list --cluster prod-vsphere-01
+
+# List active VMs at a site
+netbox-cli virtualization virtual-machines list --site lon01 --status active
+
+# List VMs by tag
+netbox-cli virtualization virtual-machines list --tag k8s-node
 ```

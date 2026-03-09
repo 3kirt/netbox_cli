@@ -61,6 +61,8 @@ netbox-cli [--config FILE] <app> <resource> <action> [flags]
 | `update` | `--id <ID>` | Partially update a record (PATCH); reads JSON from stdin |
 | `delete` | `--id <ID>` | Delete a record |
 
+Some resources accept additional filter flags on `list` and `get`. See the per-area docs linked below for details.
+
 **Examples:**
 
 ```bash
@@ -83,6 +85,12 @@ netbox-cli circuits circuits delete --id 7
 
 # List all virtual machines
 netbox-cli virtualization virtual-machines list
+
+# List virtual machines at a site, filtered by status
+netbox-cli virtualization virtual-machines list --site lon01 --status active
+
+# List IP addresses assigned to a VM
+netbox-cli ipam ip-addresses list --virtual-machine web-01
 ```
 
 Output is JSON. Use [`jq`](https://jqlang.org) to filter or format it:

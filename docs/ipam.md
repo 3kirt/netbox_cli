@@ -12,6 +12,18 @@ Commands for the NetBox IPAM API — prefixes, IP addresses, VLANs, VRFs, ASNs, 
 | `update` | `--id <ID>` | Partially update a record (PATCH); reads JSON body from stdin |
 | `delete` | `--id <ID>` | Delete a record |
 
+## Resource-specific flags
+
+### `ip-addresses`
+
+`list` accepts optional filter flags. Omitting all flags returns all records.
+
+| Flag | Description |
+|---|---|
+| `--virtual-machine <name>` | Filter by virtual machine name |
+| `--device <name>` | Filter by device name |
+| `--address <address>` | Filter by IP address (e.g. `192.0.2.1/24`) |
+
 ## Resources
 
 | Resource | Description | Actions |
@@ -84,4 +96,13 @@ netbox-cli ipam vlans list | jq '.[] | {id, vid, name}'
 
 # Find all active prefixes in a VRF
 netbox-cli ipam prefixes list | jq '.[] | select(.vrf.id == 3 and .status.value == "active")'
+
+# List IP addresses assigned to a virtual machine
+netbox-cli ipam ip-addresses list --virtual-machine web-01
+
+# List IP addresses assigned to a device
+netbox-cli ipam ip-addresses list --device core-sw-01
+
+# Look up a specific IP address
+netbox-cli ipam ip-addresses list --address 192.0.2.1/24
 ```

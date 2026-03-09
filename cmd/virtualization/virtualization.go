@@ -349,6 +349,10 @@ func virtualMachinesListCmd() *cobra.Command {
 		Use:   "list",
 		Short: "List all virtual-machines",
 		Long:  "List virtual machines. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli virtualization virtual-machines list --name web-01
+  netbox-cli virtualization virtual-machines list --site lon01 --status active
+  netbox-cli virtualization virtual-machines list --cluster prod-vsphere-01
+  netbox-cli virtualization virtual-machines list --tag k8s-node`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
