@@ -9,6 +9,7 @@ import (
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
 
+	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
@@ -306,22 +307,8 @@ func virtualDisksCmd() *cobra.Command {
 func virtualMachinesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-machines", Short: "Manage virtual machines"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-machines", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VirtualizationAPI.
-				VirtualizationVirtualMachinesList(ctx).Limit(0).Execute()
-			if err != nil {
-				return cmdutil.APIError(err)
-			}
-			return cmdutil.OutputJSON(resp.GetResults())
-		}),
-		cmdutil.GetCmd("virtual-machine", func(ctx context.Context, client *netbox.APIClient, id int32) error {
-			resp, _, err := client.VirtualizationAPI.
-				VirtualizationVirtualMachinesRetrieve(ctx, id).Execute()
-			if err != nil {
-				return cmdutil.APIError(err)
-			}
-			return cmdutil.OutputJSON(resp)
-		}),
+		virtualMachinesListCmd(),
+		virtualMachinesGetCmd(),
 		cmdutil.CreateCmd("virtual-machine", func(ctx context.Context, client *netbox.APIClient, data []byte) error {
 			var body netbox.WritableVirtualMachineWithConfigContextRequest
 			if err := json.Unmarshal(data, &body); err != nil {
@@ -352,5 +339,99 @@ func virtualMachinesCmd() *cobra.Command {
 			return nil
 		}),
 	)
+	return cmd
+}
+
+func virtualMachinesListCmd() *cobra.Command {
+	var name, site, role, cluster, status string
+	var tags []string
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all virtual-machines",
+		Long:  "List virtual machines. All flags are optional; omitting them returns all records.",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			req := client.VirtualizationAPI.VirtualizationVirtualMachinesList(cmd.Context()).Limit(0)
+			if name != "" {
+				req = req.Name([]string{name})
+			}
+			if site != "" {
+				req = req.Site([]string{site})
+			}
+			if role != "" {
+				req = req.Role([]string{role})
+			}
+			if cluster != "" {
+				req = req.Cluster([]string{cluster})
+			}
+			if status != "" {
+				req = req.Status([]string{status})
+			}
+			if len(tags) > 0 {
+				req = req.Tag(tags)
+			}
+			resp, _, err := req.Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		},
+	}
+	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
+	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
+	cmd.Flags().StringVar(&role, "role", "", "filter by role slug")
+	cmd.Flags().StringVar(&cluster, "cluster", "", "filter by cluster name")
+	cmd.Flags().StringVar(&status, "status", "", "filter by status (active, staged, offline, planned, decommissioning)")
+	cmd.Flags().StringSliceVar(&tags, "tag", nil, "filter by tag (comma-separated or repeated)")
+	return cmd
+}
+
+func virtualMachinesGetCmd() *cobra.Command {
+	var id int32
+	var name string
+	cmd := &cobra.Command{
+		Use:   "get",
+		Short: "Get a virtual-machine by ID or name",
+		Long:  "Get a virtual machine by numeric ID or exact name. Exactly one of --id or --name is required.",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			if id != 0 && name != "" {
+				return fmt.Errorf("only one of --id or --name may be specified")
+			}
+			if name != "" {
+				resp, _, err := client.VirtualizationAPI.
+					VirtualizationVirtualMachinesList(cmd.Context()).Name([]string{name}).Execute()
+				if err != nil {
+					return cmdutil.APIError(err)
+				}
+				results := resp.GetResults()
+				switch len(results) {
+				case 0:
+					return fmt.Errorf("no virtual-machine found with name %q", name)
+				case 1:
+					return cmdutil.OutputJSON(results[0])
+				default:
+					return fmt.Errorf("%d virtual-machines matched name %q; use --id for an exact lookup", len(results), name)
+				}
+			}
+			if id == 0 {
+				return fmt.Errorf("either --id or --name is required")
+			}
+			resp, _, err := client.VirtualizationAPI.
+				VirtualizationVirtualMachinesRetrieve(cmd.Context(), id).Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp)
+		},
+	}
+	cmd.Flags().Int32Var(&id, "id", 0, "virtual-machine ID")
+	cmd.Flags().StringVar(&name, "name", "", "virtual-machine name (exact match)")
 	return cmd
 }

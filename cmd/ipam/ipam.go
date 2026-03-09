@@ -9,6 +9,7 @@ import (
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
 
+	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
@@ -308,13 +309,7 @@ func fhrpGroupAssignmentsCmd() *cobra.Command {
 func ipAddressesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "ip-addresses", Short: "Manage IP addresses"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("ip-addresses", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamIpAddressesList(ctx).Limit(0).Execute()
-			if err != nil {
-				return cmdutil.APIError(err)
-			}
-			return cmdutil.OutputJSON(resp.GetResults())
-		}),
+		ipAddressesListCmd(),
 		cmdutil.GetCmd("ip-address", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.IpamAPI.IpamIpAddressesRetrieve(ctx, id).Execute()
 			if err != nil {
@@ -352,6 +347,43 @@ func ipAddressesCmd() *cobra.Command {
 			return nil
 		}),
 	)
+	return cmd
+}
+
+func ipAddressesListCmd() *cobra.Command {
+	var virtualMachine, device, address string
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all ip-addresses",
+		Long:  "List IP addresses. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli ipam ip-addresses list --virtual-machine sqdazrtst01.fes.corp
+  netbox-cli ipam ip-addresses list --device core-sw-01
+  netbox-cli ipam ip-addresses list --address 192.0.2.1/24`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			req := client.IpamAPI.IpamIpAddressesList(cmd.Context()).Limit(0)
+			if virtualMachine != "" {
+				req = req.VirtualMachine([]string{virtualMachine})
+			}
+			if device != "" {
+				req = req.Device([]string{device})
+			}
+			if address != "" {
+				req = req.Address([]string{address})
+			}
+			resp, _, err := req.Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		},
+	}
+	cmd.Flags().StringVar(&virtualMachine, "virtual-machine", "", "filter by virtual machine name")
+	cmd.Flags().StringVar(&device, "device", "", "filter by device name")
+	cmd.Flags().StringVar(&address, "address", "", "filter by IP address (e.g. 192.0.2.1/24)")
 	return cmd
 }
 
