@@ -74,6 +74,11 @@ func CreateCmd(noun string, run func(context.Context, *netbox.APIClient, []byte)
 	return &cobra.Command{
 		Use:   "create",
 		Short: "Create a " + noun,
+		Long: "Create a " + noun + `. Pipe a JSON object to stdin containing the fields for the new resource.
+
+Required fields vary by resource type. Run "get" on an existing resource to see its field structure.`,
+		Example: `  echo '{"name":"example"}' | netbox-cli <area> ` + noun + `s create
+  cat body.json        | netbox-cli <area> ` + noun + `s create`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
@@ -95,6 +100,11 @@ func UpdateCmd(noun string, run func(context.Context, *netbox.APIClient, int32, 
 	cmd := &cobra.Command{
 		Use:   "update",
 		Short: "Update a " + noun + " by ID",
+		Long: "Update a " + noun + ` by ID (PATCH). Pipe a JSON object to stdin containing only the fields to change — all other fields are left unchanged.
+
+Run "get --id <id>" first to inspect the current field values and their names.`,
+		Example: `  echo '{"status":"staged"}' | netbox-cli <area> ` + noun + `s update --id 42
+  cat patch.json       | netbox-cli <area> ` + noun + `s update --id 42`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {

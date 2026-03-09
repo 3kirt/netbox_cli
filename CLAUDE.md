@@ -77,7 +77,7 @@ internal/
 2. Create `cmd/<area>/<area>.go` — follow the pattern in `cmd/ipam/ipam.go`.
 3. Register `<area>.Command()` in `cmd/root.go`.
 4. Use `cmdutil.ListCmd` / `cmdutil.GetCmd` for list/get subcommands.
-5. Use `cmdutil.CreateCmd` / `cmdutil.UpdateCmd` / `cmdutil.DeleteCmd` for write subcommands. Create and update callbacks receive `[]byte` (raw stdin JSON) and unmarshal into the appropriate `netbox.XxxRequest` / `netbox.PatchedXxxRequest` type.
+5. Use `cmdutil.CreateCmd` / `cmdutil.UpdateCmd` / `cmdutil.DeleteCmd` for write subcommands. Create and update callbacks receive `[]byte` (raw stdin JSON) and unmarshal into the appropriate `netbox.XxxRequest` / `netbox.PatchedXxxRequest` type. Both commands read JSON from stdin — pipe it in: `echo '{"name":"x"}' | netbox-cli <area> <resource>s create` or `echo '{"status":"staged"}' | netbox-cli <area> <resource>s update --id 42`.
 6. Callbacks receive `ctx context.Context` and `client *netbox.APIClient` directly — no manual client retrieval needed.
 7. Call the corresponding `client.<Area>API.<Area>XxxList(ctx).Limit(0).Execute()`.
 
