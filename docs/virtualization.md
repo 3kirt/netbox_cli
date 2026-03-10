@@ -29,6 +29,14 @@ Commands for the NetBox Virtualization API — clusters, virtual machines, inter
 
 `get` accepts `--name <name>` as an alternative to `--id`. Returns an error if multiple VMs share the name.
 
+### `interfaces`
+
+`list` accepts an optional filter flag. Omitting it returns all records.
+
+| Flag | Description |
+|---|---|
+| `--virtual-machine <name>` | Filter by virtual machine name |
+
 ### `clusters`
 
 `list` accepts optional filter flags. Omitting all flags returns all records.
@@ -85,6 +93,9 @@ echo '{"status": "staged"}' \
 
 # Delete a virtual machine
 netbox-cli virtualization virtual-machines delete --id 12
+
+# List all interfaces for a VM
+netbox-cli virtualization interfaces list --virtual-machine web-01
 
 # Create a VM interface
 echo '{"virtual_machine": 12, "name": "eth0", "enabled": true}' \

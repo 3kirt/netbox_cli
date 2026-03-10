@@ -224,14 +224,7 @@ func clustersListCmd() *cobra.Command {
 func interfacesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "interfaces", Short: "Manage VM interfaces"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("interfaces", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VirtualizationAPI.
-				VirtualizationInterfacesList(ctx).Limit(0).Execute()
-			if err != nil {
-				return cmdutil.APIError(err)
-			}
-			return cmdutil.OutputJSON(resp.GetResults())
-		}),
+		vmInterfacesListCmd(),
 		cmdutil.GetCmd("interface", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
 				VirtualizationInterfacesRetrieve(ctx, id).Execute()
@@ -270,6 +263,33 @@ func interfacesCmd() *cobra.Command {
 			return nil
 		}),
 	)
+	return cmd
+}
+
+func vmInterfacesListCmd() *cobra.Command {
+	var virtualMachine string
+	cmd := &cobra.Command{
+		Use:     "list",
+		Short:   "List all interfaces",
+		Long:    "List VM interfaces. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli virtualization interfaces list --virtual-machine web-01`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			req := client.VirtualizationAPI.VirtualizationInterfacesList(cmd.Context()).Limit(0)
+			if virtualMachine != "" {
+				req = req.VirtualMachine([]string{virtualMachine})
+			}
+			resp, _, err := req.Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		},
+	}
+	cmd.Flags().StringVar(&virtualMachine, "virtual-machine", "", "filter by virtual machine name")
 	return cmd
 }
 
