@@ -14,6 +14,14 @@ Commands for the NetBox DCIM API — devices, racks, cables, interfaces, and all
 
 ## Resource-specific flags
 
+### `interfaces`
+
+`list` accepts an optional filter flag. Omitting it returns all records.
+
+| Flag | Description |
+|---|---|
+| `--device <name>` | Filter by device name |
+
 ### `devices`
 
 `list` accepts optional filter flags. Omitting all flags returns all records.
@@ -190,8 +198,8 @@ netbox-cli dcim devices delete --id 100
 ### Interfaces and cables
 
 ```bash
-# List all interfaces on a device (filter with jq)
-netbox-cli dcim interfaces list | jq '.[] | select(.device.id == 100)'
+# List all interfaces on a device
+netbox-cli dcim interfaces list --device core-sw-01
 
 # Create an interface
 echo '{

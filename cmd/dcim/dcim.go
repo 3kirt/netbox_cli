@@ -843,18 +843,39 @@ func interfaceTemplatesCmd() *cobra.Command {
 	return cmd
 }
 
+func interfacesListCmd() *cobra.Command {
+	var device string
+	cmd := &cobra.Command{
+		Use:     "list",
+		Short:   "List all interfaces",
+		Long:    "List device interfaces. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli dcim interfaces list --device core-sw-01`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			req := client.DcimAPI.DcimInterfacesList(cmd.Context()).Limit(0)
+			if device != "" {
+				req = req.Device([]*string{&device})
+			}
+			resp, _, err := req.Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		},
+	}
+	cmd.Flags().StringVar(&device, "device", "", "filter by device name")
+	return cmd
+}
+
 // interfacesCmd -------------------------------------------------------
 
 func interfacesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "interfaces", Short: "Manage device interfaces"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("interfaces", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.DcimAPI.DcimInterfacesList(ctx).Limit(0).Execute()
-			if err != nil {
-				return cmdutil.APIError(err)
-			}
-			return cmdutil.OutputJSON(resp.GetResults())
-		}),
+		interfacesListCmd(),
 		cmdutil.GetCmd("interface", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimInterfacesRetrieve(ctx, id).Execute()
 			if err != nil {
