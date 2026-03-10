@@ -145,14 +145,7 @@ func clusterTypesCmd() *cobra.Command {
 func clustersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "clusters", Short: "Manage clusters"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("clusters", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VirtualizationAPI.
-				VirtualizationClustersList(ctx).Limit(0).Execute()
-			if err != nil {
-				return cmdutil.APIError(err)
-			}
-			return cmdutil.OutputJSON(resp.GetResults())
-		}),
+		clustersListCmd(),
 		cmdutil.GetCmd("cluster", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
 				VirtualizationClustersRetrieve(ctx, id).Execute()
@@ -191,6 +184,38 @@ func clustersCmd() *cobra.Command {
 			return nil
 		}),
 	)
+	return cmd
+}
+
+func clustersListCmd() *cobra.Command {
+	var name, site string
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all clusters",
+		Long:  "List clusters. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli virtualization clusters list --name prod-vsphere-01
+  netbox-cli virtualization clusters list --site azure-canada-central`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			req := client.VirtualizationAPI.VirtualizationClustersList(cmd.Context()).Limit(0)
+			if name != "" {
+				req = req.Name([]string{name})
+			}
+			if site != "" {
+				req = req.Site([]string{site})
+			}
+			resp, _, err := req.Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		},
+	}
+	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
+	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
 	return cmd
 }
 

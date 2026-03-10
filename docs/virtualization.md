@@ -29,6 +29,15 @@ Commands for the NetBox Virtualization API — clusters, virtual machines, inter
 
 `get` accepts `--name <name>` as an alternative to `--id`. Returns an error if multiple VMs share the name.
 
+### `clusters`
+
+`list` accepts optional filter flags. Omitting all flags returns all records.
+
+| Flag | Description |
+|---|---|
+| `--name <name>` | Filter by exact name |
+| `--site <slug>` | Filter by site slug |
+
 ## Resources
 
 | Resource | Description | Actions |
@@ -84,6 +93,9 @@ echo '{"virtual_machine": 12, "name": "eth0", "enabled": true}' \
 # Add a virtual disk
 echo '{"virtual_machine": 12, "name": "sda", "size": 50}' \
   | netbox-cli virtualization virtual-disks create
+
+# List clusters at a site
+netbox-cli virtualization clusters list --site lon01
 
 # List VMs in a cluster
 netbox-cli virtualization virtual-machines list --cluster prod-vsphere-01
