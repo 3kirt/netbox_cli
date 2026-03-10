@@ -9,6 +9,7 @@ import (
 	netbox "github.com/netbox-community/go-netbox/v4"
 	"github.com/spf13/cobra"
 
+	"github.com/kirtis/netbox-cli/internal/clientctx"
 	"github.com/kirtis/netbox-cli/internal/cmdutil"
 )
 
@@ -594,13 +595,7 @@ func deviceTypesCmd() *cobra.Command {
 func devicesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "devices", Short: "Manage devices"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("devices", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.DcimAPI.DcimDevicesList(ctx).Limit(0).Execute()
-			if err != nil {
-				return cmdutil.APIError(err)
-			}
-			return cmdutil.OutputJSON(resp.GetResults())
-		}),
+		devicesListCmd(),
 		cmdutil.GetCmd("device", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimDevicesRetrieve(ctx, id).Execute()
 			if err != nil {
@@ -638,6 +633,57 @@ func devicesCmd() *cobra.Command {
 			return nil
 		}),
 	)
+	return cmd
+}
+
+func devicesListCmd() *cobra.Command {
+	var name, nameContains, site, status, role string
+	var tags []string
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all devices",
+		Long:  "List devices. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli dcim devices list --site hq --status active
+  netbox-cli dcim devices list --role access-switch
+  netbox-cli dcim devices list --name-contains web
+  netbox-cli dcim devices list --tag ansible-managed`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			req := client.DcimAPI.DcimDevicesList(cmd.Context()).Limit(0)
+			if name != "" {
+				req = req.Name([]string{name})
+			}
+			if nameContains != "" {
+				req = req.NameIc([]string{nameContains})
+			}
+			if site != "" {
+				req = req.Site([]string{site})
+			}
+			if status != "" {
+				req = req.Status([]string{status})
+			}
+			if role != "" {
+				req = req.Role([]string{role})
+			}
+			if len(tags) > 0 {
+				req = req.Tag(tags)
+			}
+			resp, _, err := req.Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		},
+	}
+	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
+	cmd.Flags().StringVar(&nameContains, "name-contains", "", "filter by case-insensitive name substring")
+	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
+	cmd.Flags().StringVar(&status, "status", "", "filter by status (active, staged, offline, planned, decommissioning)")
+	cmd.Flags().StringVar(&role, "role", "", "filter by role slug")
+	cmd.Flags().StringSliceVar(&tags, "tag", nil, "filter by tag (comma-separated or repeated)")
 	return cmd
 }
 

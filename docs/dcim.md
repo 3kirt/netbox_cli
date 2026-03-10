@@ -12,6 +12,21 @@ Commands for the NetBox DCIM API — devices, racks, cables, interfaces, and all
 | `update` | `--id <ID>` | Partially update a record (PATCH); reads JSON body from stdin |
 | `delete` | `--id <ID>` | Delete a record |
 
+## Resource-specific flags
+
+### `devices`
+
+`list` accepts optional filter flags. Omitting all flags returns all records.
+
+| Flag | Description |
+|---|---|
+| `--name <name>` | Filter by exact name |
+| `--name-contains <substr>` | Filter by case-insensitive name substring |
+| `--site <slug>` | Filter by site slug |
+| `--role <slug>` | Filter by role slug |
+| `--status <status>` | Filter by status (`active`, `staged`, `offline`, `planned`, `decommissioning`) |
+| `--tag <tag>` | Filter by tag (repeatable or comma-separated) |
+
 ## Resources
 
 All DCIM resources support list, get, create, update, and delete.
@@ -119,6 +134,18 @@ echo '{"location": 2}' \
 ```bash
 # List all devices
 netbox-cli dcim devices list
+
+# List active devices at a site
+netbox-cli dcim devices list --site hq --status active
+
+# List devices by role
+netbox-cli dcim devices list --role access-switch
+
+# Search by partial name
+netbox-cli dcim devices list --name-contains core-sw
+
+# List devices with a tag
+netbox-cli dcim devices list --tag ansible-managed
 
 # Get a device by ID
 netbox-cli dcim devices get --id 100
