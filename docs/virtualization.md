@@ -21,6 +21,7 @@ Commands for the NetBox Virtualization API — clusters, virtual machines, inter
 | Flag | Description |
 |---|---|
 | `--name <name>` | Filter by exact name |
+| `--name-contains <substr>` | Filter by case-insensitive name substring |
 | `--site <slug>` | Filter by site slug |
 | `--role <slug>` | Filter by role slug |
 | `--cluster <name>` | Filter by cluster name |

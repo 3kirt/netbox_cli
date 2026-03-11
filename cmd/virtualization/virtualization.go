@@ -398,13 +398,14 @@ func virtualMachinesCmd() *cobra.Command {
 }
 
 func virtualMachinesListCmd() *cobra.Command {
-	var name, site, role, cluster, status, search string
+	var name, nameContains, site, role, cluster, status, search string
 	var tags []string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all virtual-machines",
 		Long:  "List virtual machines. All flags are optional; omitting them returns all records.",
 		Example: `  netbox-cli virtualization virtual-machines list --name web-01
+  netbox-cli virtualization virtual-machines list --name-contains surveys
   netbox-cli virtualization virtual-machines list --site lon01 --status active
   netbox-cli virtualization virtual-machines list --cluster prod-vsphere-01
   netbox-cli virtualization virtual-machines list --search prod-web
@@ -420,6 +421,9 @@ func virtualMachinesListCmd() *cobra.Command {
 			}
 			if name != "" {
 				req = req.Name([]string{name})
+			}
+			if nameContains != "" {
+				req = req.NameIc([]string{nameContains})
 			}
 			if site != "" {
 				req = req.Site([]string{site})
@@ -445,6 +449,7 @@ func virtualMachinesListCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
+	cmd.Flags().StringVar(&nameContains, "name-contains", "", "filter by case-insensitive name substring")
 	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
 	cmd.Flags().StringVar(&role, "role", "", "filter by role slug")
 	cmd.Flags().StringVar(&cluster, "cluster", "", "filter by cluster name")
