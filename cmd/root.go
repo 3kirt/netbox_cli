@@ -76,10 +76,10 @@ func init() {
 	rootCmd.AddCommand(core.Command())
 	rootCmd.AddCommand(dcim.Command())
 	rootCmd.AddCommand(extras.Command())
+	rootCmd.AddCommand(ipam.Command())
 	rootCmd.AddCommand(tenancy.Command())
 	rootCmd.AddCommand(users.Command())
 	rootCmd.AddCommand(virtualization.Command())
 	rootCmd.AddCommand(vpn.Command())
 	rootCmd.AddCommand(wireless.Command())
-	rootCmd.AddCommand(ipam.Command())
 }

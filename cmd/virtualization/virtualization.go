@@ -17,7 +17,7 @@ import (
 func Command() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "virtualization",
-		Short: "Commands for the NetBox virtualization API",
+		Short: "Commands for the NetBox Virtualization API",
 	}
 
 	cmd.AddCommand(
