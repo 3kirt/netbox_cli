@@ -14,6 +14,15 @@ Commands for the NetBox IPAM API — prefixes, IP addresses, VLANs, VRFs, ASNs, 
 
 ## Resource-specific flags
 
+### `prefixes`
+
+`list` accepts optional filter flags. Omitting all flags returns all records.
+
+| Flag | Description |
+|---|---|
+| `--search <text>` | Free-text search (prefix string or description) |
+| `--site <slug>` | Filter by site slug |
+
 ### `ip-addresses`
 
 `list` accepts optional filter flags. Omitting all flags returns all records.
@@ -94,7 +103,13 @@ echo '{"asn": 65001, "rir": 1}' \
 # List all VLANs and show just vid and name
 netbox-cli ipam vlans list | jq '.[] | {id, vid, name}'
 
-# Find all active prefixes in a VRF
+# Search prefixes by subnet string
+netbox-cli ipam prefixes list --search 10.0
+
+# List prefixes at a site
+netbox-cli ipam prefixes list --site hq
+
+# Find all active prefixes in a VRF (client-side filter still works for VRF)
 netbox-cli ipam prefixes list | jq '.[] | select(.vrf.id == 3 and .status.value == "active")'
 
 # List IP addresses assigned to a virtual machine

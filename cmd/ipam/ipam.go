@@ -444,13 +444,7 @@ func ipRangesCmd() *cobra.Command {
 func prefixesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "prefixes", Short: "Manage prefixes"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("prefixes", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamPrefixesList(ctx).Limit(0).Execute()
-			if err != nil {
-				return cmdutil.APIError(err)
-			}
-			return cmdutil.OutputJSON(resp.GetResults())
-		}),
+		prefixesListCmd(),
 		cmdutil.GetCmd("prefix", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.IpamAPI.IpamPrefixesRetrieve(ctx, id).Execute()
 			if err != nil {
@@ -488,6 +482,38 @@ func prefixesCmd() *cobra.Command {
 			return nil
 		}),
 	)
+	return cmd
+}
+
+func prefixesListCmd() *cobra.Command {
+	var search, site string
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all prefixes",
+		Long:  "List IP prefixes. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli ipam prefixes list --search 10.0
+  netbox-cli ipam prefixes list --site hq`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			req := client.IpamAPI.IpamPrefixesList(cmd.Context()).Limit(0)
+			if search != "" {
+				req = req.Q(search)
+			}
+			if site != "" {
+				req = req.Site([]string{site})
+			}
+			resp, _, err := req.Execute()
+			if err != nil {
+				return cmdutil.APIError(err)
+			}
+			return cmdutil.OutputJSON(resp.GetResults())
+		},
+	}
+	cmd.Flags().StringVar(&search, "search", "", "free-text search (prefix string or description)")
+	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
 	return cmd
 }
 
