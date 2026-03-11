@@ -637,7 +637,7 @@ func devicesCmd() *cobra.Command {
 }
 
 func devicesListCmd() *cobra.Command {
-	var name, nameContains, site, status, role string
+	var name, nameContains, site, status, role, search string
 	var tags []string
 	cmd := &cobra.Command{
 		Use:   "list",
@@ -646,6 +646,7 @@ func devicesListCmd() *cobra.Command {
 		Example: `  netbox-cli dcim devices list --site hq --status active
   netbox-cli dcim devices list --role access-switch
   netbox-cli dcim devices list --name-contains web
+  netbox-cli dcim devices list --search core
   netbox-cli dcim devices list --tag ansible-managed`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
@@ -653,6 +654,9 @@ func devicesListCmd() *cobra.Command {
 				return err
 			}
 			req := client.DcimAPI.DcimDevicesList(cmd.Context()).Limit(0)
+			if search != "" {
+				req = req.Q(search)
+			}
 			if name != "" {
 				req = req.Name([]string{name})
 			}
@@ -678,6 +682,7 @@ func devicesListCmd() *cobra.Command {
 			return cmdutil.OutputJSON(resp.GetResults())
 		},
 	}
+	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
 	cmd.Flags().StringVar(&nameContains, "name-contains", "", "filter by case-insensitive name substring")
 	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
@@ -844,18 +849,22 @@ func interfaceTemplatesCmd() *cobra.Command {
 }
 
 func interfacesListCmd() *cobra.Command {
-	var device string
+	var device, search string
 	cmd := &cobra.Command{
-		Use:     "list",
-		Short:   "List all interfaces",
-		Long:    "List device interfaces. All flags are optional; omitting them returns all records.",
-		Example: `  netbox-cli dcim interfaces list --device core-sw-01`,
+		Use:   "list",
+		Short: "List all interfaces",
+		Long:  "List device interfaces. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli dcim interfaces list --device core-sw-01
+  netbox-cli dcim interfaces list --search eth0`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
 				return err
 			}
 			req := client.DcimAPI.DcimInterfacesList(cmd.Context()).Limit(0)
+			if search != "" {
+				req = req.Q(search)
+			}
 			if device != "" {
 				req = req.Device([]*string{&device})
 			}
@@ -866,6 +875,7 @@ func interfacesListCmd() *cobra.Command {
 			return cmdutil.OutputJSON(resp.GetResults())
 		},
 	}
+	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&device, "device", "", "filter by device name")
 	return cmd
 }

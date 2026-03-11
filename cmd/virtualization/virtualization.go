@@ -188,19 +188,23 @@ func clustersCmd() *cobra.Command {
 }
 
 func clustersListCmd() *cobra.Command {
-	var name, site string
+	var name, site, search string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all clusters",
 		Long:  "List clusters. All flags are optional; omitting them returns all records.",
 		Example: `  netbox-cli virtualization clusters list --name prod-vsphere-01
-  netbox-cli virtualization clusters list --site azure-canada-central`,
+  netbox-cli virtualization clusters list --site azure-canada-central
+  netbox-cli virtualization clusters list --search vsphere`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
 				return err
 			}
 			req := client.VirtualizationAPI.VirtualizationClustersList(cmd.Context()).Limit(0)
+			if search != "" {
+				req = req.Q(search)
+			}
 			if name != "" {
 				req = req.Name([]string{name})
 			}
@@ -214,6 +218,7 @@ func clustersListCmd() *cobra.Command {
 			return cmdutil.OutputJSON(resp.GetResults())
 		},
 	}
+	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
 	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
 	return cmd
@@ -267,18 +272,22 @@ func interfacesCmd() *cobra.Command {
 }
 
 func vmInterfacesListCmd() *cobra.Command {
-	var virtualMachine string
+	var virtualMachine, search string
 	cmd := &cobra.Command{
-		Use:     "list",
-		Short:   "List all interfaces",
-		Long:    "List VM interfaces. All flags are optional; omitting them returns all records.",
-		Example: `  netbox-cli virtualization interfaces list --virtual-machine web-01`,
+		Use:   "list",
+		Short: "List all interfaces",
+		Long:  "List VM interfaces. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli virtualization interfaces list --virtual-machine web-01
+  netbox-cli virtualization interfaces list --search eth`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
 				return err
 			}
 			req := client.VirtualizationAPI.VirtualizationInterfacesList(cmd.Context()).Limit(0)
+			if search != "" {
+				req = req.Q(search)
+			}
 			if virtualMachine != "" {
 				req = req.VirtualMachine([]string{virtualMachine})
 			}
@@ -289,6 +298,7 @@ func vmInterfacesListCmd() *cobra.Command {
 			return cmdutil.OutputJSON(resp.GetResults())
 		},
 	}
+	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&virtualMachine, "virtual-machine", "", "filter by virtual machine name")
 	return cmd
 }
@@ -388,7 +398,7 @@ func virtualMachinesCmd() *cobra.Command {
 }
 
 func virtualMachinesListCmd() *cobra.Command {
-	var name, site, role, cluster, status string
+	var name, site, role, cluster, status, search string
 	var tags []string
 	cmd := &cobra.Command{
 		Use:   "list",
@@ -397,6 +407,7 @@ func virtualMachinesListCmd() *cobra.Command {
 		Example: `  netbox-cli virtualization virtual-machines list --name web-01
   netbox-cli virtualization virtual-machines list --site lon01 --status active
   netbox-cli virtualization virtual-machines list --cluster prod-vsphere-01
+  netbox-cli virtualization virtual-machines list --search prod-web
   netbox-cli virtualization virtual-machines list --tag k8s-node`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
@@ -404,6 +415,9 @@ func virtualMachinesListCmd() *cobra.Command {
 				return err
 			}
 			req := client.VirtualizationAPI.VirtualizationVirtualMachinesList(cmd.Context()).Limit(0)
+			if search != "" {
+				req = req.Q(search)
+			}
 			if name != "" {
 				req = req.Name([]string{name})
 			}
@@ -429,6 +443,7 @@ func virtualMachinesListCmd() *cobra.Command {
 			return cmdutil.OutputJSON(resp.GetResults())
 		},
 	}
+	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
 	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
 	cmd.Flags().StringVar(&role, "role", "", "filter by role slug")

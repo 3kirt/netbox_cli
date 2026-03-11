@@ -351,20 +351,24 @@ func ipAddressesCmd() *cobra.Command {
 }
 
 func ipAddressesListCmd() *cobra.Command {
-	var virtualMachine, device, address string
+	var virtualMachine, device, address, search string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all ip-addresses",
 		Long:  "List IP addresses. All flags are optional; omitting them returns all records.",
 		Example: `  netbox-cli ipam ip-addresses list --virtual-machine sqdazrtst01.fes.corp
   netbox-cli ipam ip-addresses list --device core-sw-01
-  netbox-cli ipam ip-addresses list --address 192.0.2.1/24`,
+  netbox-cli ipam ip-addresses list --address 192.0.2.1/24
+  netbox-cli ipam ip-addresses list --search 10.0.1`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
 				return err
 			}
 			req := client.IpamAPI.IpamIpAddressesList(cmd.Context()).Limit(0)
+			if search != "" {
+				req = req.Q(search)
+			}
 			if virtualMachine != "" {
 				req = req.VirtualMachine([]string{virtualMachine})
 			}
@@ -381,6 +385,7 @@ func ipAddressesListCmd() *cobra.Command {
 			return cmdutil.OutputJSON(resp.GetResults())
 		},
 	}
+	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&virtualMachine, "virtual-machine", "", "filter by virtual machine name")
 	cmd.Flags().StringVar(&device, "device", "", "filter by device name")
 	cmd.Flags().StringVar(&address, "address", "", "filter by IP address (e.g. 192.0.2.1/24)")
