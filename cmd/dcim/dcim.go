@@ -688,7 +688,7 @@ func devicesListCmd() *cobra.Command {
 	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
 	cmd.Flags().StringVar(&status, "status", "", "filter by status (active, staged, offline, planned, decommissioning)")
 	cmd.Flags().StringVar(&role, "role", "", "filter by role slug")
-	cmd.Flags().StringSliceVar(&tags, "tag", nil, "filter by tag (comma-separated or repeated)")
+	cmd.Flags().StringSliceVar(&tags, "tag", nil, "filter by tag slug; multiple values require ALL tags to be present (comma-separated or repeated: --tag a,b or --tag a --tag b)")
 	return cmd
 }
 

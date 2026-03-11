@@ -26,7 +26,7 @@ Commands for the NetBox Virtualization API — clusters, virtual machines, inter
 | `--role <slug>` | Filter by role slug |
 | `--cluster <name>` | Filter by cluster name |
 | `--status <status>` | Filter by status (`active`, `staged`, `offline`, `planned`, `decommissioning`) |
-| `--tag <tag>` | Filter by tag (repeatable or comma-separated) |
+| `--tag <tag>` | Filter by tag slug; multiple values require ALL tags (repeatable or comma-separated) |
 
 `get` accepts `--name <name>` as an alternative to `--id`. Returns an error if multiple VMs share the name.
 

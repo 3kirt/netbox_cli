@@ -33,7 +33,7 @@ Commands for the NetBox DCIM API — devices, racks, cables, interfaces, and all
 | `--site <slug>` | Filter by site slug |
 | `--role <slug>` | Filter by role slug |
 | `--status <status>` | Filter by status (`active`, `staged`, `offline`, `planned`, `decommissioning`) |
-| `--tag <tag>` | Filter by tag (repeatable or comma-separated) |
+| `--tag <tag>` | Filter by tag slug; multiple values require ALL tags (repeatable or comma-separated) |
 
 ## Resources
 
