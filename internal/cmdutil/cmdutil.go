@@ -29,9 +29,11 @@ func APIError(err error) error {
 }
 
 // ListCmd builds a cobra "list" subcommand. The run callback receives the
-// context and the NetBox API client resolved from the command context.
-func ListCmd(noun string, run func(context.Context, *netbox.APIClient) error) *cobra.Command {
-	return &cobra.Command{
+// context, the NetBox API client resolved from the command context, and the
+// value of the optional --limit flag (0 means fetch all records).
+func ListCmd(noun string, run func(context.Context, *netbox.APIClient, int32) error) *cobra.Command {
+	var limit int32
+	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all " + noun,
 		RunE: func(cmd *cobra.Command, _ []string) error {
@@ -39,9 +41,11 @@ func ListCmd(noun string, run func(context.Context, *netbox.APIClient) error) *c
 			if err != nil {
 				return err
 			}
-			return run(cmd.Context(), client)
+			return run(cmd.Context(), client, limit)
 		},
 	}
+	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
+	return cmd
 }
 
 // GetCmd builds a cobra "get" subcommand. The run callback receives the

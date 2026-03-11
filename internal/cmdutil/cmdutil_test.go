@@ -153,7 +153,7 @@ func TestListCmd(t *testing.T) {
 		ctx := clientctx.WithClient(context.Background(), client)
 
 		var gotClient *netbox.APIClient
-		cmd := cmdutil.ListCmd("widget", func(_ context.Context, cl *netbox.APIClient) error {
+		cmd := cmdutil.ListCmd("widget", func(_ context.Context, cl *netbox.APIClient, _ int32) error {
 			gotClient = cl
 			return nil
 		})
@@ -169,7 +169,7 @@ func TestListCmd(t *testing.T) {
 
 	t.Run("callback error is propagated", func(t *testing.T) {
 		want := errors.New("list failed")
-		cmd := cmdutil.ListCmd("widget", func(_ context.Context, _ *netbox.APIClient) error {
+		cmd := cmdutil.ListCmd("widget", func(_ context.Context, _ *netbox.APIClient, _ int32) error {
 			return want
 		})
 		cmd.SetContext(ctxWithClient())
@@ -180,7 +180,7 @@ func TestListCmd(t *testing.T) {
 	})
 
 	t.Run("missing client returns error", func(t *testing.T) {
-		cmd := cmdutil.ListCmd("widget", func(_ context.Context, _ *netbox.APIClient) error {
+		cmd := cmdutil.ListCmd("widget", func(_ context.Context, _ *netbox.APIClient, _ int32) error {
 			return nil
 		})
 		cmd.SetContext(context.Background())

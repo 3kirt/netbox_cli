@@ -36,8 +36,8 @@ func Command() *cobra.Command {
 func contactAssignmentsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "contact-assignments", Short: "Manage contact assignments"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("contact-assignments", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.TenancyAPI.TenancyContactAssignmentsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("contact-assignments", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.TenancyAPI.TenancyContactAssignmentsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -88,8 +88,8 @@ func contactAssignmentsCmd() *cobra.Command {
 func contactGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "contact-groups", Short: "Manage contact groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("contact-groups", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.TenancyAPI.TenancyContactGroupsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("contact-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.TenancyAPI.TenancyContactGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -140,8 +140,8 @@ func contactGroupsCmd() *cobra.Command {
 func contactRolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "contact-roles", Short: "Manage contact roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("contact-roles", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.TenancyAPI.TenancyContactRolesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("contact-roles", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.TenancyAPI.TenancyContactRolesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -192,8 +192,8 @@ func contactRolesCmd() *cobra.Command {
 func contactsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "contacts", Short: "Manage contacts"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("contacts", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.TenancyAPI.TenancyContactsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("contacts", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.TenancyAPI.TenancyContactsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -244,8 +244,8 @@ func contactsCmd() *cobra.Command {
 func tenantGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tenant-groups", Short: "Manage tenant groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tenant-groups", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.TenancyAPI.TenancyTenantGroupsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("tenant-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.TenancyAPI.TenancyTenantGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -296,8 +296,8 @@ func tenantGroupsCmd() *cobra.Command {
 func tenantsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tenants", Short: "Manage tenants"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tenants", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.TenancyAPI.TenancyTenantsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("tenants", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.TenancyAPI.TenancyTenantsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

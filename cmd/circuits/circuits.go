@@ -41,8 +41,8 @@ func Command() *cobra.Command {
 func circuitGroupAssignmentsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuit-group-assignments", Short: "Manage circuit group assignments"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuit-group-assignments", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupAssignmentsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("circuit-group-assignments", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupAssignmentsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -93,8 +93,8 @@ func circuitGroupAssignmentsCmd() *cobra.Command {
 func circuitGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuit-groups", Short: "Manage circuit groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuit-groups", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("circuit-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -145,8 +145,8 @@ func circuitGroupsCmd() *cobra.Command {
 func circuitTerminationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuit-terminations", Short: "Manage circuit terminations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuit-terminations", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsCircuitTerminationsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("circuit-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitTerminationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -197,8 +197,8 @@ func circuitTerminationsCmd() *cobra.Command {
 func circuitTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuit-types", Short: "Manage circuit types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuit-types", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsCircuitTypesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("circuit-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -249,8 +249,8 @@ func circuitTypesCmd() *cobra.Command {
 func circuitsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuits", Short: "Manage circuits"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuits", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsCircuitsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("circuits", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsCircuitsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -301,8 +301,8 @@ func circuitsCmd() *cobra.Command {
 func providerAccountsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "provider-accounts", Short: "Manage provider accounts"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("provider-accounts", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsProviderAccountsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("provider-accounts", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsProviderAccountsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -353,8 +353,8 @@ func providerAccountsCmd() *cobra.Command {
 func providerNetworksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "provider-networks", Short: "Manage provider networks"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("provider-networks", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsProviderNetworksList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("provider-networks", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsProviderNetworksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -405,8 +405,8 @@ func providerNetworksCmd() *cobra.Command {
 func providersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "providers", Short: "Manage providers"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("providers", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsProvidersList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("providers", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsProvidersList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -457,8 +457,8 @@ func providersCmd() *cobra.Command {
 func virtualCircuitTerminationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-circuit-terminations", Short: "Manage virtual circuit terminations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-circuit-terminations", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTerminationsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("virtual-circuit-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTerminationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -509,8 +509,8 @@ func virtualCircuitTerminationsCmd() *cobra.Command {
 func virtualCircuitTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-circuit-types", Short: "Manage virtual circuit types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-circuit-types", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTypesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("virtual-circuit-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -561,8 +561,8 @@ func virtualCircuitTypesCmd() *cobra.Command {
 func virtualCircuitsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-circuits", Short: "Manage virtual circuits"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-circuits", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("virtual-circuits", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

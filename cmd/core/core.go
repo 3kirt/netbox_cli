@@ -35,8 +35,8 @@ func Command() *cobra.Command {
 func dataFilesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "data-files", Short: "Browse data files"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("data-files", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CoreAPI.CoreDataFilesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("data-files", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CoreAPI.CoreDataFilesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -58,8 +58,8 @@ func dataFilesCmd() *cobra.Command {
 func dataSourcesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "data-sources", Short: "Manage data sources"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("data-sources", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CoreAPI.CoreDataSourcesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("data-sources", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CoreAPI.CoreDataSourcesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -111,8 +111,8 @@ func dataSourcesCmd() *cobra.Command {
 func jobsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "jobs", Short: "Browse jobs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("jobs", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CoreAPI.CoreJobsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("jobs", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CoreAPI.CoreJobsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -135,8 +135,8 @@ func jobsCmd() *cobra.Command {
 func objectChangesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "object-changes", Short: "Browse object changes"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("object-changes", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.CoreAPI.CoreObjectChangesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("object-changes", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.CoreAPI.CoreObjectChangesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

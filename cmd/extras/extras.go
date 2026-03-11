@@ -50,8 +50,8 @@ func Command() *cobra.Command {
 func bookmarksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "bookmarks", Short: "Manage bookmarks"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("bookmarks", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasBookmarksList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("bookmarks", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasBookmarksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -102,8 +102,8 @@ func bookmarksCmd() *cobra.Command {
 func configContextsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "config-contexts", Short: "Manage config contexts"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("config-contexts", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasConfigContextsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("config-contexts", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasConfigContextsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -154,8 +154,8 @@ func configContextsCmd() *cobra.Command {
 func configTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "config-templates", Short: "Manage config templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("config-templates", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasConfigTemplatesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("config-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasConfigTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -206,8 +206,8 @@ func configTemplatesCmd() *cobra.Command {
 func customFieldChoiceSetsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "custom-field-choice-sets", Short: "Manage custom field choice sets"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("custom-field-choice-sets", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasCustomFieldChoiceSetsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("custom-field-choice-sets", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasCustomFieldChoiceSetsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -258,8 +258,8 @@ func customFieldChoiceSetsCmd() *cobra.Command {
 func customFieldsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "custom-fields", Short: "Manage custom fields"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("custom-fields", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasCustomFieldsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("custom-fields", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasCustomFieldsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -310,8 +310,8 @@ func customFieldsCmd() *cobra.Command {
 func customLinksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "custom-links", Short: "Manage custom links"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("custom-links", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasCustomLinksList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("custom-links", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasCustomLinksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -362,8 +362,8 @@ func customLinksCmd() *cobra.Command {
 func eventRulesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "event-rules", Short: "Manage event rules"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("event-rules", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasEventRulesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("event-rules", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasEventRulesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -414,8 +414,8 @@ func eventRulesCmd() *cobra.Command {
 func exportTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "export-templates", Short: "Manage export templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("export-templates", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasExportTemplatesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("export-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasExportTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -466,8 +466,8 @@ func exportTemplatesCmd() *cobra.Command {
 func imageAttachmentsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "image-attachments", Short: "Manage image attachments"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("image-attachments", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasImageAttachmentsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("image-attachments", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasImageAttachmentsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -518,8 +518,8 @@ func imageAttachmentsCmd() *cobra.Command {
 func journalEntriesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "journal-entries", Short: "Manage journal entries"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("journal-entries", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasJournalEntriesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("journal-entries", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasJournalEntriesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -570,8 +570,8 @@ func journalEntriesCmd() *cobra.Command {
 func notificationGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "notification-groups", Short: "Manage notification groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("notification-groups", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasNotificationGroupsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("notification-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasNotificationGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -622,8 +622,8 @@ func notificationGroupsCmd() *cobra.Command {
 func notificationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "notifications", Short: "Manage notifications"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("notifications", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasNotificationsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("notifications", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasNotificationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -675,8 +675,8 @@ func notificationsCmd() *cobra.Command {
 func objectTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "object-types", Short: "Browse object types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("object-types", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasObjectTypesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("object-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasObjectTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -698,8 +698,8 @@ func objectTypesCmd() *cobra.Command {
 func savedFiltersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "saved-filters", Short: "Manage saved filters"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("saved-filters", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasSavedFiltersList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("saved-filters", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasSavedFiltersList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -751,8 +751,8 @@ func savedFiltersCmd() *cobra.Command {
 func scriptsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "scripts", Short: "Manage scripts"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("scripts", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasScriptsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("scripts", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasScriptsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -767,8 +767,8 @@ func scriptsCmd() *cobra.Command {
 func subscriptionsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "subscriptions", Short: "Manage subscriptions"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("subscriptions", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasSubscriptionsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("subscriptions", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasSubscriptionsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -819,8 +819,8 @@ func subscriptionsCmd() *cobra.Command {
 func tableConfigsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "table-configs", Short: "Manage table configs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("table-configs", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasTableConfigsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("table-configs", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasTableConfigsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -872,8 +872,8 @@ func tableConfigsCmd() *cobra.Command {
 func taggedObjectsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tagged-objects", Short: "Browse tagged objects"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tagged-objects", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasTaggedObjectsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("tagged-objects", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasTaggedObjectsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -895,8 +895,8 @@ func taggedObjectsCmd() *cobra.Command {
 func tagsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tags", Short: "Manage tags"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tags", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasTagsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("tags", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasTagsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -947,8 +947,8 @@ func tagsCmd() *cobra.Command {
 func webhooksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "webhooks", Short: "Manage webhooks"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("webhooks", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.ExtrasAPI.ExtrasWebhooksList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("webhooks", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.ExtrasAPI.ExtrasWebhooksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

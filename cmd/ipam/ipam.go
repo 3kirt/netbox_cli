@@ -49,8 +49,8 @@ func Command() *cobra.Command {
 func aggregatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "aggregates", Short: "Manage aggregates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("aggregates", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamAggregatesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("aggregates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamAggregatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -101,8 +101,8 @@ func aggregatesCmd() *cobra.Command {
 func asnsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "asns", Short: "Manage ASNs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("asns", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamAsnsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("asns", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamAsnsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -153,8 +153,8 @@ func asnsCmd() *cobra.Command {
 func asnRangesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "asn-ranges", Short: "Manage ASN ranges"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("asn-ranges", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamAsnRangesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("asn-ranges", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamAsnRangesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -205,8 +205,8 @@ func asnRangesCmd() *cobra.Command {
 func fhrpGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "fhrp-groups", Short: "Manage FHRP groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("fhrp-groups", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamFhrpGroupsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("fhrp-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamFhrpGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -257,8 +257,8 @@ func fhrpGroupsCmd() *cobra.Command {
 func fhrpGroupAssignmentsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "fhrp-group-assignments", Short: "Manage FHRP group assignments"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("fhrp-group-assignments", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamFhrpGroupAssignmentsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("fhrp-group-assignments", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamFhrpGroupAssignmentsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -352,6 +352,7 @@ func ipAddressesCmd() *cobra.Command {
 
 func ipAddressesListCmd() *cobra.Command {
 	var virtualMachine, device, address, search string
+	var limit int32
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all ip-addresses",
@@ -365,7 +366,7 @@ func ipAddressesListCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			req := client.IpamAPI.IpamIpAddressesList(cmd.Context()).Limit(0)
+			req := client.IpamAPI.IpamIpAddressesList(cmd.Context()).Limit(limit)
 			if search != "" {
 				req = req.Q(search)
 			}
@@ -389,6 +390,7 @@ func ipAddressesListCmd() *cobra.Command {
 	cmd.Flags().StringVar(&virtualMachine, "virtual-machine", "", "filter by virtual machine name")
 	cmd.Flags().StringVar(&device, "device", "", "filter by device name")
 	cmd.Flags().StringVar(&address, "address", "", "filter by IP address (e.g. 192.0.2.1/24)")
+	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
 	return cmd
 }
 
@@ -397,8 +399,8 @@ func ipAddressesListCmd() *cobra.Command {
 func ipRangesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "ip-ranges", Short: "Manage IP ranges"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("ip-ranges", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamIpRangesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("ip-ranges", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamIpRangesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -492,6 +494,7 @@ func prefixesCmd() *cobra.Command {
 
 func prefixesListCmd() *cobra.Command {
 	var search, site string
+	var limit int32
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all prefixes",
@@ -503,7 +506,7 @@ func prefixesListCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			req := client.IpamAPI.IpamPrefixesList(cmd.Context()).Limit(0)
+			req := client.IpamAPI.IpamPrefixesList(cmd.Context()).Limit(limit)
 			if search != "" {
 				req = req.Q(search)
 			}
@@ -519,6 +522,7 @@ func prefixesListCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&search, "search", "", "free-text search (prefix string or description)")
 	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
+	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
 	return cmd
 }
 
@@ -527,8 +531,8 @@ func prefixesListCmd() *cobra.Command {
 func rirsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rirs", Short: "Manage RIRs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rirs", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamRirsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("rirs", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamRirsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -579,8 +583,8 @@ func rirsCmd() *cobra.Command {
 func rolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "roles", Short: "Manage IP/VLAN roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("roles", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamRolesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("roles", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamRolesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -631,8 +635,8 @@ func rolesCmd() *cobra.Command {
 func routeTargetsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "route-targets", Short: "Manage route targets"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("route-targets", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamRouteTargetsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("route-targets", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamRouteTargetsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -683,8 +687,8 @@ func routeTargetsCmd() *cobra.Command {
 func serviceTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "service-templates", Short: "Manage service templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("service-templates", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamServiceTemplatesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("service-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamServiceTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -735,8 +739,8 @@ func serviceTemplatesCmd() *cobra.Command {
 func servicesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "services", Short: "Manage services"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("services", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamServicesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("services", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamServicesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -787,8 +791,8 @@ func servicesCmd() *cobra.Command {
 func vlanGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "vlan-groups", Short: "Manage VLAN groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("vlan-groups", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamVlanGroupsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("vlan-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamVlanGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -839,8 +843,8 @@ func vlanGroupsCmd() *cobra.Command {
 func vlanTranslationPoliciesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "vlan-translation-policies", Short: "Manage VLAN translation policies"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("vlan-translation-policies", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamVlanTranslationPoliciesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("vlan-translation-policies", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamVlanTranslationPoliciesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -891,8 +895,8 @@ func vlanTranslationPoliciesCmd() *cobra.Command {
 func vlanTranslationRulesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "vlan-translation-rules", Short: "Manage VLAN translation rules"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("vlan-translation-rules", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamVlanTranslationRulesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("vlan-translation-rules", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamVlanTranslationRulesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -943,8 +947,8 @@ func vlanTranslationRulesCmd() *cobra.Command {
 func vlansCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "vlans", Short: "Manage VLANs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("vlans", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamVlansList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("vlans", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamVlansList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -995,8 +999,8 @@ func vlansCmd() *cobra.Command {
 func vrfsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "vrfs", Short: "Manage VRFs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("vrfs", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.IpamAPI.IpamVrfsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("vrfs", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.IpamAPI.IpamVrfsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

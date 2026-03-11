@@ -40,8 +40,8 @@ func Command() *cobra.Command {
 func ikePoliciesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "ike-policies", Short: "Manage IKE policies"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("ike-policies", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnIkePoliciesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("ike-policies", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnIkePoliciesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -92,8 +92,8 @@ func ikePoliciesCmd() *cobra.Command {
 func ikeProposalsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "ike-proposals", Short: "Manage IKE proposals"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("ike-proposals", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnIkeProposalsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("ike-proposals", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnIkeProposalsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -144,8 +144,8 @@ func ikeProposalsCmd() *cobra.Command {
 func ipsecPoliciesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "ipsec-policies", Short: "Manage IPSec policies"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("ipsec-policies", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnIpsecPoliciesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("ipsec-policies", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnIpsecPoliciesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -196,8 +196,8 @@ func ipsecPoliciesCmd() *cobra.Command {
 func ipsecProfilesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "ipsec-profiles", Short: "Manage IPSec profiles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("ipsec-profiles", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnIpsecProfilesList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("ipsec-profiles", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnIpsecProfilesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -248,8 +248,8 @@ func ipsecProfilesCmd() *cobra.Command {
 func ipsecProposalsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "ipsec-proposals", Short: "Manage IPSec proposals"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("ipsec-proposals", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnIpsecProposalsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("ipsec-proposals", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnIpsecProposalsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -300,8 +300,8 @@ func ipsecProposalsCmd() *cobra.Command {
 func l2vpnTerminationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "l2vpn-terminations", Short: "Manage L2VPN terminations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("l2vpn-terminations", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnL2vpnTerminationsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("l2vpn-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnL2vpnTerminationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -352,8 +352,8 @@ func l2vpnTerminationsCmd() *cobra.Command {
 func l2vpnsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "l2vpns", Short: "Manage L2VPNs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("l2vpns", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnL2vpnsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("l2vpns", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnL2vpnsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -404,8 +404,8 @@ func l2vpnsCmd() *cobra.Command {
 func tunnelGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tunnel-groups", Short: "Manage tunnel groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tunnel-groups", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnTunnelGroupsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("tunnel-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnTunnelGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -456,8 +456,8 @@ func tunnelGroupsCmd() *cobra.Command {
 func tunnelTerminationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tunnel-terminations", Short: "Manage tunnel terminations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tunnel-terminations", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnTunnelTerminationsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("tunnel-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnTunnelTerminationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -508,8 +508,8 @@ func tunnelTerminationsCmd() *cobra.Command {
 func tunnelsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tunnels", Short: "Manage tunnels"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tunnels", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.VpnAPI.VpnTunnelsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("tunnels", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.VpnAPI.VpnTunnelsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

@@ -33,8 +33,8 @@ func Command() *cobra.Command {
 func wirelessLanGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "wireless-lan-groups", Short: "Manage wireless LAN groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("wireless-lan-groups", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.WirelessAPI.WirelessWirelessLanGroupsList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("wireless-lan-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.WirelessAPI.WirelessWirelessLanGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -85,8 +85,8 @@ func wirelessLanGroupsCmd() *cobra.Command {
 func wirelessLansCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "wireless-lans", Short: "Manage wireless LANs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("wireless-lans", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.WirelessAPI.WirelessWirelessLansList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("wireless-lans", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.WirelessAPI.WirelessWirelessLansList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
@@ -137,8 +137,8 @@ func wirelessLansCmd() *cobra.Command {
 func wirelessLinksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "wireless-links", Short: "Manage wireless links"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("wireless-links", func(ctx context.Context, client *netbox.APIClient) error {
-			resp, _, err := client.WirelessAPI.WirelessWirelessLinksList(ctx).Limit(0).Execute()
+		cmdutil.ListCmd("wireless-links", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+			resp, _, err := client.WirelessAPI.WirelessWirelessLinksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}

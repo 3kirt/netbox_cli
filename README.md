@@ -55,7 +55,7 @@ netbox-cli [--config FILE] <app> <resource> <action> [flags]
 
 | Action | Flags | Description |
 |---|---|---|
-| `list` | | Fetch all records |
+| `list` | `--limit <N>` | Fetch records (default 0: all) |
 | `get` | `--id <ID>` | Fetch one record by ID |
 | `create` | | Create a record; reads JSON body from stdin |
 | `update` | `--id <ID>` | Partially update a record (PATCH); reads JSON from stdin |
