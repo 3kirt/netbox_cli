@@ -188,7 +188,7 @@ func clustersCmd() *cobra.Command {
 }
 
 func clustersListCmd() *cobra.Command {
-	var name, site, search string
+	var name, site, clusterType, search string
 	var limit int32
 	var fields []string
 	cmd := &cobra.Command{
@@ -197,6 +197,7 @@ func clustersListCmd() *cobra.Command {
 		Long:  "List clusters. All flags are optional; omitting them returns all records.",
 		Example: `  netbox-cli virtualization clusters list --name prod-vsphere-01
   netbox-cli virtualization clusters list --site azure-canada-central
+  netbox-cli virtualization clusters list --type vsphere
   netbox-cli virtualization clusters list --search vsphere`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
@@ -213,6 +214,9 @@ func clustersListCmd() *cobra.Command {
 			if site != "" {
 				req = req.Site([]string{site})
 			}
+			if clusterType != "" {
+				req = req.Type_([]string{clusterType})
+			}
 			resp, _, err := req.Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
@@ -223,6 +227,7 @@ func clustersListCmd() *cobra.Command {
 	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
 	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
+	cmd.Flags().StringVar(&clusterType, "type", "", "filter by cluster type slug (e.g. vsphere, proxmox)")
 	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
 	cmd.Flags().StringSliceVar(&fields, "fields", nil, "comma-separated top-level fields to include in output (e.g. id,name,status)")
 	return cmd

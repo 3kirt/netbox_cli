@@ -47,6 +47,7 @@ Commands for the NetBox Virtualization API — clusters, virtual machines, inter
 |---|---|
 | `--name <name>` | Filter by exact name |
 | `--site <slug>` | Filter by site slug |
+| `--type <slug>` | Filter by cluster type slug (e.g. `vsphere`, `proxmox`) |
 
 ## Resources
 
@@ -109,6 +110,9 @@ echo '{"virtual_machine": 12, "name": "sda", "size": 50}' \
 
 # List clusters at a site
 netbox-cli virtualization clusters list --site lon01
+
+# List clusters of a specific type
+netbox-cli virtualization clusters list --type vsphere
 
 # List VMs in a cluster
 netbox-cli virtualization virtual-machines list --cluster prod-vsphere-01
