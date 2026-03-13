@@ -2288,16 +2288,46 @@ func siteGroupsCmd() *cobra.Command {
 
 // sitesCmd -------------------------------------------------------
 
-func sitesCmd() *cobra.Command {
-	cmd := &cobra.Command{Use: "sites", Short: "Manage sites"}
-	cmd.AddCommand(
-		cmdutil.ListCmd("sites", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
-			resp, _, err := client.DcimAPI.DcimSitesList(ctx).Limit(limit).Execute()
+func sitesListCmd() *cobra.Command {
+	var name, search string
+	var limit int32
+	var fields []string
+	cmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all sites",
+		Long:  "List sites. All flags are optional; omitting them returns all records.",
+		Example: `  netbox-cli dcim sites list --name lon01
+  netbox-cli dcim sites list --search london`,
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			client, err := clientctx.Client(cmd.Context())
+			if err != nil {
+				return err
+			}
+			req := client.DcimAPI.DcimSitesList(cmd.Context()).Limit(limit)
+			if name != "" {
+				req = req.Name([]string{name})
+			}
+			if search != "" {
+				req = req.Q(search)
+			}
+			resp, _, err := req.Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
 			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
-		}),
+		},
+	}
+	cmd.Flags().StringVar(&name, "name", "", "filter by exact site name")
+	cmd.Flags().StringVar(&search, "search", "", "free-text search (name or slug)")
+	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
+	cmd.Flags().StringSliceVar(&fields, "fields", nil, "comma-separated top-level fields to include in output (e.g. id,name,status)")
+	return cmd
+}
+
+func sitesCmd() *cobra.Command {
+	cmd := &cobra.Command{Use: "sites", Short: "Manage sites"}
+	cmd.AddCommand(
+		sitesListCmd(),
 		cmdutil.GetCmd("site", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimSitesRetrieve(ctx, id).Execute()
 			if err != nil {

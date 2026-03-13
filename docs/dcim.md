@@ -22,6 +22,15 @@ Commands for the NetBox DCIM API — devices, racks, cables, interfaces, and all
 |---|---|
 | `--device <name>` | Filter by device name |
 
+### `sites`
+
+`list` accepts optional filter flags. Omitting all flags returns all records.
+
+| Flag | Description |
+|---|---|
+| `--name <name>` | Filter by exact site name |
+| `--search <text>` | Free-text search (name or slug) |
+
 ### `devices`
 
 `list` accepts optional filter flags. Omitting all flags returns all records.
@@ -93,6 +102,12 @@ All DCIM resources support list, get, create, update, and delete.
 ```bash
 # List all sites
 netbox-cli dcim sites list
+
+# Find a site by exact name
+netbox-cli dcim sites list --name lon01
+
+# Search sites by keyword
+netbox-cli dcim sites list --search london
 
 # Create a region
 echo '{"name": "North America", "slug": "north-america"}' \
