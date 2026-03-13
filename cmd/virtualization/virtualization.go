@@ -406,7 +406,7 @@ func virtualMachinesCmd() *cobra.Command {
 }
 
 func virtualMachinesListCmd() *cobra.Command {
-	var name, nameContains, site, role, cluster, status, search string
+	var name, nameContains, site, role, cluster, status, search, ip string
 	var tags []string
 	var limit int32
 	var fields []string
@@ -419,12 +419,35 @@ func virtualMachinesListCmd() *cobra.Command {
   netbox-cli virtualization virtual-machines list --site lon01 --status active
   netbox-cli virtualization virtual-machines list --cluster prod-vsphere-01
   netbox-cli virtualization virtual-machines list --search prod-web
-  netbox-cli virtualization virtual-machines list --tag k8s-node`,
+  netbox-cli virtualization virtual-machines list --tag k8s-node
+  netbox-cli virtualization virtual-machines list --ip 10.1.1.182
+  netbox-cli virtualization virtual-machines list --ip 10.1.1.182/24`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			client, err := clientctx.Client(cmd.Context())
 			if err != nil {
 				return err
 			}
+
+			// --ip: resolve address to VM names via the IPAM API, then filter.
+			if ip != "" {
+				vmNames, err := vmNamesForIP(cmd.Context(), client, ip)
+				if err != nil {
+					return err
+				}
+				if len(vmNames) == 0 {
+					return cmdutil.OutputJSONFields([]any{}, fields)
+				}
+				name = ""         // --ip supersedes any --name flag
+				nameContains = "" // --ip supersedes any --name-contains flag
+				req := client.VirtualizationAPI.VirtualizationVirtualMachinesList(cmd.Context()).Limit(0)
+				req = req.Name(vmNames)
+				resp, _, err := req.Execute()
+				if err != nil {
+					return cmdutil.APIError(err)
+				}
+				return cmdutil.OutputJSONFields(resp.GetResults(), fields)
+			}
+
 			req := client.VirtualizationAPI.VirtualizationVirtualMachinesList(cmd.Context()).Limit(limit)
 			if search != "" {
 				req = req.Q(search)
@@ -464,10 +487,43 @@ func virtualMachinesListCmd() *cobra.Command {
 	cmd.Flags().StringVar(&role, "role", "", "filter by role slug")
 	cmd.Flags().StringVar(&cluster, "cluster", "", "filter by cluster name")
 	cmd.Flags().StringVar(&status, "status", "", "filter by status (active, staged, offline, planned, decommissioning)")
+	cmd.Flags().StringVar(&ip, "ip", "", "filter by assigned IP address (e.g. 10.1.1.182 or 10.1.1.182/24)")
 	cmd.Flags().StringSliceVar(&tags, "tag", nil, "filter by tag slug; multiple values require ALL tags to be present (comma-separated or repeated: --tag a,b or --tag a --tag b)")
 	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
 	cmd.Flags().StringSliceVar(&fields, "fields", nil, "comma-separated top-level fields to include in output (e.g. id,name,status)")
 	return cmd
+}
+
+// vmNamesForIP queries the IPAM API for the given address and returns the
+// names of any virtual machines whose interface has that IP assigned.
+// The address may be specified with or without a prefix length.
+func vmNamesForIP(ctx context.Context, client *netbox.APIClient, address string) ([]string, error) {
+	resp, _, err := client.IpamAPI.IpamIpAddressesList(ctx).Address([]string{address}).Limit(0).Execute()
+	if err != nil {
+		return nil, cmdutil.APIError(err)
+	}
+	var names []string
+	seen := make(map[string]bool)
+	for _, addr := range resp.GetResults() {
+		if addr.GetAssignedObjectType() != "virtualization.vminterface" {
+			continue
+		}
+		obj, ok := addr.GetAssignedObject().(map[string]any)
+		if !ok {
+			continue
+		}
+		vm, ok := obj["virtual_machine"].(map[string]any)
+		if !ok {
+			continue
+		}
+		n, ok := vm["name"].(string)
+		if !ok || n == "" || seen[n] {
+			continue
+		}
+		seen[n] = true
+		names = append(names, n)
+	}
+	return names, nil
 }
 
 func virtualMachinesGetCmd() *cobra.Command {
