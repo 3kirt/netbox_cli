@@ -33,12 +33,12 @@ func Command() *cobra.Command {
 func wirelessLanGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "wireless-lan-groups", Short: "Manage wireless LAN groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("wireless-lan-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("wireless-lan-groups", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.WirelessAPI.WirelessWirelessLanGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("wireless-lan-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.WirelessAPI.WirelessWirelessLanGroupsRetrieve(ctx, id).Execute()
@@ -85,12 +85,12 @@ func wirelessLanGroupsCmd() *cobra.Command {
 func wirelessLansCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "wireless-lans", Short: "Manage wireless LANs"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("wireless-lans", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("wireless-lans", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.WirelessAPI.WirelessWirelessLansList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("wireless-lan", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.WirelessAPI.WirelessWirelessLansRetrieve(ctx, id).Execute()
@@ -137,12 +137,12 @@ func wirelessLansCmd() *cobra.Command {
 func wirelessLinksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "wireless-links", Short: "Manage wireless links"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("wireless-links", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("wireless-links", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.WirelessAPI.WirelessWirelessLinksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("wireless-link", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.WirelessAPI.WirelessWirelessLinksRetrieve(ctx, id).Execute()

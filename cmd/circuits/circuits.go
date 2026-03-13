@@ -41,12 +41,12 @@ func Command() *cobra.Command {
 func circuitGroupAssignmentsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuit-group-assignments", Short: "Manage circuit group assignments"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuit-group-assignments", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("circuit-group-assignments", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupAssignmentsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("circuit-group-assignment", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupAssignmentsRetrieve(ctx, id).Execute()
@@ -93,12 +93,12 @@ func circuitGroupAssignmentsCmd() *cobra.Command {
 func circuitGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuit-groups", Short: "Manage circuit groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuit-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("circuit-groups", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("circuit-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitGroupsRetrieve(ctx, id).Execute()
@@ -145,12 +145,12 @@ func circuitGroupsCmd() *cobra.Command {
 func circuitTerminationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuit-terminations", Short: "Manage circuit terminations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuit-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("circuit-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitTerminationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("circuit-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitTerminationsRetrieve(ctx, id).Execute()
@@ -197,12 +197,12 @@ func circuitTerminationsCmd() *cobra.Command {
 func circuitTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuit-types", Short: "Manage circuit types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuit-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("circuit-types", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("circuit-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitTypesRetrieve(ctx, id).Execute()
@@ -249,12 +249,12 @@ func circuitTypesCmd() *cobra.Command {
 func circuitsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "circuits", Short: "Manage circuits"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("circuits", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("circuits", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("circuit", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsCircuitsRetrieve(ctx, id).Execute()
@@ -301,12 +301,12 @@ func circuitsCmd() *cobra.Command {
 func providerAccountsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "provider-accounts", Short: "Manage provider accounts"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("provider-accounts", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("provider-accounts", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsProviderAccountsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("provider-account", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsProviderAccountsRetrieve(ctx, id).Execute()
@@ -353,12 +353,12 @@ func providerAccountsCmd() *cobra.Command {
 func providerNetworksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "provider-networks", Short: "Manage provider networks"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("provider-networks", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("provider-networks", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsProviderNetworksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("provider-network", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsProviderNetworksRetrieve(ctx, id).Execute()
@@ -405,12 +405,12 @@ func providerNetworksCmd() *cobra.Command {
 func providersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "providers", Short: "Manage providers"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("providers", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("providers", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsProvidersList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("provider", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsProvidersRetrieve(ctx, id).Execute()
@@ -457,12 +457,12 @@ func providersCmd() *cobra.Command {
 func virtualCircuitTerminationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-circuit-terminations", Short: "Manage virtual circuit terminations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-circuit-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("virtual-circuit-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTerminationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("virtual-circuit-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTerminationsRetrieve(ctx, id).Execute()
@@ -509,12 +509,12 @@ func virtualCircuitTerminationsCmd() *cobra.Command {
 func virtualCircuitTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-circuit-types", Short: "Manage virtual circuit types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-circuit-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("virtual-circuit-types", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("virtual-circuit-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitTypesRetrieve(ctx, id).Execute()
@@ -561,12 +561,12 @@ func virtualCircuitTypesCmd() *cobra.Command {
 func virtualCircuitsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-circuits", Short: "Manage virtual circuits"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-circuits", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("virtual-circuits", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("virtual-circuit", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.CircuitsAPI.CircuitsVirtualCircuitsRetrieve(ctx, id).Execute()

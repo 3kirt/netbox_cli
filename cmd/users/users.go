@@ -34,12 +34,12 @@ func Command() *cobra.Command {
 func groupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "groups", Short: "Manage groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("groups", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.UsersAPI.UsersGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.UsersAPI.UsersGroupsRetrieve(ctx, id).Execute()
@@ -86,12 +86,12 @@ func groupsCmd() *cobra.Command {
 func permissionsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "permissions", Short: "Manage permissions"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("permissions", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("permissions", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.UsersAPI.UsersPermissionsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("permission", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.UsersAPI.UsersPermissionsRetrieve(ctx, id).Execute()
@@ -138,12 +138,12 @@ func permissionsCmd() *cobra.Command {
 func tokensCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "tokens", Short: "Manage tokens"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("tokens", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("tokens", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.UsersAPI.UsersTokensList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("token", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.UsersAPI.UsersTokensRetrieve(ctx, id).Execute()
@@ -190,12 +190,12 @@ func tokensCmd() *cobra.Command {
 func usersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "users", Short: "Manage users"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("users", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("users", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.UsersAPI.UsersUsersList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("user", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.UsersAPI.UsersUsersRetrieve(ctx, id).Execute()

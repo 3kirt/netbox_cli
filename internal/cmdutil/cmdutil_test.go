@@ -110,6 +110,108 @@ func TestOutputJSON(t *testing.T) {
 	})
 }
 
+// ── ProjectFields ─────────────────────────────────────────────────────────────
+
+func TestProjectFields(t *testing.T) {
+	input := []map[string]any{
+		{"id": 1, "name": "foo", "status": "active"},
+		{"id": 2, "name": "bar", "status": "staged"},
+	}
+
+	t.Run("empty fields returns results unchanged", func(t *testing.T) {
+		got := cmdutil.ProjectFields(input, nil)
+		if len(got) != len(input) {
+			t.Fatalf("got %d results, want %d", len(got), len(input))
+		}
+		if len(got[0]) != 3 {
+			t.Errorf("got %d keys, want 3", len(got[0]))
+		}
+	})
+
+	t.Run("projects to requested fields", func(t *testing.T) {
+		got := cmdutil.ProjectFields(input, []string{"id", "name"})
+		if len(got) != 2 {
+			t.Fatalf("got %d results, want 2", len(got))
+		}
+		if _, ok := got[0]["id"]; !ok {
+			t.Error("missing 'id' field")
+		}
+		if _, ok := got[0]["name"]; !ok {
+			t.Error("missing 'name' field")
+		}
+		if _, ok := got[0]["status"]; ok {
+			t.Error("unexpected 'status' field in projected output")
+		}
+	})
+
+	t.Run("field matching is case-insensitive", func(t *testing.T) {
+		got := cmdutil.ProjectFields(input, []string{"ID", "NAME"})
+		if _, ok := got[0]["id"]; !ok {
+			t.Error("missing 'id' field with case-insensitive match")
+		}
+		if _, ok := got[0]["name"]; !ok {
+			t.Error("missing 'name' field with case-insensitive match")
+		}
+	})
+
+	t.Run("unknown fields produce empty objects", func(t *testing.T) {
+		got := cmdutil.ProjectFields(input, []string{"nonexistent"})
+		if len(got[0]) != 0 {
+			t.Errorf("got %d keys, want 0", len(got[0]))
+		}
+	})
+}
+
+// ── OutputJSONFields ──────────────────────────────────────────────────────────
+
+func TestOutputJSONFields(t *testing.T) {
+	input := []map[string]any{
+		{"id": float64(1), "name": "foo", "status": "active"},
+	}
+
+	t.Run("no fields outputs full results", func(t *testing.T) {
+		var encErr error
+		got := captureStdout(t, func() {
+			encErr = cmdutil.OutputJSONFields(input, nil)
+		})
+		if encErr != nil {
+			t.Fatalf("OutputJSONFields returned error: %v", encErr)
+		}
+		if !strings.Contains(got, "status") {
+			t.Errorf("expected 'status' in unfiltered output, got %q", got)
+		}
+	})
+
+	t.Run("projects to requested fields", func(t *testing.T) {
+		var encErr error
+		got := captureStdout(t, func() {
+			encErr = cmdutil.OutputJSONFields(input, []string{"id", "name"})
+		})
+		if encErr != nil {
+			t.Fatalf("OutputJSONFields returned error: %v", encErr)
+		}
+		if strings.Contains(got, "status") {
+			t.Errorf("unexpected 'status' in projected output: %q", got)
+		}
+		if !strings.Contains(got, "name") {
+			t.Errorf("missing 'name' in projected output: %q", got)
+		}
+	})
+
+	t.Run("non-slice value is output as-is", func(t *testing.T) {
+		var encErr error
+		got := captureStdout(t, func() {
+			encErr = cmdutil.OutputJSONFields(map[string]any{"id": 1}, []string{"id"})
+		})
+		if encErr != nil {
+			t.Fatalf("OutputJSONFields returned error: %v", encErr)
+		}
+		if !strings.Contains(got, "id") {
+			t.Errorf("missing 'id' in non-slice output: %q", got)
+		}
+	})
+}
+
 // ── APIError ──────────────────────────────────────────────────────────────────
 
 func TestAPIError(t *testing.T) {
@@ -153,7 +255,7 @@ func TestListCmd(t *testing.T) {
 		ctx := clientctx.WithClient(context.Background(), client)
 
 		var gotClient *netbox.APIClient
-		cmd := cmdutil.ListCmd("widget", func(_ context.Context, cl *netbox.APIClient, _ int32) error {
+		cmd := cmdutil.ListCmd("widget", func(_ context.Context, cl *netbox.APIClient, _ int32, _ []string) error {
 			gotClient = cl
 			return nil
 		})
@@ -169,7 +271,7 @@ func TestListCmd(t *testing.T) {
 
 	t.Run("callback error is propagated", func(t *testing.T) {
 		want := errors.New("list failed")
-		cmd := cmdutil.ListCmd("widget", func(_ context.Context, _ *netbox.APIClient, _ int32) error {
+		cmd := cmdutil.ListCmd("widget", func(_ context.Context, _ *netbox.APIClient, _ int32, _ []string) error {
 			return want
 		})
 		cmd.SetContext(ctxWithClient())
@@ -180,7 +282,7 @@ func TestListCmd(t *testing.T) {
 	})
 
 	t.Run("missing client returns error", func(t *testing.T) {
-		cmd := cmdutil.ListCmd("widget", func(_ context.Context, _ *netbox.APIClient, _ int32) error {
+		cmd := cmdutil.ListCmd("widget", func(_ context.Context, _ *netbox.APIClient, _ int32, _ []string) error {
 			return nil
 		})
 		cmd.SetContext(context.Background())

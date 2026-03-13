@@ -37,13 +37,13 @@ func Command() *cobra.Command {
 func clusterGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "cluster-groups", Short: "Manage cluster groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("cluster-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("cluster-groups", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.VirtualizationAPI.
 				VirtualizationClusterGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("cluster-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
@@ -91,13 +91,13 @@ func clusterGroupsCmd() *cobra.Command {
 func clusterTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "cluster-types", Short: "Manage cluster types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("cluster-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("cluster-types", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.VirtualizationAPI.
 				VirtualizationClusterTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("cluster-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
@@ -190,6 +190,7 @@ func clustersCmd() *cobra.Command {
 func clustersListCmd() *cobra.Command {
 	var name, site, search string
 	var limit int32
+	var fields []string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all clusters",
@@ -216,13 +217,14 @@ func clustersListCmd() *cobra.Command {
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		},
 	}
 	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&name, "name", "", "filter by exact name")
 	cmd.Flags().StringVar(&site, "site", "", "filter by site slug")
 	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
+	cmd.Flags().StringSliceVar(&fields, "fields", nil, "comma-separated top-level fields to include in output (e.g. id,name,status)")
 	return cmd
 }
 
@@ -276,6 +278,7 @@ func interfacesCmd() *cobra.Command {
 func vmInterfacesListCmd() *cobra.Command {
 	var virtualMachine, search string
 	var limit int32
+	var fields []string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all interfaces",
@@ -298,12 +301,13 @@ func vmInterfacesListCmd() *cobra.Command {
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		},
 	}
 	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&virtualMachine, "virtual-machine", "", "filter by virtual machine name")
 	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
+	cmd.Flags().StringSliceVar(&fields, "fields", nil, "comma-separated top-level fields to include in output (e.g. id,name,status)")
 	return cmd
 }
 
@@ -312,13 +316,13 @@ func vmInterfacesListCmd() *cobra.Command {
 func virtualDisksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-disks", Short: "Manage virtual disks"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-disks", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("virtual-disks", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.VirtualizationAPI.
 				VirtualizationVirtualDisksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("virtual-disk", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.VirtualizationAPI.
@@ -405,6 +409,7 @@ func virtualMachinesListCmd() *cobra.Command {
 	var name, nameContains, site, role, cluster, status, search string
 	var tags []string
 	var limit int32
+	var fields []string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all virtual-machines",
@@ -449,7 +454,7 @@ func virtualMachinesListCmd() *cobra.Command {
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		},
 	}
 	cmd.Flags().StringVar(&search, "search", "", "free-text search")
@@ -461,6 +466,7 @@ func virtualMachinesListCmd() *cobra.Command {
 	cmd.Flags().StringVar(&status, "status", "", "filter by status (active, staged, offline, planned, decommissioning)")
 	cmd.Flags().StringSliceVar(&tags, "tag", nil, "filter by tag slug; multiple values require ALL tags to be present (comma-separated or repeated: --tag a,b or --tag a --tag b)")
 	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
+	cmd.Flags().StringSliceVar(&fields, "fields", nil, "comma-separated top-level fields to include in output (e.g. id,name,status)")
 	return cmd
 }
 

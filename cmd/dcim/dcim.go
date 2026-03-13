@@ -75,12 +75,12 @@ func Command() *cobra.Command {
 func cableTerminationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "cable-terminations", Short: "Manage cable terminations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("cable-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("cable-terminations", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimCableTerminationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("cable-termination", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimCableTerminationsRetrieve(ctx, id).Execute()
@@ -127,12 +127,12 @@ func cableTerminationsCmd() *cobra.Command {
 func cablesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "cables", Short: "Manage cables"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("cables", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("cables", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimCablesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("cable", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimCablesRetrieve(ctx, id).Execute()
@@ -179,12 +179,12 @@ func cablesCmd() *cobra.Command {
 func consolePortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "console-port-templates", Short: "Manage console port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("console-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("console-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimConsolePortTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("console-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimConsolePortTemplatesRetrieve(ctx, id).Execute()
@@ -231,12 +231,12 @@ func consolePortTemplatesCmd() *cobra.Command {
 func consolePortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "console-ports", Short: "Manage console ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("console-ports", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("console-ports", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimConsolePortsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("console-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimConsolePortsRetrieve(ctx, id).Execute()
@@ -283,12 +283,12 @@ func consolePortsCmd() *cobra.Command {
 func consoleServerPortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "console-server-port-templates", Short: "Manage console server port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("console-server-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("console-server-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimConsoleServerPortTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("console-server-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimConsoleServerPortTemplatesRetrieve(ctx, id).Execute()
@@ -335,12 +335,12 @@ func consoleServerPortTemplatesCmd() *cobra.Command {
 func consoleServerPortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "console-server-ports", Short: "Manage console server ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("console-server-ports", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("console-server-ports", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimConsoleServerPortsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("console-server-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimConsoleServerPortsRetrieve(ctx, id).Execute()
@@ -387,12 +387,12 @@ func consoleServerPortsCmd() *cobra.Command {
 func deviceBayTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "device-bay-templates", Short: "Manage device bay templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("device-bay-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("device-bay-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimDeviceBayTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("device-bay-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimDeviceBayTemplatesRetrieve(ctx, id).Execute()
@@ -439,12 +439,12 @@ func deviceBayTemplatesCmd() *cobra.Command {
 func deviceBaysCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "device-bays", Short: "Manage device bays"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("device-bays", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("device-bays", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimDeviceBaysList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("device-bay", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimDeviceBaysRetrieve(ctx, id).Execute()
@@ -491,12 +491,12 @@ func deviceBaysCmd() *cobra.Command {
 func deviceRolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "device-roles", Short: "Manage device roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("device-roles", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("device-roles", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimDeviceRolesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("device-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimDeviceRolesRetrieve(ctx, id).Execute()
@@ -543,12 +543,12 @@ func deviceRolesCmd() *cobra.Command {
 func deviceTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "device-types", Short: "Manage device types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("device-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("device-types", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimDeviceTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("device-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimDeviceTypesRetrieve(ctx, id).Execute()
@@ -640,6 +640,7 @@ func devicesListCmd() *cobra.Command {
 	var name, nameContains, site, status, role, search string
 	var tags []string
 	var limit int32
+	var fields []string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all devices",
@@ -680,7 +681,7 @@ func devicesListCmd() *cobra.Command {
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		},
 	}
 	cmd.Flags().StringVar(&search, "search", "", "free-text search")
@@ -691,6 +692,7 @@ func devicesListCmd() *cobra.Command {
 	cmd.Flags().StringVar(&role, "role", "", "filter by role slug")
 	cmd.Flags().StringSliceVar(&tags, "tag", nil, "filter by tag slug; multiple values require ALL tags to be present (comma-separated or repeated: --tag a,b or --tag a --tag b)")
 	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
+	cmd.Flags().StringSliceVar(&fields, "fields", nil, "comma-separated top-level fields to include in output (e.g. id,name,status)")
 	return cmd
 }
 
@@ -699,12 +701,12 @@ func devicesListCmd() *cobra.Command {
 func frontPortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "front-port-templates", Short: "Manage front port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("front-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("front-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimFrontPortTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("front-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimFrontPortTemplatesRetrieve(ctx, id).Execute()
@@ -751,12 +753,12 @@ func frontPortTemplatesCmd() *cobra.Command {
 func frontPortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "front-ports", Short: "Manage front ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("front-ports", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("front-ports", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimFrontPortsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("front-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimFrontPortsRetrieve(ctx, id).Execute()
@@ -803,12 +805,12 @@ func frontPortsCmd() *cobra.Command {
 func interfaceTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "interface-templates", Short: "Manage interface templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("interface-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("interface-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimInterfaceTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("interface-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimInterfaceTemplatesRetrieve(ctx, id).Execute()
@@ -853,6 +855,7 @@ func interfaceTemplatesCmd() *cobra.Command {
 func interfacesListCmd() *cobra.Command {
 	var device, search string
 	var limit int32
+	var fields []string
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List all interfaces",
@@ -875,12 +878,13 @@ func interfacesListCmd() *cobra.Command {
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		},
 	}
 	cmd.Flags().StringVar(&search, "search", "", "free-text search")
 	cmd.Flags().StringVar(&device, "device", "", "filter by device name")
 	cmd.Flags().Int32Var(&limit, "limit", 0, "maximum number of records to return (default 0: return all)")
+	cmd.Flags().StringSliceVar(&fields, "fields", nil, "comma-separated top-level fields to include in output (e.g. id,name,status)")
 	return cmd
 }
 
@@ -935,12 +939,12 @@ func interfacesCmd() *cobra.Command {
 func inventoryItemRolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "inventory-item-roles", Short: "Manage inventory item roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("inventory-item-roles", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("inventory-item-roles", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimInventoryItemRolesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("inventory-item-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimInventoryItemRolesRetrieve(ctx, id).Execute()
@@ -987,12 +991,12 @@ func inventoryItemRolesCmd() *cobra.Command {
 func inventoryItemTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "inventory-item-templates", Short: "Manage inventory item templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("inventory-item-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("inventory-item-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimInventoryItemTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("inventory-item-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimInventoryItemTemplatesRetrieve(ctx, id).Execute()
@@ -1039,12 +1043,12 @@ func inventoryItemTemplatesCmd() *cobra.Command {
 func inventoryItemsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "inventory-items", Short: "Manage inventory items"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("inventory-items", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("inventory-items", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimInventoryItemsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("inventory-item", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimInventoryItemsRetrieve(ctx, id).Execute()
@@ -1091,12 +1095,12 @@ func inventoryItemsCmd() *cobra.Command {
 func locationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "locations", Short: "Manage locations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("locations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("locations", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimLocationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("location", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimLocationsRetrieve(ctx, id).Execute()
@@ -1143,12 +1147,12 @@ func locationsCmd() *cobra.Command {
 func macAddressesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "mac-addresses", Short: "Manage MAC addresses"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("mac-addresses", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("mac-addresses", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimMacAddressesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("mac-address", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimMacAddressesRetrieve(ctx, id).Execute()
@@ -1195,12 +1199,12 @@ func macAddressesCmd() *cobra.Command {
 func manufacturersCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "manufacturers", Short: "Manage manufacturers"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("manufacturers", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("manufacturers", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimManufacturersList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("manufacturer", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimManufacturersRetrieve(ctx, id).Execute()
@@ -1247,12 +1251,12 @@ func manufacturersCmd() *cobra.Command {
 func moduleBayTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "module-bay-templates", Short: "Manage module bay templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("module-bay-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("module-bay-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimModuleBayTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("module-bay-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimModuleBayTemplatesRetrieve(ctx, id).Execute()
@@ -1299,12 +1303,12 @@ func moduleBayTemplatesCmd() *cobra.Command {
 func moduleBaysCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "module-bays", Short: "Manage module bays"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("module-bays", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("module-bays", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimModuleBaysList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("module-bay", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimModuleBaysRetrieve(ctx, id).Execute()
@@ -1351,12 +1355,12 @@ func moduleBaysCmd() *cobra.Command {
 func moduleTypeProfilesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "module-type-profiles", Short: "Manage module type profiles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("module-type-profiles", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("module-type-profiles", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimModuleTypeProfilesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("module-type-profile", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimModuleTypeProfilesRetrieve(ctx, id).Execute()
@@ -1403,12 +1407,12 @@ func moduleTypeProfilesCmd() *cobra.Command {
 func moduleTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "module-types", Short: "Manage module types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("module-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("module-types", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimModuleTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("module-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimModuleTypesRetrieve(ctx, id).Execute()
@@ -1455,12 +1459,12 @@ func moduleTypesCmd() *cobra.Command {
 func modulesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "modules", Short: "Manage modules"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("modules", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("modules", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimModulesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("module", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimModulesRetrieve(ctx, id).Execute()
@@ -1507,12 +1511,12 @@ func modulesCmd() *cobra.Command {
 func platformsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "platforms", Short: "Manage platforms"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("platforms", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("platforms", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimPlatformsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("platform", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimPlatformsRetrieve(ctx, id).Execute()
@@ -1559,12 +1563,12 @@ func platformsCmd() *cobra.Command {
 func powerFeedsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-feeds", Short: "Manage power feeds"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-feeds", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("power-feeds", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimPowerFeedsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("power-feed", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimPowerFeedsRetrieve(ctx, id).Execute()
@@ -1611,12 +1615,12 @@ func powerFeedsCmd() *cobra.Command {
 func powerOutletTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-outlet-templates", Short: "Manage power outlet templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-outlet-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("power-outlet-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimPowerOutletTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("power-outlet-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimPowerOutletTemplatesRetrieve(ctx, id).Execute()
@@ -1663,12 +1667,12 @@ func powerOutletTemplatesCmd() *cobra.Command {
 func powerOutletsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-outlets", Short: "Manage power outlets"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-outlets", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("power-outlets", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimPowerOutletsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("power-outlet", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimPowerOutletsRetrieve(ctx, id).Execute()
@@ -1715,12 +1719,12 @@ func powerOutletsCmd() *cobra.Command {
 func powerPanelsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-panels", Short: "Manage power panels"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-panels", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("power-panels", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimPowerPanelsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("power-panel", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimPowerPanelsRetrieve(ctx, id).Execute()
@@ -1767,12 +1771,12 @@ func powerPanelsCmd() *cobra.Command {
 func powerPortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-port-templates", Short: "Manage power port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("power-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimPowerPortTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("power-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimPowerPortTemplatesRetrieve(ctx, id).Execute()
@@ -1819,12 +1823,12 @@ func powerPortTemplatesCmd() *cobra.Command {
 func powerPortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "power-ports", Short: "Manage power ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("power-ports", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("power-ports", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimPowerPortsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("power-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimPowerPortsRetrieve(ctx, id).Execute()
@@ -1871,12 +1875,12 @@ func powerPortsCmd() *cobra.Command {
 func rackReservationsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rack-reservations", Short: "Manage rack reservations"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rack-reservations", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("rack-reservations", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimRackReservationsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("rack-reservation", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimRackReservationsRetrieve(ctx, id).Execute()
@@ -1923,12 +1927,12 @@ func rackReservationsCmd() *cobra.Command {
 func rackRolesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rack-roles", Short: "Manage rack roles"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rack-roles", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("rack-roles", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimRackRolesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("rack-role", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimRackRolesRetrieve(ctx, id).Execute()
@@ -1975,12 +1979,12 @@ func rackRolesCmd() *cobra.Command {
 func rackTypesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rack-types", Short: "Manage rack types"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rack-types", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("rack-types", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimRackTypesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("rack-type", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimRackTypesRetrieve(ctx, id).Execute()
@@ -2027,12 +2031,12 @@ func rackTypesCmd() *cobra.Command {
 func racksCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "racks", Short: "Manage racks"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("racks", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("racks", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimRacksList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("rack", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimRacksRetrieve(ctx, id).Execute()
@@ -2079,12 +2083,12 @@ func racksCmd() *cobra.Command {
 func rearPortTemplatesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rear-port-templates", Short: "Manage rear port templates"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rear-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("rear-port-templates", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimRearPortTemplatesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("rear-port-template", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimRearPortTemplatesRetrieve(ctx, id).Execute()
@@ -2131,12 +2135,12 @@ func rearPortTemplatesCmd() *cobra.Command {
 func rearPortsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "rear-ports", Short: "Manage rear ports"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("rear-ports", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("rear-ports", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimRearPortsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("rear-port", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimRearPortsRetrieve(ctx, id).Execute()
@@ -2183,12 +2187,12 @@ func rearPortsCmd() *cobra.Command {
 func regionsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "regions", Short: "Manage regions"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("regions", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("regions", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimRegionsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("region", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimRegionsRetrieve(ctx, id).Execute()
@@ -2235,12 +2239,12 @@ func regionsCmd() *cobra.Command {
 func siteGroupsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "site-groups", Short: "Manage site groups"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("site-groups", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("site-groups", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimSiteGroupsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("site-group", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimSiteGroupsRetrieve(ctx, id).Execute()
@@ -2287,12 +2291,12 @@ func siteGroupsCmd() *cobra.Command {
 func sitesCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "sites", Short: "Manage sites"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("sites", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("sites", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimSitesList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("site", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimSitesRetrieve(ctx, id).Execute()
@@ -2339,12 +2343,12 @@ func sitesCmd() *cobra.Command {
 func virtualChassisCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-chassis", Short: "Manage virtual chassis"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-chassis", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("virtual-chassis", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimVirtualChassisList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("virtual-chassis", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimVirtualChassisRetrieve(ctx, id).Execute()
@@ -2391,12 +2395,12 @@ func virtualChassisCmd() *cobra.Command {
 func virtualDeviceContextsCmd() *cobra.Command {
 	cmd := &cobra.Command{Use: "virtual-device-contexts", Short: "Manage virtual device contexts"}
 	cmd.AddCommand(
-		cmdutil.ListCmd("virtual-device-contexts", func(ctx context.Context, client *netbox.APIClient, limit int32) error {
+		cmdutil.ListCmd("virtual-device-contexts", func(ctx context.Context, client *netbox.APIClient, limit int32, fields []string) error {
 			resp, _, err := client.DcimAPI.DcimVirtualDeviceContextsList(ctx).Limit(limit).Execute()
 			if err != nil {
 				return cmdutil.APIError(err)
 			}
-			return cmdutil.OutputJSON(resp.GetResults())
+			return cmdutil.OutputJSONFields(resp.GetResults(), fields)
 		}),
 		cmdutil.GetCmd("virtual-device-context", func(ctx context.Context, client *netbox.APIClient, id int32) error {
 			resp, _, err := client.DcimAPI.DcimVirtualDeviceContextsRetrieve(ctx, id).Execute()
